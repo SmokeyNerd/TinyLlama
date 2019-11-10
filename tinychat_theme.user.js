@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TinyLlama : 2019 Theme
 // @namespace    http://www.smokeyllama.com
-// @version      2019.39
+// @version      2019.40
 // @description  Editing Overall Theme of Tinychat. Install and refresh.
 // @author       SmokeyLlama
 // @match        https://tinychat.com/*
@@ -11,6 +11,8 @@
 // @grant        GM_getValue
 // @grant        GM_listValues
 // @license      MIT
+// @updateURL    https://github.com/SmokeyLlama/tinyllama/raw/master/tinychat_theme.user.js
+// @downloadURL  https://github.com/SmokeyLlama/tinyllama/raw/master/tinychat_theme.user.js
 
 
 // ==/UserScript==
