@@ -4,6 +4,7 @@
 ## [**🢂 CLICK HERE TO INSTALL! 🢀**](https://github.com/SmokeyLlama/tinyllama/raw/master/tinychat_theme.user.js)
 
 ---
+### :exclamation::no_entry_sign: **NOT** compatible with **ANY** other Tinychat userscripts.
 
 * Developed on Chrome, working on Opera
 * Requires Tampermonkey:
