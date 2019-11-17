@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TinyLlama : 2019 Theme
 // @namespace    http://www.smokeyllama.com
-// @version      2019.40
+// @version      2019.41
 // @description  Editing Overall Theme of Tinychat. Install and refresh.
 // @author       SmokeyLlama
 // @match        https://tinychat.com/*
@@ -580,7 +580,7 @@ position: absolute;
 <div id="tes-settings">
 
 <div id="tes-settingsBox" class="hidden">
-<p id="title">Settings - - - - <a href="http://www.smokeyllama.tk">SmokeyLlama.tk</a></p>
+<p id="title">Settings - - - - <a href="http://www.smokeyllama.com">SmokeyLlama.com</a></p>
 
 <div id="tes-settings-mentions" class="tes-setting-container">
 <input type="checkbox">
