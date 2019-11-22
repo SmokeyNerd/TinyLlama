@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TinyLlama : 2019 Theme
 // @namespace    http://www.smokeyllama.com
-// @version      2019.41
+// @version      2019.42
 // @description  Editing Overall Theme of Tinychat. Install and refresh.
 // @author       SmokeyLlama
 // @match        https://tinychat.com/*
@@ -3031,6 +3031,11 @@ background-color:transparent !important;
 :host, #videolist {
     background-color: transparent;
 }
+@media screen and (max-width: 600px){
+
+:host, #videolist {
+height: 0px !important;
+}}
 /*--------------------------------------------------MINIYT--------------------------------------------------------*/
 .tes-miniyt .videos-items:first-child:not(.hidden) {
     width: 100px !important;
@@ -3444,6 +3449,7 @@ background-color:#00ff00;
 @keyframes ease-to-bottom-21px {
     0% {top:-300px; opacity: 0;}
     100% {top:0; opacity: 1;}}
+    width: 446px;
 
 #content {
     padding: 0px;
@@ -4346,6 +4352,8 @@ color:#000000;
 #tes-settings a:hover {
     color: #53b6ef;}
 
+
+
 #room-header {
 z-index:9;
     height: 100px;
@@ -4382,9 +4390,11 @@ z-index:9;
     /*	height: 25px;*/}
 
 @media screen and (max-width: 600px) {
+
 #room-header {
-    min-height: inherit;
-    max-height: inherit;}
+    min-height: 0px !important;
+    max-height: 0px !important;    height: 0px !important;
+}
 }
 
 #room-header-info {
@@ -5002,6 +5012,25 @@ top: -13px !important;
 #videos-content {
     background-color:#111111;}
 
+@media screen and (max-width: 600px) {
+#submenu-icons > div {
+    width: 32% !important;
+    position: fixed !important;
+    top: -3px !important;
+    left: 4px !important;}
+#videos-footer-broadcast {display:none !important;}
+#videos-footer-youtube {
+}
+
+#videos-footer-broadcast {display:none;}
+#videos-footer-submenu {opacity: 1 !important;
+    visibility: visible !important;background-color: transparent !important;}
+
+#videos-footer-submenu > span {opacity: 0 !important;
+    visibility: hidden !important;    }
+}
+
+}
 #videos-footer-youtube {
     background-color: #b20000;
     background-image: url(https://anceldesigns.000webhostapp.com/img/youtube_white.png);
@@ -6155,7 +6184,21 @@ font-weight:bold;
 :host, #chat-wrapper.tes-chatCollapsed {
 }
 
+@media screen and (max-width: 600px){
 
+:host, #chat-wrapper, #chat-wider + #chat-wrapper, #chat-wider.active + #chat-wrapper {
+    position: relative;
+    min-width: 320px;
+    top: -8px;
+}
+
+#users-icon {
+
+    right:0px !important;
+
+}
+
+}
 /* END */
 
 		.message a:first-child,
@@ -6173,7 +6216,7 @@ font-weight:bold;
 		}
 #chat-instant > a > .avatar, #chat-content > .message > a > .avatar:hover {border-radius:100%;}
 
-
+#chat-instant > .avatar > div > img, #chat-content > .message > .avatar > div > img {border-radius:100%;}
 
 #chat-instant > a > .status-icon, #chat-content > .message > a > .status-icon {
     position: absolute;
@@ -6193,6 +6236,14 @@ left:293px;}
     font-weight: 600;
     color: #00ff00;
     margin:10px;}
+@media screen and (max-width: 600px) {
+#chat-wrapper {border:0px !important;}
+#chat-content > .message > .nickname {right:5px !important;}
+
+#users-icon, #input-users:checked ~ #users-icon, #input-menu:checked ~ #input-users ~ #users-icon {left: 17px !important;}
+#videos-header-fullscreen {display:none;}
+}
+
 
 #chat-wrapper {
     min-width: 350px;
@@ -7698,6 +7749,8 @@ border-color:#000000;
 	webappCSShtml = `
 	<style id="webappCSS" scope="tinychat-webrtc-app">` + globalCSS + `
 .input-menu{display:none;}
+
+
 #room {
     padding: 0;
     padding-left: 80px;}
@@ -7715,12 +7768,16 @@ border-color:#000000;
 
 @media screen and (max-width: 600px) {
 :host > #room {
-    padding-left: 0;}
+    padding-left: 0;width: 450px !important;}
+
+#room-content {padding-top:0px !important;}
 }
 
 #room-content.tes-chatbelow {
     flex-direction: column !important;
     margin-bottom: -10px !important;}
+
+
 
 
 .tes-nightmode tc-videolist { background: var(--nightmode-bgcolor); }
