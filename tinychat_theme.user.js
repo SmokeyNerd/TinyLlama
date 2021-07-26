@@ -3153,6 +3153,10 @@ background-color:transparent !important;
 :host, #videolist {
 height: 0px !important;
 }}
+
+.video.blacknight div.ratio-4-3 {
+	border-radius: 10px;
+}
 /*--------------------------------------------------MINIYT--------------------------------------------------------*/
 .llama-miniyt .videos-items:first-child:not(.hidden) {
     width: 100px !important;
