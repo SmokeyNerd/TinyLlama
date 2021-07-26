@@ -554,7 +554,7 @@ if (/\/room/.test(location.pathname)) {
       </div>
    </div>
    <div id="llama-hidingGear" title="Games">
-      <div class="llama-hidingButton" id="llama-hidingButton"><span style="margin-left:10px;"> 
+      <div class="llama-hidingButton" id="llama-hidingButton"><span style="margin-left:10px;">
          </span>
       </div>
    </div>
@@ -586,7 +586,7 @@ if (/\/room/.test(location.pathname)) {
       </div>
    </div>
    <div id="llama-emojisGear" title="Emojis">
-      <div class="llama-emojisButton" id="llama-emojisButton"><span style="margin-left:10px;"> 
+      <div class="llama-emojisButton" id="llama-emojisButton"><span style="margin-left:10px;">
          </span>
       </div>
    </div>
@@ -599,7 +599,7 @@ if (/\/room/.test(location.pathname)) {
       </div>
    </div>
    <div id="llama-gamesGear" title="Games">
-      <div class="llama-gamesButton" id="llama-gamesButton"><span style="margin-left:10px;"> 
+      <div class="llama-gamesButton" id="llama-gamesButton"><span style="margin-left:10px;">
          </span>
       </div>
    </div>
@@ -3836,7 +3836,7 @@ input[type="button"], button {
     font-size: 11px;
     flex: none;
     overflow: hidden;
-    z-index: 9;
+    z-index: 5;
     position: absolute;
     top: 0px;
 		/*	right: ` + (giftsElemWidth + 10).toString() + `px; */}
@@ -6340,11 +6340,11 @@ font-weight:bold;
 			width: 100px;
 			height: 79px!important;
 		}
-#chat-instant > a > .avatar, #chat-content > .message > a > .avatar:hover {border-radius:100%;}
+#chat-instant .message.common > a > .avatar, #chat-content > .message > a > .avatar:hover {border-radius:100%;}
+#chat-instant .message.common > a > .avatar, #chat-content > .message > .avatar{width:30px;height:30px;}
+#chat-instant .message.common > .avatar > div > img, #chat-content > .message > .avatar > div > img {border-radius:100%;}
 
-#chat-instant > .avatar > div > img, #chat-content > .message > .avatar > div > img {border-radius:100%;}
-
-#chat-instant > a > .status-icon, #chat-content > .message > a > .status-icon {
+#chat-instant .message.common > a > .status-icon, #chat-content > .message > a > .status-icon {
     position: absolute;
     height: 15px;
     width: 15px;
@@ -6422,9 +6422,9 @@ left:293px;}
 #chat-content.llama-notif-off > .message.system.dontHide {
     display: initial;}
 
-#chat-instant > a:first-child,
-#chat-content > .message > a:first-child {
-    top: auto;}
+#chat-instant .message.common > a:first-child,
+#chat-content > .message.common > a:first-child {
+    top: 5px; left: 2px;}
 
 #chat-position #input:before {
     background: none;}
@@ -6511,8 +6511,8 @@ left:293px;}
     cursor: pointer;
     border:0px;}
 
-#chat-instant > a > .avatar,
-#chat-content > .message > a > .avatar {
+#chat-instant .message.common > a > .avatar,
+#chat-content > .message.common > a > .avatar {
     width:75%;
     height:100%;
     background-color: #666666;
@@ -6613,7 +6613,8 @@ border:1px solid #990000;}
     position: absolute;
     top: 2px;
     left: 6px;
-    font: 15px monospace;}
+    font: 15px monospace;
+    display: none;}
 
 .llama-chatlogBut {
     padding: 2px;
