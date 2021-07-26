@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TinyLlama : 2019 Theme
 // @namespace    http://www.smokeyllama.com
-// @version      2021.07
+// @version      2021.06
 // @description  Editing Overall Theme of Tinychat. Install and refresh.
 // @author       SmokeyLlama
 // @match        https://tinychat.com/*
@@ -8786,7 +8786,7 @@ border-color:#000000;
             "    position: relative !important;",
             "    border-radius: 15px !important;",
             "    background-color: #222222 !important;",
-            "    /*border:0px solid #666666 !important;*/",
+            "    border:0px solid #666666 !important;",
             "    box-shadow: 0 2px 15px 0 #111111 !important;",
             "    overflow: hidden !important;",
             "",
