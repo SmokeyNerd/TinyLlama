@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         TinyLlama : 2021 Theme
+// @name         TinyLlama : 2019 Theme
 // @namespace    http://www.smokeyllama.com
 // @version      2019.43
 // @description  Editing Overall Theme of Tinychat. Install and refresh.
