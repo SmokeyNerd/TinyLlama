@@ -14,7 +14,6 @@
 // @updateURL    https://github.com/SmokeyLlama/tinyllama/raw/master/tinychat_theme.user.js
 // @downloadURL  https://github.com/SmokeyLlama/tinyllama/raw/master/tinychat_theme.user.js
 
-
 // ==/UserScript==
 /* jshint -W097 */
 var blobURL = URL.createObjectURL(new Blob(['(',
