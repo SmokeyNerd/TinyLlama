@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         TinyLlama : 2021 Theme
+// @name         TinyLlama : 2021 Tinychat Theme
 // @namespace    http://www.smokeyllama.com
-// @version      2021.07
-// @description  Editing Overall Theme of Tinychat. Install and refresh.
+// @version      2021.08
+// @description  Editing Overall Theme of Tinychat. 12 Color Themes, and More! Install and refresh.
 // @author       SmokeyLlama
 // @match        https://tinychat.com/*
 // @match        https://tinychat.com/room/*
