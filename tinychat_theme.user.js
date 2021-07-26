@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TinyLlama : 2019 Theme
 // @namespace    http://www.smokeyllama.com
-// @version      2021.05
+// @version      2021.06
 // @description  Editing Overall Theme of Tinychat. Install and refresh.
 // @author       SmokeyLlama
 // @match        https://tinychat.com/*
@@ -6340,11 +6340,11 @@ font-weight:bold;
 			width: 100px;
 			height: 79px!important;
 		}
-#chat-instant .message.common > a > .avatar, #chat-content > .message > a > .avatar:hover {border-radius:100%;}
-#chat-instant .message.common > a > .avatar, #chat-content > .message > .avatar{width:30px;height:30px;}
-#chat-instant .message.common > .avatar > div > img, #chat-content > .message > .avatar > div > img {border-radius:100%;}
+#chat-instant .message.common > a > .avatar, #chat-content > .message.common > a > .avatar:hover {border-radius:100%;}
+#chat-instant .message.common > a > .avatar, #chat-content > .message.common > .avatar{width:30px;height:30px;}
+#chat-instant .message.common > .avatar > div > img, #chat-content > .message.common > .avatar > div > img {border-radius:100%;}
 
-#chat-instant .message.common > a > .status-icon, #chat-content > .message > a > .status-icon {
+#chat-instant .message.common > a > .status-icon, #chat-content > .message.common > a > .status-icon {
     position: absolute;
     height: 15px;
     width: 15px;
@@ -6354,7 +6354,7 @@ font-weight:bold;
     border-radius: 100%;
     background-color: #fff;}
 
-.llama-featurethreemode #chat-content > .message > a > .status-icon {
+.llama-featurethreemode #chat-content > .message.common > a > .status-icon {
 left:293px;}
 
 #chat-content > .message.system > .content {
@@ -6364,7 +6364,7 @@ left:293px;}
     margin:10px;}
 @media screen and (max-width: 600px) {
 #chat-wrapper {border:0px !important;}
-#chat-content > .message > .nickname {right:5px !important;}
+#chat-content > .message.common > .nickname {right:5px !important;}
 
 #users-icon, #input-users:checked ~ #users-icon, #input-menu:checked ~ #input-users ~ #users-icon {left: 17px !important;}
 #videos-header-fullscreen {display:none;}
@@ -6384,7 +6384,7 @@ left:293px;}
     background-color: #111111;
     transition: .8s;}
 
-#chat-content > .message {
+#chat-content > .message.common {
     padding-bottom: 0;
     padding-top: 0!important;
     margin-bottom: 5px;
@@ -6535,7 +6535,7 @@ left:293px;}
     padding-right: 20px;
     font-weight: 600;}
 
-#chat-content > .message > .nickname {
+#chat-content > .message.common > .nickname {
     overflow: initial;
     line-height: initial;
     position: relative;
