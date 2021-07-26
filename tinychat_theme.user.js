@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TinyLlama : 2021 Tinychat Theme
 // @namespace    http://www.smokeyllama.com
-// @version      2021.08
+// @version      2021.09
 // @description  Editing Overall Theme of Tinychat. 12 Color Themes, and More! Install and refresh.
 // @author       SmokeyLlama
 // @match        https://tinychat.com/*
@@ -15,63 +15,9 @@
 // @downloadURL  https://github.com/SmokeyLlama/tinyllama/raw/master/tinychat_theme.user.js
 
 // ==/UserScript==
-/* jshint -W097 */
-var blobURL = URL.createObjectURL(new Blob(['(',
-
-    function() {
-        onmessage = function(e) {
-            setTimeout(function() {
-                postMessage('fuckTc')
-            }, 500);
-        }
-    }
-    .toString(),
-
-    ')()'
-], {
-    type: 'application/javascript'
-}));
-
-var worker = new Worker(blobURL);
-
-worker.onmessage = function(e) {
-    try {
-        var bodyElem = document.querySelector("body");
-        var webappOuter = document.querySelector("tinychat-webrtc-app");
-        var webappElem = webappOuter.shadowRoot;
-        var videolistElem = webappElem.querySelector("tc-videolist").shadowRoot;
-        var camQueryString = ".videos-items:last-child > .js-video";
-        var camElems = videolistElem.querySelectorAll(camQueryString);
-
-        camElems.forEach(function(item, index) {
-            var bluredShit = item.querySelector("tc-video-item").shadowRoot.querySelector(".video").querySelector(".blured");
-            if (bluredShit !== null) {
-                bluredShit.remove();
-            }
-            item.querySelector("tc-video-item").shadowRoot.querySelector(".video").querySelector("div").querySelector("video").style.filter = "none"
-            if (item.querySelector("tc-video-item").shadowRoot.querySelector(".video").querySelector("div").querySelector('style') === null) {
-                var css = '.overlay{z-index:1;}.overlay:hover > .icon-visibility {left: 14px!important; top: 12px!important;}.overlay:hover > .icon-resize {top: 12px!important;}.overlay:hover > .icon-report {right: 12px!important;top: 14px!important;}.overlay:hover > .icon-context {bottom: 7px!important; right: 16px!important;}.overlay:hover > .icon-context {right: 7px!important; right: 16px!important;}.overlay:hover > .icon-volume {left: 14px!important; bottom: 7px!important;}.overlay > .icon-context:focus + .video-context.on-white-scroll{opacity: 100!important;visibility: visible!important;}';
-                var style = document.createElement('style');
-                if (style.styleSheet) {
-                    style.styleSheet.cssText = css;
-                } else {
-                    style.appendChild(document.createTextNode(css));
-                }
-                item.querySelector("tc-video-item").shadowRoot.querySelector(".video").querySelector("div").appendChild(style);
-            }
-        });
-    } catch (e) {}
-    setTimeout(function() {
-        worker.postMessage('fuckTc')
-    }, 500);
-};
-
-worker.postMessage('');
-
+/* Room vs Homepage */
 if (/\/room/.test(location.pathname)) {
-
-
-    LLAMAwsParser``;
+    LLAMA_SocketWatcher``;
     var initInterval = setInterval(function() {
         if (document.querySelector("tinychat-webrtc-app").shadowRoot) LLAMAapp = runLLAMA``;
         else tcl("Waiting for DOM...");
@@ -80,8 +26,6 @@ if (/\/room/.test(location.pathname)) {
     function runLLAMA() {
         clearInterval(initInterval);
         try {
-            /* Begin main function */
-
             var bodyElem = document.querySelector("body");
 
             var webappOuter = document.querySelector("tinychat-webrtc-app");
@@ -93,7 +37,6 @@ if (/\/room/.test(location.pathname)) {
             var sidemenuElem = webappElem.querySelector("tc-sidemenu").shadowRoot;
             var videomoderationElem = sidemenuElem.querySelector("tc-video-moderation").shadowRoot;
             var videolistElem = webappElem.querySelector("tc-videolist").shadowRoot;
-
 
             var chatlistElem = sidemenuElem.querySelector("tc-chatlist").shadowRoot;
             var userlistElem = sidemenuElem.querySelector("tc-userlist").shadowRoot;
@@ -227,7 +170,7 @@ if (/\/room/.test(location.pathname)) {
 			</span>
 		</div>
 	</div>
-	`);
+                `);
             }
 
             function waitForSettings() {
@@ -248,10 +191,10 @@ if (/\/room/.test(location.pathname)) {
                         }
                         if (titleCSS.querySelector("#titleCSS")) {
                             titleCSS.querySelector("#titleCSS").innerHTML += `
-				#llama-settings {
-					right: ` + giftsElemWidth + `px;
-				}
-			`;
+                        #llama-settings {
+                             right: ` + giftsElemWidth + `px;
+                        }
+                        `;
                         }
 
                         var sidemenuFakeBorder = document.createElement("span");
@@ -8567,7 +8510,7 @@ border-color:#000000;
         }
     }
 
-    function LLAMAwsParser() {
+    function LLAMA_SocketWatcher() {
         try {
             wsdata = [];
             chatlogMain = "";
@@ -8681,7 +8624,7 @@ border-color:#000000;
             }
 
         } catch (e) {
-            tcl("error LLAMAwsParser: " + e.message);
+            tcl("error LLAMA_SocketWatcher: " + e.message);
         }
     }
 
@@ -8689,7 +8632,7 @@ border-color:#000000;
 
 } else
 
-{
+{//homepage css 
     (function() {
         var css = [
             ".left-arrow.active:before, .right-arrow.active:before {",
@@ -9123,7 +9066,6 @@ border-color:#000000;
             if (heads.length > 0) {
                 heads[0].appendChild(node);
             } else {
-                // no head yet, stick it whereever
                 document.documentElement.appendChild(node);
             }
         }
