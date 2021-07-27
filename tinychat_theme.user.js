@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         TinyLlama : 2021 Tinychat Theme
+// @name         TinyLlama : Tinychat Themes and Extra Features
 // @namespace    http://www.smokeyllama.com
-// @version      2021.09
-// @description  Editing Overall Theme of Tinychat. 12 Color Themes, and More! Install and refresh.
+// @version      2021.10
+// @description  Editing Overall Theme of Tinychat. 12 Color Themes, Background Images, and More! Install and refresh.
 // @author       SmokeyLlama
 // @match        https://tinychat.com/*
 // @match        https://tinychat.com/room/*
@@ -98,6 +98,9 @@ if (/\/room/.test(location.pathname)) {
             injectCSS();
             injectElements();
 
+            var current_theme = localStorage.getItem('llama_theme');
+            if (current_theme) {Toggle_Theme(current_theme);} else {Toggle_Theme('default');}
+
             var scrollboxEvent = scrollbox.addEventListener("wheel", userHasScrolled);
             var unreadbubbleEvent = unreadbubble.addEventListener("click", function() {
                 autoScrollStatus = true;
@@ -118,23 +121,7 @@ if (/\/room/.test(location.pathname)) {
                 "NotificationsOff": (GM_getValue("llama-NotificationsOff") == "true"),
                 "ChangeFont": (GM_getValue("llama-ChangeFont") == "true" || GM_getValue("llama-ChangeFont") == undefined),
                 "MaxedCamLeft": (GM_getValue("llama-MaxedCamLeft") == "true" || GM_getValue("llama-MaxedCamLeft") == undefined),
-
                 "NightMode": (GM_getValue("llama-NightMode") == "true"),
-                "NightModeBlack": (GM_getValue("llama-NightModeBlack") == "true" || GM_getValue("llama-NightModeBlack") == undefined),
-
-                "DefaultMode": (GM_getValue("llama-NighModeBlack") == "true" || GM_getValue("llama-DarkMode") == "false"),
-                "PinkMode": (GM_getValue("llama-PinkMode") == "true" || GM_getValue("llama-DarkMode") == "false"),
-                "BlueMode": (GM_getValue("llama-BlueMode") == "true" || GM_getValue("llama-DarkMode") == "false"),
-                "GreenMode": (GM_getValue("llama-GreenMode") == "true" || GM_getValue("llama-DarkMode") == "false"),
-                "PurpleMode": (GM_getValue("llama-PurpleMode") == "true" || GM_getValue("llama-DarkMode") == "false"),
-                "DarkPurpleMode": (GM_getValue("llama-DarkPurpleMode") == "true" || GM_getValue("llama-DarkMode") == "false"),
-                "OrangeMode": (GM_getValue("llama-OrangeMode") == "true" || GM_getValue("llama-DarkMode") == "false"),
-                "RedMode": (GM_getValue("llama-RedMode") == "true" || GM_getValue("llama-DarkMode") == "false"),
-                "WhiteMode": (GM_getValue("llama-WhiteMode") == "true" || GM_getValue("llama-DarkMode") == "false"),
-                "FeatureOneMode": (GM_getValue("llama-FeatureOneMode") == "true" || GM_getValue("llama-DarkMode") == "false"),
-                "FeatureTwoMode": (GM_getValue("llama-FeatureTwoMode") == "true" || GM_getValue("llama-DarkMode") == "false"),
-                "FeatureThreeMode": (GM_getValue("llama-FeatureThreeMode") == "true" || GM_getValue("llama-DarkMode") == "false"),
-
                 "BorderlessCams": (GM_getValue("llama-BorderlessCams") == "true" || GM_getValue("llama-BorderlessCams") == undefined),
                 "miniyt": (GM_getValue("llama-miniyt") == "true"),
                 "ChatBelow": (GM_getValue("llama-ChatBelow") == "true"),
@@ -144,32 +131,18 @@ if (/\/room/.test(location.pathname)) {
             if (settingsQuick["MaxedCamLeft"]) videolistCSS.classList.add("llama-leftcam");
             if (settingsQuick["miniyt"]) miniytToggle(true);
 
-            if (settingsQuick["DefaultMode"]) defaultmodeToggle(true) && whitemodeToggle(false) && greenmodeToggle(false) && bluemodeToggle(false) && pinkmodeToggle(false) && purplemodeToggle(false) && orangemodeToggle(false) && redmodeToggle(false) && featureonemodeToggle(false) && featuretwomodeToggle(false) && darkpurplemodeToggle(false) && featurethreemodeToggle(false);
-            if (settingsQuick["PinkMode"]) pinkmodeToggle(true) && whitemodeToggle(false) && greenmodeToggle(false) && bluemodeToggle(false) && purplemodeToggle(false) && defaultmodeToggle(false) && orangemodeToggle(false) && redmodeToggle(false) && featureonemodeToggle(false) && featuretwomodeToggle(false) && darkpurplemodeToggle(false) && featurethreemodeToggle(false);
-            if (settingsQuick["BlueMode"]) bluemodeToggle(true) && whitemodeToggle(false) && greenmodeToggle(false) && pinkmodeToggle(false) && purplemodeToggle(false) && defaultmodeToggle(false) && orangemodeToggle(false) && redmodeToggle(false) && featureonemodeToggle(false) && featuretwomodeToggle(false) && darkpurplemodeToggle(false) && featurethreemodeToggle(false);
-            if (settingsQuick["GreenMode"]) greenmodeToggle(true) && whitemodeToggle(false) && pinkmodeToggle(false) && bluemodeToggle(false) && purplemodeToggle(false) && defaultmodeToggle(false) && orangemodeToggle(false) && redmodeToggle(false) && featureonemodeToggle(false) && featuretwomodeToggle(false) && darkpurplemodeToggle(false) && featurethreemodeToggle(false);
-            if (settingsQuick["PurpleMode"]) purplemodeToggle(true) && whitemodeToggle(false) && greenmodeToggle(false) && bluemodeToggle(false) && pinkmodeToggle(false) && defaultmodeToggle(false) && orangemodeToggle(false) && redmodeToggle(false) && featureonemodeToggle(false) && featuretwomodeToggle(false) && darkpurplemodeToggle(false) && featurethreemodeToggle(false);
-            if (settingsQuick["DarkPurpleMode"]) darkpurplemodeToggle(true) && whitemodeToggle(false) && purplemodeToggle(false) && greenmodeToggle(false) && bluemodeToggle(false) && pinkmodeToggle(false) && defaultmodeToggle(false) && orangemodeToggle(false) && redmodeToggle(false) && featureonemodeToggle(false) && featuretwomodeToggle(false) && featurethreemodeToggle(false);
-            if (settingsQuick["OrangeMode"]) orangemodeToggle(true) && whitemodeToggle(false) && purplemodeToggle(false) && greenmodeToggle(false) && bluemodeToggle(false) && pinkmodeToggle(false) && defaultmodeToggle(false) && redmodeToggle(false) && featureonemodeToggle(false) && featuretwomodeToggle(false) && darkpurplemodeToggle(false) && featurethreemodeToggle(false);
-            if (settingsQuick["RedMode"]) redmodeToggle(true) && whitemodeToggle(false) && purplemodeToggle(false) && greenmodeToggle(false) && bluemodeToggle(false) && pinkmodeToggle(false) && defaultmodeToggle(false) && orangemodeToggle(false) && featureonemodeToggle(false) && featuretwomodeToggle(false) && darkpurplemodeToggle(false) && featurethreemodeToggle(false);
-            if (settingsQuick["FeatureOneMode"]) featureonemodeToggle(true) && whitemodeToggle(false) && redmodeToggle(false) && purplemodeToggle(false) && greenmodeToggle(false) && bluemodeToggle(false) && pinkmodeToggle(false) && defaultmodeToggle(false) && orangemodeToggle(false) && featuretwomodeToggle(false) && darkpurplemodeToggle(false) && featurethreemodeToggle(false);
-            if (settingsQuick["FeatureTwoMode"]) featuretwomodeToggle(true) && whitemodeToggle(false) && redmodeToggle(false) && purplemodeToggle(false) && greenmodeToggle(false) && bluemodeToggle(false) && pinkmodeToggle(false) && defaultmodeToggle(false) && orangemodeToggle(false) && featureonemodeToggle(false) && darkpurplemodeToggle(false) && featurethreemodeToggle(false);
-            if (settingsQuick["FeatureThreeMode"]) featurethreemodeToggle(true) && featuretwomodeToggle(false) && whitemodeToggle(false) && redmodeToggle(false) && purplemodeToggle(false) && greenmodeToggle(false) && bluemodeToggle(false) && pinkmodeToggle(false) && defaultmodeToggle(false) && orangemodeToggle(false) && featureonemodeToggle(false) && darkpurplemodeToggle(false);
-            if (settingsQuick["WhiteMode"]) whitemodeToggle(true) && featuretwomodeToggle(false) && redmodeToggle(false) && purplemodeToggle(false) && greenmodeToggle(false) && bluemodeToggle(false) && pinkmodeToggle(false) && defaultmodeToggle(false) && orangemodeToggle(false) && featureonemodeToggle(false) && darkpurplemodeToggle(false) && featurethreemodeToggle(false);
-
             if (settingsQuick["ChatBelow"]) chatBelowToggle(true);
             if (settingsQuick["BorderlessCams"]) borderlessCamsToggle(true);
 
             if (browserFirefox && 1 == 2) {
                 titleElem.querySelector("#room-header-info").insertAdjacentHTML("afterend", `
-	<div id="llama-firefoxwarning" class="style-scope tinychat-title"
-	style="font-size: .75em; background: white; color: grey; width: 200px; padding: 5px; line-height: 13px;vertical-align: middle;border: #ddd 1px solid;border-width: 0px 1px 0px 1px;">
-		<div class="style-scope tinychat-title" style="display: table;height: 100%;">
-			<span style="display: table-cell; vertical-align: middle;top: 16%;" class="style-scope tinychat-title">
-			Tinychat Theme requires Chrome or Opera.
-			</span>
-		</div>
-	</div>
+                    <div id="llama-firefoxwarning" class="style-scope tinychat-title" style="font-size: .75em; background: white; color: grey; width: 200px; padding: 5px; line-height: 13px;vertical-align: middle;border: #ddd 1px solid;border-width: 0px 1px 0px 1px;">
+                    <div class="style-scope tinychat-title" style="display: table;height: 100%;">
+                    <span style="display: table-cell; vertical-align: middle;top: 16%;" class="style-scope tinychat-title">
+                    Tinychat Theme requires Chrome or Opera.
+                    </span>
+                    </div>
+                    </div>
                 `);
             }
 
@@ -191,10 +164,10 @@ if (/\/room/.test(location.pathname)) {
                         }
                         if (titleCSS.querySelector("#titleCSS")) {
                             titleCSS.querySelector("#titleCSS").innerHTML += `
-                        #llama-settings {
-                             right: ` + giftsElemWidth + `px;
-                        }
-                        `;
+                                #llama-settings {
+                                    right: ` + giftsElemWidth + `px;
+                                }
+                            `;
                         }
 
                         var sidemenuFakeBorder = document.createElement("span");
@@ -202,7 +175,6 @@ if (/\/room/.test(location.pathname)) {
                         sidemenuCSS.insertAdjacentElement("beforeend", sidemenuFakeBorder);
 
                         settingsElem = titleElem.querySelector("#room-header-gifts").insertAdjacentHTML("beforebegin", `
-
 <!--- START OF THEMES --->
 <div id="llama-themes">
 <div id="llama-themesBox" class="hidden">
@@ -249,19 +221,19 @@ if (/\/room/.test(location.pathname)) {
             <div class="foo2 darkpurple"></div>
          </label>
       </div>
-      <div id="llama-settings-defaultmode">
+      <div id="llama-settings-blackmode">
          <label class="llama-color-container">
             <input type="checkbox"><span class="checkmark" title="DEFAULT"></span>
+            <div class="foo2 black"></div>
+         </label>
+      </div>
+      <div id="llama-settings-defaultmode">
+         <label class="llama-color-container">
+            <input type="checkbox"><span class="checkmark" title="WHITE"></span>
             <div class="foo2 default"></div>
          </label>
       </div>
-      <div id="llama-settings-whitemode">
-         <label class="llama-color-container">
-            <input type="checkbox"><span class="checkmark" title="WHITE"></span>
-            <div class="foo2 white"></div>
-         </label>
-      </div>
-      <div id="llama-settings-featureonemode">
+      <div id="llama-settings-weedmode">
          <label class="llama-color-container">
             <input type="checkbox"><span class="checkmark feature1" title="Weed"></span>
             <div class="foo2 featureone"></div>
@@ -313,158 +285,6 @@ if (/\/room/.test(location.pathname)) {
 #llama-themesButton.llama-themes-open>span::after {
 	border-width: 0 0 2px 2px;
 	margin-left: 8px;
-}
-
-
-/* -------------------------------- PINKKK BUTTONS -------------------------------- */
-
-.llama-pinkmode #llama-themesButton {
-	background-color: var(--pinkmode-bgcolor);
-	border-color: var(--pinkmode-bordercolor);
-}
-
-.llama-pinkmode #llama-gamesButton {
-	background-color: var(--pinkmode-bgcolor);
-	border-color: var(--pinkmode-bordercolor);
-}
-
-.llama-pinkmode #llama-themesGear>div {
-	color: #fff;
-}
-
-.llama-pinkmode #llama-gamesGear>div {
-	color: #fff;
-}
-
-
-/* -------------------------------- GREENNN BUTTONS -------------------------------- */
-
-.llama-greenmode #llama-themesButton {
-	background-color: var(--greenmode-bgcolor);
-	border-color: var(--greenmode-bordercolor);
-}
-
-.llama-greenmode #llama-gamesButton {
-	background-color: var(--greenmode-bgcolor);
-	border-color: var(--greenmode-bordercolor);
-}
-
-
-/* -------------------------------- BLUEEE BUTTONS -------------------------------- */
-
-.llama-bluemode #llama-themesButton {
-	background-color: var(--bluemode-bgcolor);
-	border-color: var(--bluemode-bordercolor);
-}
-
-.llama-bluemode #llama-gamesButton {
-	background-color: var(--bluemode-bgcolor);
-	border-color: var(--bluemode-bordercolor);
-}
-
-
-/* -------------------------------- PURPLEEE BUTTONS -------------------------------- */
-
-.llama-purplemode #llama-themesButton {
-	background-color: var(--purplemode-bgcolor);
-	border-color: var(--purplemode-bordercolor);
-}
-
-.llama-purplemode #llama-gamesButton {
-	background-color: var(--purplemode-bgcolor);
-	border-color: var(--purplemode-bordercolor);
-}
-
-
-/* -------------------------------- ORANGEEE BUTTONS -------------------------------- */
-
-.llama-orangemode #llama-themesButton {
-	background-color: var(--orangemode-bgcolor);
-	border-color: var(--orangemode-bordercolor);
-}
-
-.llama-orangemode #llama-gamesButton {
-	background-color: var(--orangemode-bgcolor);
-	border-color: var(--orangemode-bordercolor);
-}
-
-
-/* -------------------------------- REDDD BUTTONS -------------------------------- */
-
-.llama-redmode #llama-themesButton {
-	background-color: var(--redmode-bgcolor);
-	border-color: var(--redmode-bordercolor);
-}
-
-.llama-redmode #llama-gamesButton {
-	background-color: var(--redmode-bgcolor);
-	border-color: var(--redmode-bordercolor);
-}
-
-
-/* -------------------------------- DARKPURPLEEE BUTTONS -------------------------------- */
-
-.llama-darkpurplemode #llama-themesButton {
-	background-color: var(--darkpurplemode-bgcolor);
-	border-color: var(--darkpurplemode-bordercolor);
-}
-
-.llama-darkpurplemode #llama-gamesButton {
-	background-color: var(--darkpurplemode-bgcolor);
-	border-color: var(--darkpurplemode-bordercolor);
-}
-
-
-/* -------------------------------- WHITEEE BUTTONS -------------------------------- */
-
-.llama-whitemode #llama-themesButton {
-	background-color: var(--whitemode-tcblue);
-	border-color: var(--whitemode-bordercolor);
-}
-
-.llama-whitemode #llama-gamesButton {
-	background-color: var(--whitemode-bgcolor);
-	border-color: var(--whitemode-bordercolor);
-}
-
-
-/* -------------------------------- FEATUREONEEE BUTTONS -------------------------------- */
-
-.llama-featureonemode #llama-themesButton {
-	background-color: var(--featureonemode-bgcolor);
-	border-color: var(--featureonemode-bordercolor);
-}
-
-.llama-featureonemode #llama-gamesButton {
-	background-color: var(--featureonemode-bgcolor);
-	border-color: var(--featureonemode-bordercolor);
-}
-
-
-/* -------------------------------- FEATURETWOOO BUTTONS -------------------------------- */
-
-.llama-featuretwomode #llama-themesButton {
-	background-color: var(--featuretwomode-bgcolor);
-	border-color: var(--featuretwomode-bordercolor);
-}
-
-.llama-featuretwomode #llama-gamesButton {
-	background-color: var(--featuretwomode-bgcolor);
-	border-color: var(--featuretwomode-bordercolor);
-}
-
-
-/* -------------------------------- FEATURETHREEE BUTTONS -------------------------------- */
-
-.llama-featurethreemode #llama-themesButton {
-	background-color: transparent;
-	border: 0px;
-}
-
-.llama-featurethreemode #llama-gamesButton {
-	background-color: #51bc02;
-	border-color: #111;
-	border-top: 0px !important;
 }
 
 </style>
@@ -521,7 +341,6 @@ if (/\/room/.test(location.pathname)) {
 }
 
 </style>
-
 <div id="llama-emojis" style="">
    <div id="llama-emojisBox" class="hidden">
       <div id="llama-emojislist" style="position: absolute;bottom: 30px;right: 7px;height: 220px;background-color: #191919;z-index: 100;border-radius: 10px;border: 1px solid #313131;">
@@ -547,10 +366,164 @@ if (/\/room/.test(location.pathname)) {
       </div>
    </div>
 </div>
+<style>
+.default-theme .chat__LlamaOption {
+    background-color: #006e8c !important;
+    border-color: #04caff !important;
+    color: #fff !important;
+}
+.default-theme .chat__LlamaOption.active,
+.default-theme .chat__LlamaOption:hover{
+    background-color: #04caff !important;
+}
+.chat__LlamaOption.active {
+    font-weight: 600;
+    background-color: var(--llamatheme-buttontext);
+    color: var(--llamatheme-textcolor);
+}
+.chat__LlamaOption:hover {
+    background-color: var(--llamatheme-buttontext);
+}
+.chat__LlamaOption {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 40px;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 2px;
+    padding-left: 8px;
+    padding-right: 8px;
+    min-height: 27px;
+    border: 1px solid transparent;
+    border-color: var(--llamatheme-bordercolor);
+    background-color: var(--llamatheme-bordercolor);
+    color: var(--llamatheme-textcolor);
+    box-shadow: 0 -1px rgb(0 0 0/50%) inset!important;
+}
+#llama_top_bar {
+    vertical-align: top;
+    display: inline-block;
+    width: 30%;
+    margin-right: 10px;
+    }
+.llama_setting {
+    display: inline-block;
+    width: 240px;
+    max-width: 240px;
+    max-height: 600px;
+    height: 200px;
+    overflow: auto;
+    padding-right: 4px;
+    margin-bottom: 10px;
+}
+.d-none {
+    display: none!important;
+}
+.w-100 {
+    width: 100%!important;
+}
+
+.dabchatog_mode {
+    background-color: #143848;
+}
+
+.color_square {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin: 1px;
+    cursor: pointer;
+    border-radius: 3px;
+    border: 1px solid #1b8cb5;
+}
+
+.color_square:hover {
+	transition-timing-function: ease-in;
+	transform: scale(0.9)
+}
+
+.dabchat_mode {
+	background-color: #848e98
+}
+
+.dabchatog_mode {
+	background-color: #143848
+}
+
+.pink_mode {
+	background-color: #ffd1dc
+}
+
+.neonpink_mode {
+	background-color: #ad0098
+}
+
+.green_mode {
+	background-color: #042500
+}
+
+.neongreen_mode {
+	background-color: #01ca21
+}
+
+.blue_mode {
+	background-color: #111949
+}
+
+.mauve_mode {
+	background-color: #9168b2
+}
+
+.orange_mode {
+	background-color: #b33700
+}
+
+.red_mode {
+	background-color: #590000
+}
+
+.purple_mode {
+	background-color: #280048
+}
+
+.black_mode {
+	background-color: #2c2f33
+}
+
+.default_mode {
+	background-color: #fff
+}
+</style>
 <!--- END OF GAMES --->
+
 <div id="llama-settings">
+   <div id="llama-settingsGear" title="Settings">
+      <span style="">
+         <img src="https://cdn1.iconfinder.com/data/icons/MetroStation-PNG/128/MB__Llama.png" width="20px">
+      </span>
+   </div>
    <div id="llama-settingsBox" class="hidden">
-      <p id="title">Settings - - - - <a href="http://www.smokeyllama.com">SmokeyLlama.com</a></p>
+      <p id="title">TinyLlama Settings - - - - <a href="http://www.smokeyllama.com">SmokeyLlama.com</a></p>
+      <div class="llama_settings_inner">
+<div id="llama_top_bar">
+      <label class="button chat__LlamaOption active" id="llama_general">
+        General
+      </label>
+
+      <label class="button chat__LlamaOption" id="llama_theme">
+        Themes
+      </label>
+
+      <label class="button chat__LlamaOption" id="llama_images">
+        Images
+      </label>
+</div>
+
+<div class="llama_setting" id="llama_general_settings">
       <div id="llama-settings-mentions" class="llama-setting-container">
          <input type="checkbox"><span class="label">Alert phrases <span class="info" data-title='A comma-separated list of phrases to alert/highlight for. Example of 3 phrases: "hello,Google Chrome,sky"'>?</span></span>
          <div class="inputcontainer"><input class="text"><button class="save blue-button">save</button></div>
@@ -559,15 +532,48 @@ if (/\/room/.test(location.pathname)) {
       <div id="llama-settings-notifications" class="llama-setting-container"><input type="checkbox"><span class="label">Hide notifications </span></div>
       <div id="llama-settings-changefont" class="llama-setting-container"><input type="checkbox"><span class="label">Improve font <span class="info" data-title='The default font is too thin in some browsers'>?</span></span></div>
       <div id="llama-settings-chatbelow" class="llama-setting-container"><input type="checkbox"><span class="label">Chat on Bottom <span class="info" data-title='!! BETA !! ------ If cams dont resize, hit the arrow on the side of the chatlog to force resize.'>*</span></span></div>
-      <!-- RIGHT SIDE --><!-- <div id="llama-settings-messageanim" class="llama-setting-container"><input type="checkbox"><span class="label">Disable message animation </span></div>-->
-      <div id="llama-settings-borderlesscams" class="llama-setting-container right" style="position:absolute;right:100px;"><input type="checkbox"><span class="label">Remove cam spacing </span></div>
-   </div>
-   <div id="llama-updateNotifier"><a class="llama-exitButtonSmall">✕</a><span style="padding:8px;border-color:cyan;right: -39px;">Updated Overall Theme Code!</span></div>
-   <div id="llama-settingsGear" title="Settings"><span style=""><img src="https://cdn1.iconfinder.com/data/icons/MetroStation-PNG/128/MB__Llama.png" width="20px"></span></div>
+      <div id="llama-settings-borderlesscams" class="llama-setting-container"><input type="checkbox"><span class="label">Remove cam spacing </span></div>
 </div>
-</div></div></div><!--- START OF TEST --->
-<div id="llama-settings-miniyt" class="llama-setting-container right" style="position:absolute;right:100px;"><label class="llama-miniyt-container"><input type="checkbox"">
-   <span class="checkmark" title="Toggle Mini Youtube"></span><span class="label"><img src="https://i.ibb.co/x5wQDvb/MiniYT.png"><span class="info" data-title='Mini Youtube : After Toggle, Press the arrow button on the side of the chatbox to fix cams!'>? </span></span></label>
+
+<div class="llama_setting" id="llama_theme_settings">
+        <div class="color_square pink_mode" title="pink" id="pink_square"></div>
+        <div class="color_square green_mode" title="green" id="green_square"></div>
+        <div class="color_square blue_mode" title="blue" id="blue_square"></div>
+        <div class="color_square mauve_mode" title="mauve" id="mauve_square"></div>
+        <div class="color_square orange_mode" title="orange" id="orange_square"></div>
+        <div class="color_square red_mode" title="red" id="red_square"></div>
+        <div class="color_square purple_mode" title="purple" id="purple_square"></div>
+        <div class="color_square black_mode" title="black" id="black_square"></div>
+        <div class="color_square default_mode" title="default" id="default_square"></div>
+        <div id="llama-trans-chat" class="llama-setting-container"><input type="checkbox" id="llama-trans-chat-checkbox"><span class="label">Transparent Chatbox </span></div>
+</div>
+
+<div class="llama_setting" id="llama_images_settings">
+<div id="llama-settings-roombg" class="llama-setting-container"><input type="checkbox"><span class="label">Room BG Image </span></div>
+
+      <span class="dropdown__Option no_hoverbg no_hover" id="room_bg_box">
+        <input type="text" id="llama_roombg_img" class="" placeholder="Room BG image URL..">
+      </span>
+</div>
+
+
+</div>
+
+   </div>
+</div>
+</div></div></div>
+
+<!--- START OF TEST --->
+
+<div id="llama-settings-miniyt" class="llama-setting-container right" style="position:absolute;right:100px;">
+   <label class="llama-miniyt-container">
+      <input type="checkbox"">
+      <span class="checkmark" title="Toggle Mini Youtube"></span>
+      <span class="label">
+         <img src="https://i.ibb.co/x5wQDvb/MiniYT.png">
+         <span class="info" data-title='Mini Youtube : After Toggle, Press the arrow button on the side of the chatbox to fix cams!'>?</span>
+      </span>
+   </label>
 </div>
 
 <style>
@@ -575,54 +581,6 @@ if (/\/room/.test(location.pathname)) {
 
 #llama-settings-miniyt>label:hover {
 	background: transparent;
-}
-
-.checkmark .feature1:hover {
-	background-color: #00ff00;
-}
-
-.llama-pinkmode #llama-settings-miniyt {
-	background-color: var(--pinkmode-bordercolor);
-}
-
-.llama-greenmode #llama-settings-miniyt {
-	background-color: var(--greenmode-bordercolor);
-}
-
-.llama-bluemode #llama-settings-miniyt {
-	background-color: var(--bluemode-bordercolor);
-}
-
-.llama-purplemode #llama-settings-miniyt {
-	background-color: var(--purplemode-bgcolor);
-}
-
-.llama-orangemode #llama-settings-miniyt {
-	background-color: var(--orangemode-bordercolor);
-}
-
-.llama-redmode #llama-settings-miniyt {
-	background-color: var(--redmode-bordercolor);
-}
-
-.llama-darkpurplemode #llama-settings-miniyt {
-	background-color: var(--darkpurplemode-bordercolor);
-}
-
-.llama-whitemode #llama-settings-miniyt {
-	background-color: var(--whitemode-bordercolor);
-}
-
-.llama-featureonemode #llama-settings-miniyt {
-	background-color: var(--featureonemode-bordercolor);
-}
-
-.llama-featuretwomode #llama-settings-miniyt {
-	background-color: var(--featuretwomode-bordercolor);
-}
-
-.llama-featurethreemode #llama-settings-miniyt {
-	background-color: var(--featurethreemode-bordercolor);
 }
 
 
@@ -740,61 +698,104 @@ if (/\/room/.test(location.pathname)) {
                         titleElem.getElementById("llama-themesGear").addEventListener("click", toggleThemesDisplay);
                         titleElem.getElementById("llama-gamesGear").addEventListener("click", toggleGamesDisplay);
                         titleElem.getElementById("llama-emojisGear").addEventListener("click", toggleEmojisDisplay);
-                        titleElem.getElementById("llama-hidingGear").addEventListener("click", toggleHidingDisplay);
-                        titleElem.getElementById("llama-updateNotifier").addEventListener("click", function() {
-                            toggleSettingsDisplay("updateNotifier");
+                        titleElem.getElementById("llama-trans-chat-checkbox").addEventListener("click", toggleTransparentChat);
+                        toggleSubSetting("general")
+                        titleElem.getElementById("llama_general").addEventListener("click", function() {
+                            toggleSubSetting("general");
                         });
-                        if (!freshInstall && GM_getValue("llama-updateNotifSeen") != "2018.155") titleElem.getElementById("llama-updateNotifier").classList.add("visible");
+
+                        titleElem.getElementById("llama_theme").addEventListener("click", function() {
+                            toggleSubSetting("theme");
+                        });
+
+                        titleElem.getElementById("llama_images").addEventListener("click", function() {
+                            toggleSubSetting("images");
+                        });
+
+                        titleElem.getElementById("llama-settings-roombg").addEventListener("click", function() {
+                            Toggle_Theme("roombg");
+                        });
+
+                        titleElem.getElementById("llama_roombg_img").addEventListener("focusout", function() {
+                            Toggle_Theme("roombg");
+                        });
+
                         titleElem.querySelector("#llama-settings #llama-settings-mentions button.save").addEventListener("click", function() {
                             mentionsManager("save");
                         });
                         mentionsManager("load");
-
                         settingsCheckboxUpdate();
+                        reloadUserImages();
+                        toggleTransparentChat('reload')
+                        titleElem.getElementById("pink_square").addEventListener("click", function() {
+                            Toggle_Theme('pink');
+                        });
+                        titleElem.getElementById("green_square").addEventListener("click", function() {
+                            Toggle_Theme("green");
+                        });
+                        titleElem.getElementById("blue_square").addEventListener("click", function() {
+                            Toggle_Theme("blue");
+                        });
+                        titleElem.getElementById("mauve_square").addEventListener("click", function() {
+                            Toggle_Theme("mauve");
+                        });
+                        titleElem.getElementById("orange_square").addEventListener("click", function() {
+                            Toggle_Theme("orange");
+                        });
+                        titleElem.getElementById("red_square").addEventListener("click", function() {
+                            Toggle_Theme("red");
+                        });
+                        titleElem.getElementById("purple_square").addEventListener("click", function() {
+                            Toggle_Theme("purple");
+                        });
+                        titleElem.getElementById("black_square").addEventListener("click", function() {
+                            Toggle_Theme("black");
+                        });
+                        titleElem.getElementById("default_square").addEventListener("click", function() {
+                            Toggle_Theme('default');
+                        });
                         titleElem.querySelector("#llama-settings-pinkmode input").addEventListener("click", function() {
-                            settingsCheckboxUpdate("llama-settings-pinkmode");
+                            Toggle_Theme('pink');
                         });
                         titleElem.querySelector("#llama-settings-greenmode input").addEventListener("click", function() {
-                            settingsCheckboxUpdate("llama-settings-greenmode");
+                            Toggle_Theme("green");
                         });
                         titleElem.querySelector("#llama-settings-bluemode input").addEventListener("click", function() {
-                            settingsCheckboxUpdate("llama-settings-bluemode");
+                            Toggle_Theme("blue");
                         });
                         titleElem.querySelector("#llama-settings-purplemode input").addEventListener("click", function() {
-                            settingsCheckboxUpdate("llama-settings-purplemode");
-                        });
-                        titleElem.querySelector("#llama-settings-darkpurplemode input").addEventListener("click", function() {
-                            settingsCheckboxUpdate("llama-settings-darkpurplemode");
-                        });
-                        titleElem.querySelector("#llama-settings-whitemode input").addEventListener("click", function() {
-                            settingsCheckboxUpdate("llama-settings-whitemode");
+                            Toggle_Theme("mauve");
                         });
                         titleElem.querySelector("#llama-settings-orangemode input").addEventListener("click", function() {
-                            settingsCheckboxUpdate("llama-settings-orangemode");
+                            Toggle_Theme("orange");
                         });
                         titleElem.querySelector("#llama-settings-redmode input").addEventListener("click", function() {
-                            settingsCheckboxUpdate("llama-settings-redmode");
+                            Toggle_Theme("red");
                         });
-                        titleElem.querySelector("#llama-settings-featureonemode input").addEventListener("click", function() {
-                            settingsCheckboxUpdate("llama-settings-featureonemode");
+                        titleElem.querySelector("#llama-settings-darkpurplemode input").addEventListener("click", function() {
+                            Toggle_Theme("purple");
                         });
-                        titleElem.querySelector("#llama-settings-featuretwomode input").addEventListener("click", function() {
-                            settingsCheckboxUpdate("llama-settings-featuretwomode");
-                        });
-                        titleElem.querySelector("#llama-settings-featurethreemode input").addEventListener("click", function() {
-                            settingsCheckboxUpdate("llama-settings-featurethreemode");
+                        titleElem.querySelector("#llama-settings-blackmode input").addEventListener("click", function() {
+                            Toggle_Theme("black");
                         });
                         titleElem.querySelector("#llama-settings-defaultmode input").addEventListener("click", function() {
-                            settingsCheckboxUpdate("llama-settings-defaultmode");
+                            Toggle_Theme('default');
                         });
-
+                        titleElem.querySelector("#llama-settings-weedmode input").addEventListener("click", function() {
+                            Toggle_Theme("weed");
+                        });
+                        titleElem.querySelector("#llama-settings-featuretwomode input").addEventListener("click", function() {
+                            Toggle_Theme("smashbros");
+                        });
+                        titleElem.querySelector("#llama-settings-featurethreemode input").addEventListener("click", function() {
+                            Toggle_Theme("splatoon");
+                        });
                         titleElem.querySelector("#llama-settings-borderlesscams input").addEventListener("click", function() {
                             settingsCheckboxUpdate("llama-settings-borderlesscams");
                         });
                         titleElem.querySelector("#llama-settings-miniyt input").addEventListener("click", function() {
                             settingsCheckboxUpdate("llama-settings-miniyt");
                         });
-
                         titleElem.querySelector("#llama-settings-autoscroll input").addEventListener("click", function() {
                             settingsCheckboxUpdate("llama-settings-autoscroll");
                         });
@@ -813,16 +814,313 @@ if (/\/room/.test(location.pathname)) {
                         titleElem.querySelector("#llama-settings-nightmode input").addEventListener("click", function() {
                             settingsCheckboxUpdate("llama-settings-nightmode");
                         });
-
-
                         titleElem.querySelector("#llama-settings-maxcamposition input").addEventListener("click", function() {
                             settingsCheckboxUpdate("llama-settings-maxcamposition");
                         });
 
                         notificationHider();
+
                     }
+
                 } catch (e) {
                     tcl("error waitForSettings: " + e.message);
+                }
+            }
+
+            function Toggle_Theme(color) {
+                var darkgreen_bgcolor = "#143848"
+                var darkgreen_bordercolor = "#061015"
+                var darkgreen_lightbgcolor = "#263233"
+                var darkgreen_textcolor = "#FFFFFF"
+                var darkgreen_buttontext = "#446165"
+                var darkgreen_userlist = "#FFFFFF"
+                var darkgreen_cambgcolor = "#071921"
+                var pink_bgcolor = "#fb98c9"
+                var pink_bordercolor = "#eebfda"
+                var pink_lightbgcolor = "#ffe0ee"
+                var pink_textcolor = "#db6ba3"
+                var pink_buttontext = "#a65480"
+                var pink_userlist = "#FFFFFF"
+                var pink_cambgcolor = "#b7719d"
+                var neonpink_bgcolor = "#940282"
+                var neonpink_bordercolor = "#ff51ea"
+                var neonpink_lightbgcolor = "#ad0098"
+                var neonpink_textcolor = "#FFFFFF"
+                var neonpink_buttontext = "#350024"
+                var neonpink_userlist = "#000000"
+                var neonpink_cambgcolor = "#650059"
+                var green_bgcolor = "#042500"
+                var green_bordercolor = "#217c16"
+                var green_lightbgcolor = "#00500d"
+                var green_textcolor = "#FFFFFF"
+                var green_buttontext = "#042500"
+                var green_userlist = "#FFFFFF"
+                var green_cambgcolor = "#010c00"
+                var neongreen_bgcolor = "#109600"
+                var neongreen_bordercolor = "#0e6904"
+                var neongreen_lightbgcolor = "#01ca21"
+                var neongreen_textcolor = "#FFFFFF"
+                var neongreen_buttontext = "#063c00"
+                var neongreen_userlist = "#FFFFFF"
+                var neongreen_cambgcolor = "#010c00"
+                var blue_bgcolor = "#111949"
+                var blue_bordercolor = "#596ce0"
+                var blue_lightbgcolor = "#2a388b"
+                var blue_textcolor = "#FFFFFF"
+                var blue_buttontext = "#111949"
+                var blue_userlist = "#FFFFFF"
+                var blue_cambgcolor = "#050921"
+                var mauve_bgcolor = "#9168b2"
+                var mauve_bordercolor = "#d6b7ef"
+                var mauve_lightbgcolor = "#BF8FE5"
+                var mauve_textcolor = "#000000"
+                var mauve_buttontext = "#9168b2"
+                var mauve_userlist = "#000000"
+                var mauve_cambgcolor = "#4c2c65"
+                var orange_bgcolor = "#b33700"
+                var orange_bordercolor = "#ff8d10"
+                var orange_lightbgcolor = "#ff4f00"
+                var orange_textcolor = "#000000"
+                var orange_buttontext = "#b33700"
+                var orange_userlist = "#000000"
+                var orange_cambgcolor = "#6b2100"
+                var red_bgcolor = "#590000"
+                var red_bordercolor = "#d02323"
+                var red_lightbgcolor = "#860000"
+                var red_textcolor = "#FFFFFF"
+                var red_buttontext = "#590000"
+                var red_userlist = "#FFFFFF"
+                var red_cambgcolor = "#290000"
+                var purple_bgcolor = "#280048"
+                var purple_bordercolor = "#b14fff"
+                var purple_lightbgcolor = "#550098"
+                var purple_textcolor = "#FFFFFF"
+                var purple_buttontext = "#280048"
+                var purple_userlist = "#FFFFFF"
+                var purple_cambgcolor = "#0d0017"
+                var black_bgcolor = "#191919"
+                var black_bordercolor = "#23272a"
+                var black_lightbgcolor = "#2a2a2a"
+                var black_textcolor = "#FFFFFF"
+                var black_buttontext = "#7289da"
+                var black_userlist = "#FFFFFF"
+                var black_cambgcolor = "#111"
+                try {
+                    var body = document.body
+                    if(color != "roombg") {
+                        var theme_choices = ['pink', 'green', 'blue', 'purple', 'orange', 'red', 'darkpurple', 'black', 'default', 'weed', 'smashbros', 'splatoon']
+                        theme_choices.forEach(function(theme_choice) {
+                            if (theme_choice === color) {
+                                bodyElem.classList.add("llama-theme")
+                                bodyElem.classList.add(color + "-theme")
+                                titleCSS.classList.add(color + "-theme")
+                                sidemenuCSS.classList.add(color + "-theme")
+                                userlistCSS.classList.add(color + "-theme")
+                                webappCSS.classList.add(color + "-theme")
+                                videolistCSS.classList.add(color + "-theme")
+                                videomoderationCSS.classList.add(color + "-theme")
+                                chatlistCSS.classList.add(color + "-theme")
+                                chatlogCSS.classList.add(color + "-theme")
+                                chatlogElem.querySelector("#chat-wider").classList.add(color + "-theme")
+                                //console.log('yes - ' + color)
+                            } else {
+                                bodyElem.classList.remove(theme_choice + "-theme")
+                                titleCSS.classList.remove(theme_choice + "-theme")
+                                sidemenuCSS.classList.remove(theme_choice + "-theme")
+                                userlistCSS.classList.remove(theme_choice + "-theme")
+                                webappCSS.classList.remove(theme_choice + "-theme")
+                                videolistCSS.classList.remove(theme_choice + "-theme")
+                                videomoderationCSS.classList.remove(theme_choice + "-theme")
+                                chatlistCSS.classList.remove(theme_choice + "-theme")
+                                chatlogCSS.classList.remove(theme_choice + "-theme")
+                                //console.log('no - ' + theme_choice)
+                            }
+                        })
+                    }
+                    if (color === "roombg") {
+                        let roombg_checkbox = titleElem.querySelector('#llama-settings-roombg > input')
+                        let current_room_bg_image = titleElem.getElementById('llama_roombg_img').value
+                        if(roombg_checkbox.checked === true) {
+                            document.documentElement.style.setProperty("--llamatheme-roombg", "url('" + current_room_bg_image + "')")
+                            localStorage.setItem('llama_image_roombg', 1)
+                            localStorage.setItem('llama_image_roombg_url', current_room_bg_image)
+                        } else {
+                            document.documentElement.style.setProperty("--llamatheme-roombg", "url('')")
+                            localStorage.removeItem('llama_image_roombg')
+                            localStorage.setItem('llama_image_roombg_url', current_room_bg_image)
+                        }
+                    } else if (color === "weed") {
+                        localStorage.setItem('llama_theme', color);
+                        if (color === "weed") {
+                            document.documentElement.style.setProperty("--llamatheme-bgcolor", "#000000")
+                            document.documentElement.style.setProperty("--llamatheme-bordercolor", "#005900")
+                            document.documentElement.style.setProperty("--llamatheme-lightbgcolor", "#000000")
+                            document.documentElement.style.setProperty("--llamatheme-textcolor", "#005900")
+                            document.documentElement.style.setProperty("--llamatheme-buttontext", "#005900")
+                            document.documentElement.style.setProperty("--llamatheme-userlist", "#005900")
+                            document.documentElement.style.setProperty("--llamatheme-cambgcolor", "#000000")
+                            document.documentElement.style.setProperty("--llamatheme-headerbg", "url(https://i.ibb.co/jDC8w3C/weed-wallpaper-1920x1080.jpg)")
+                            if(localStorage.getItem('llama_image_roombg') != 1) {document.documentElement.style.setProperty("--llamatheme-roombg", "url(https://i.ibb.co/5YKLsSK/wp2565886.jpg)")}
+                            document.documentElement.style.setProperty("--llamatheme-userbg", "url(https://i.ibb.co/5YKLsSK/wp2565886.jpg)")
+                            document.documentElement.style.setProperty("--llamatheme-chatbg", "url(https://i.ibb.co/5YKLsSK/wp2565886.jpg)")
+                        }
+                    } else if (color === "smashbros") {
+                        localStorage.setItem('llama_theme', color);
+                        if (color === "smashbros") {
+                            document.documentElement.style.setProperty("--llamatheme-bgcolor", "#282828")
+                            document.documentElement.style.setProperty("--llamatheme-bordercolor", "#3c3c3c")
+                            document.documentElement.style.setProperty("--llamatheme-lightbgcolor", "#282828")
+                            document.documentElement.style.setProperty("--llamatheme-textcolor", "#FFF")
+                            document.documentElement.style.setProperty("--llamatheme-buttontext", "#FFF")
+                            document.documentElement.style.setProperty("--llamatheme-userlist", "#FFF")
+                            document.documentElement.style.setProperty("--llamatheme-cambgcolor", "#151515")
+                            document.documentElement.style.setProperty("--llamatheme-headerbg", "url(https://i.ibb.co/BK1CXz4/smashlogo.jpg)")
+                            if(localStorage.getItem('llama_image_roombg') != 1) {document.documentElement.style.setProperty("--llamatheme-roombg", "url(https://i.ibb.co/JxkgSdj/melee-minimal-wallpaper-by-browniehooves-d8lwcvk.png)")}
+                            document.documentElement.style.setProperty("--llamatheme-userbg", "url(https://i.ibb.co/nRNHL9C/20444930186-7a639da784-o.png)")
+                            document.documentElement.style.setProperty("--llamatheme-chatbg", "url(https://i.ibb.co/ZSYHQs7/chat.jpg)")
+                            document.documentElement.style.setProperty("--llamatheme-ptt", "url(https://i.ibb.co/7KSTsdj/smash-clipart-87526.png)")
+                        }
+                    } else if (color === "splatoon") {
+                        localStorage.setItem('llama_theme', color);
+                        if (color === "splatoon") {
+                            document.documentElement.style.setProperty("--llamatheme-bgcolor", "#282828")
+                            document.documentElement.style.setProperty("--llamatheme-bordercolor", "#3c3c3c")
+                            document.documentElement.style.setProperty("--llamatheme-lightbgcolor", "#282828")
+                            document.documentElement.style.setProperty("--llamatheme-textcolor", "#FFF")
+                            document.documentElement.style.setProperty("--llamatheme-buttontext", "#FFF")
+                            document.documentElement.style.setProperty("--llamatheme-userlist", "#FFF")
+                            document.documentElement.style.setProperty("--llamatheme-cambgcolor", "#151515")
+                            document.documentElement.style.setProperty("--llamatheme-headerbg", "url(https://i.ibb.co/XsTjVk0/splay-bg-header2.png)")
+                            if(localStorage.getItem('llama_image_roombg') != 1) {document.documentElement.style.setProperty("--llamatheme-roombg", "url(https://i.ibb.co/C18JNgK/splatbg.jpg)")}
+                            document.documentElement.style.setProperty("--llamatheme-userbg", "url(https://i.ibb.co/7nrB9LT/test.png)")
+                            document.documentElement.style.setProperty("--llamatheme-chatbg", "url(https://i.ibb.co/TrKBZFn/splat-chat-bg3.png)")
+                            document.documentElement.style.setProperty("--llamatheme-ptt", "url(https://i.ibb.co/3dHQVhC/splat-mic2.png)")
+                        }
+                    } else {
+                        localStorage.setItem('llama_theme', color);
+                        var llama_theme_bgcolor = ""
+                        var llama_theme_bordercolor = ""
+                        var llama_theme_lightbgcolor = ""
+                        var llama_theme_textcolor = ""
+                        var llama_theme_buttontext = ""
+                        var llama_theme_userlist = ""
+                        var llama_theme_cambgcolor = ""
+                        if (color === "default") {
+                            document.documentElement.style.setProperty("--llamatheme-bgcolor", "#2d373a")
+                            document.documentElement.style.setProperty("--llamatheme-bordercolor", "")
+                            document.documentElement.style.setProperty("--llamatheme-lightbgcolor", "")
+                            document.documentElement.style.setProperty("--llamatheme-textcolor", "")
+                            document.documentElement.style.setProperty("--llamatheme-buttontext", "")
+                            document.documentElement.style.setProperty("--llamatheme-userlist", "")
+                            document.documentElement.style.setProperty("--llamatheme-cambgcolor", "#FFF")
+                        } else if (color === "darkgreen") {
+                            llama_theme_bgcolor = darkgreen_bgcolor
+                            llama_theme_bordercolor = darkgreen_bordercolor
+                            llama_theme_lightbgcolor = darkgreen_lightbgcolor
+                            llama_theme_textcolor = darkgreen_textcolor
+                            llama_theme_buttontext = darkgreen_buttontext
+                            llama_theme_userlist = darkgreen_userlist
+                            llama_theme_cambgcolor = darkgreen_cambgcolor
+                        } else if (color === "pink") {
+                            llama_theme_bgcolor = pink_bgcolor
+                            llama_theme_bordercolor = pink_bordercolor
+                            llama_theme_lightbgcolor = pink_lightbgcolor
+                            llama_theme_textcolor = pink_textcolor
+                            llama_theme_buttontext = pink_buttontext
+                            llama_theme_userlist = pink_userlist
+                            llama_theme_cambgcolor = pink_cambgcolor
+                        } else if (color === "neonpink") {
+                            llama_theme_bgcolor = neonpink_bgcolor
+                            llama_theme_bordercolor = neonpink_bordercolor
+                            llama_theme_lightbgcolor = neonpink_lightbgcolor
+                            llama_theme_textcolor = neonpink_textcolor
+                            llama_theme_buttontext = neonpink_buttontext
+                            llama_theme_userlist = neonpink_userlist
+                            llama_theme_cambgcolor = neonpink_cambgcolor
+                        } else if (color === "green") {
+                            llama_theme_bgcolor = green_bgcolor
+                            llama_theme_bordercolor = green_bordercolor
+                            llama_theme_lightbgcolor = green_lightbgcolor
+                            llama_theme_textcolor = green_textcolor
+                            llama_theme_buttontext = green_buttontext
+                            llama_theme_userlist = green_userlist
+                            llama_theme_cambgcolor = green_cambgcolor
+                        } else if (color === "neongreen") {
+                            llama_theme_bgcolor = neongreen_bgcolor
+                            llama_theme_bordercolor = neongreen_bordercolor
+                            llama_theme_lightbgcolor = neongreen_lightbgcolor
+                            llama_theme_textcolor = neongreen_textcolor
+                            llama_theme_buttontext = neongreen_buttontext
+                            llama_theme_userlist = neongreen_userlist
+                            llama_theme_cambgcolor = neongreen_cambgcolor
+                        } else if (color === "blue") {
+                            llama_theme_bgcolor = blue_bgcolor
+                            llama_theme_bordercolor = blue_bordercolor
+                            llama_theme_lightbgcolor = blue_lightbgcolor
+                            llama_theme_textcolor = blue_textcolor
+                            llama_theme_buttontext = blue_buttontext
+                            llama_theme_userlist = blue_userlist
+                            llama_theme_cambgcolor = blue_cambgcolor
+                        } else if (color === "mauve") {
+                            llama_theme_bgcolor = mauve_bgcolor
+                            llama_theme_bordercolor = mauve_bordercolor
+                            llama_theme_lightbgcolor = mauve_lightbgcolor
+                            llama_theme_textcolor = mauve_textcolor
+                            llama_theme_buttontext = mauve_buttontext
+                            llama_theme_userlist = mauve_userlist
+                            llama_theme_cambgcolor = mauve_cambgcolor
+                        } else if (color === "orange") {
+                            llama_theme_bgcolor = orange_bgcolor
+                            llama_theme_bordercolor = orange_bordercolor
+                            llama_theme_lightbgcolor = orange_lightbgcolor
+                            llama_theme_textcolor = orange_textcolor
+                            llama_theme_buttontext = orange_buttontext
+                            llama_theme_userlist = orange_userlist
+                            llama_theme_cambgcolor = orange_cambgcolor
+                        } else if (color === "red") {
+                            llama_theme_bgcolor = red_bgcolor
+                            llama_theme_bordercolor = red_bordercolor
+                            llama_theme_lightbgcolor = red_lightbgcolor
+                            llama_theme_textcolor = red_textcolor
+                            llama_theme_buttontext = red_buttontext
+                            llama_theme_userlist = red_userlist
+                            llama_theme_cambgcolor = red_cambgcolor
+                        } else if (color === "purple") {
+                            llama_theme_bgcolor = purple_bgcolor
+                            llama_theme_bordercolor = purple_bordercolor
+                            llama_theme_lightbgcolor = purple_lightbgcolor
+                            llama_theme_textcolor = purple_textcolor
+                            llama_theme_buttontext = purple_buttontext
+                            llama_theme_userlist = purple_userlist
+                            llama_theme_cambgcolor = purple_cambgcolor
+                        } else if (color === "black") {
+                            llama_theme_bgcolor = black_bgcolor
+                            llama_theme_bordercolor = black_bordercolor
+                            llama_theme_lightbgcolor = black_lightbgcolor
+                            llama_theme_textcolor = black_textcolor
+                            llama_theme_buttontext = black_buttontext
+                            llama_theme_userlist = black_userlist
+                            llama_theme_cambgcolor = black_cambgcolor
+                        }
+                        document.documentElement.style.setProperty("--llamatheme-bgcolor", llama_theme_bgcolor)
+                        document.documentElement.style.setProperty("--llamatheme-bordercolor", llama_theme_bordercolor)
+                        document.documentElement.style.setProperty("--llamatheme-lightbgcolor", llama_theme_lightbgcolor)
+                        document.documentElement.style.setProperty("--llamatheme-textcolor", llama_theme_textcolor)
+                        document.documentElement.style.setProperty("--llamatheme-buttontext", llama_theme_buttontext)
+                        document.documentElement.style.setProperty("--llamatheme-userlist", llama_theme_userlist)
+                        document.documentElement.style.setProperty("--llamatheme-cambgcolor", llama_theme_cambgcolor)
+
+
+                        document.documentElement.style.setProperty("--llamatheme-headerbg", "")
+                        if(localStorage.getItem('llama_image_roombg') != 1) {document.documentElement.style.setProperty("--llamatheme-roombg", "")}
+                        document.documentElement.style.setProperty("--llamatheme-userbg", "")
+                        document.documentElement.style.setProperty("--llamatheme-chatbg", "")
+                        document.documentElement.style.setProperty("--llamatheme-ptt", "")
+                    }
+
+                    //alert('theme `' + color + '` chosen');
+                } catch (e) {
+                    tcl("error toggleTheme: " + e.message);
                 }
             }
 
@@ -976,777 +1274,29 @@ if (/\/room/.test(location.pathname)) {
                 }
             }
 
-            function whitemodeToggle(arg) {
-                try {
-                    var whitemodeClasses = ["llama-whitemode"];
-
-                    if (settingsQuick["WhiteModeBlack"]) whitemodeClasses.push("whitenight");
-
-                    if (arg == true) {
-                        bodyElem.classList.add(...whitemodeClasses);
-                        titleCSS.classList.add(...whitemodeClasses);
-                        sidemenuCSS.classList.add(...whitemodeClasses);
-                        userlistCSS.classList.add(...whitemodeClasses);
-                        webappCSS.classList.add(...whitemodeClasses);
-                        videolistCSS.classList.add(...whitemodeClasses);
-                        videomoderationCSS.classList.add(...whitemodeClasses);
-                        chatlistCSS.classList.add(...whitemodeClasses);
-                        chatlogCSS.classList.add(...whitemodeClasses);
-                        chatlogElem.querySelector("#chat-wider").classList.add(...whitemodeClasses);
-                        // Messages:
-                        if (chatlogElem.querySelector(messageQueryString) != null) {
-                            var messageElems = chatlogElem.querySelectorAll(messageQueryString);
-                            for (i = 0; i < messageElems.length; i++) {
-                                var messageItem = messageElems[i].querySelector("tc-message-html").shadowRoot;
-                                var messageItemCSS = messageItem.querySelector(".message");
-                                messageItemCSS.classList.add(...whitemodeClasses);
-                            }
-                        }
-                        // Cams:
-                        if (videolistElem.querySelector(camQueryString) != null) {
-                            var camElems = videolistElem.querySelectorAll(camQueryString);
-                            for (i = 0; i < camElems.length; i++) {
-                                var camItem = camElems[i].querySelector("tc-video-item").shadowRoot;
-                                var camItemCSS = camItem.querySelector(".video");
-                                camItemCSS.classList.add(...whitemodeClasses);
-
-                                if (camItemCSS.querySelector("#camItemCSS") == null) camItemCSS.insertAdjacentHTML("afterbegin", camItemCSShtml);
-                            }
-                        }
+            function toggleTransparentChat(chat_status) {
+                var chat_status = chat_status || ''
+                let current_trans_status = localStorage.getItem('llama_trans_chat')
+                let current_trans_checkbox = titleElem.getElementById('llama-trans-chat-checkbox')
+                if(chat_status != 'reload') {
+                    if(current_trans_status == 1) {
+                        current_trans_checkbox.checked = false
+                        chatlogElem.querySelector("#chat-wrapper").setAttribute('style', '')
+                        localStorage.removeItem('llama_trans_chat')
+                    } else {
+                        current_trans_checkbox.checked = true
+                        chatlogElem.querySelector("#chat-wrapper").setAttribute('style', 'background-color: transparent;')
+                        localStorage.setItem('llama_trans_chat', 1)
                     }
-                    if (arg == false) {
-                        if (!settingsQuick["WhiteModeBlack"] && settingsQuick["WhiteMode"]) whitemodeClasses = ["whitenight"];
-
-                        bodyElem.classList.remove(...whitemodeClasses);
-                        titleCSS.classList.remove(...whitemodeClasses);
-                        sidemenuCSS.classList.remove(...whitemodeClasses);
-                        userlistCSS.classList.remove(...whitemodeClasses);
-                        webappCSS.classList.remove(...whitemodeClasses);
-                        videolistCSS.classList.remove(...whitemodeClasses);
-                        videomoderationCSS.classList.remove(...whitemodeClasses);
-                        chatlistCSS.classList.remove(...whitemodeClasses);
-                        chatlogCSS.classList.remove(...whitemodeClasses);
-                        chatlogElem.querySelector("#chat-wider").classList.remove(...whitemodeClasses);
-                        // Messages:
-                        if (chatlogElem.querySelector(messageQueryString) != null) {
-                            var messageElems = chatlogElem.querySelectorAll(messageQueryString);
-                            for (i = 0; i < messageElems.length; i++) {
-                                var messageItem = messageElems[i].querySelector("tc-message-html").shadowRoot;
-                                var messageItemCSS = messageItem.querySelector(".message");
-                                messageItemCSS.classList.remove(...whitemodeClasses);
-                            }
-                        }
-                        // Cams:
-                        if (videolistElem.querySelector(camQueryString) != null) {
-                            var camElems = videolistElem.querySelectorAll(camQueryString);
-                            for (i = 0; i < camElems.length; i++) {
-                                var camItem = camElems[i].querySelector("tc-video-item").shadowRoot;
-                                var camItemCSS = camItem.querySelector(".video");
-                                camItemCSS.classList.remove(...whitemodeClasses);
-                            }
-                        }
-                    }
-                } catch (e) {
-                    tcl("error whitemodeToggle: " + e.message);
-                }
-            }
-
-            function greenmodeToggle(arg) {
-                try {
-                    var greenmodeClasses = ["llama-greenmode"];
-
-                    if (settingsQuick["GreenModeBlack"]) greenmodeClasses.push("greennight");
-
-                    if (arg == true) {
-                        bodyElem.classList.add(...greenmodeClasses);
-                        titleCSS.classList.add(...greenmodeClasses);
-                        sidemenuCSS.classList.add(...greenmodeClasses);
-                        userlistCSS.classList.add(...greenmodeClasses);
-                        webappCSS.classList.add(...greenmodeClasses);
-                        videolistCSS.classList.add(...greenmodeClasses);
-                        videomoderationCSS.classList.add(...greenmodeClasses);
-                        chatlistCSS.classList.add(...greenmodeClasses);
-                        chatlogCSS.classList.add(...greenmodeClasses);
-                        chatlogElem.querySelector("#chat-wider").classList.add(...greenmodeClasses);
-                        // Messages:
-                        if (chatlogElem.querySelector(messageQueryString) != null) {
-                            var messageElems = chatlogElem.querySelectorAll(messageQueryString);
-                            for (i = 0; i < messageElems.length; i++) {
-                                var messageItem = messageElems[i].querySelector("tc-message-html").shadowRoot;
-                                var messageItemCSS = messageItem.querySelector(".message");
-                                messageItemCSS.classList.add(...greenmodeClasses);
-                            }
-                        }
-                        // Cams:
-                        if (videolistElem.querySelector(camQueryString) != null) {
-                            var camElems = videolistElem.querySelectorAll(camQueryString);
-                            for (i = 0; i < camElems.length; i++) {
-                                var camItem = camElems[i].querySelector("tc-video-item").shadowRoot;
-                                var camItemCSS = camItem.querySelector(".video");
-                                camItemCSS.classList.add(...greenmodeClasses);
-
-                                if (camItemCSS.querySelector("#camItemCSS") == null) camItemCSS.insertAdjacentHTML("afterbegin", camItemCSShtml);
-                            }
-                        }
-                    }
-                    if (arg == false) {
-                        if (!settingsQuick["GreenModeBlack"] && settingsQuick["GreenMode"]) nightmodeClasses = ["greennight"];
-
-                        bodyElem.classList.remove(...greenmodeClasses);
-                        titleCSS.classList.remove(...greenmodeClasses);
-                        sidemenuCSS.classList.remove(...greenmodeClasses);
-                        userlistCSS.classList.remove(...greenmodeClasses);
-                        webappCSS.classList.remove(...greenmodeClasses);
-                        videolistCSS.classList.remove(...greenmodeClasses);
-                        videomoderationCSS.classList.remove(...greenmodeClasses);
-                        chatlistCSS.classList.remove(...greenmodeClasses);
-                        chatlogCSS.classList.remove(...greenmodeClasses);
-                        chatlogElem.querySelector("#chat-wider").classList.remove(...greenmodeClasses);
-                        // Messages:
-                        if (chatlogElem.querySelector(messageQueryString) != null) {
-                            var messageElems = chatlogElem.querySelectorAll(messageQueryString);
-                            for (i = 0; i < messageElems.length; i++) {
-                                var messageItem = messageElems[i].querySelector("tc-message-html").shadowRoot;
-                                var messageItemCSS = messageItem.querySelector(".message");
-                                messageItemCSS.classList.remove(...greenmodeClasses);
-                            }
-                        }
-                        // Cams:
-                        if (videolistElem.querySelector(camQueryString) != null) {
-                            var camElems = videolistElem.querySelectorAll(camQueryString);
-                            for (i = 0; i < camElems.length; i++) {
-                                var camItem = camElems[i].querySelector("tc-video-item").shadowRoot;
-                                var camItemCSS = camItem.querySelector(".video");
-                                camItemCSS.classList.remove(...greenmodeClasses);
-                            }
-                        }
-                    }
-                } catch (e) {
-                    tcl("error greenmodeToggle: " + e.message);
-                }
-            }
-
-            function bluemodeToggle(arg) {
-                try {
-                    var bluemodeClasses = ["llama-bluemode"];
-
-                    if (settingsQuick["BlueModeBlack"]) bluemodeClasses.push("bluenight");
-
-                    if (arg == true) {
-                        bodyElem.classList.add(...bluemodeClasses);
-                        titleCSS.classList.add(...bluemodeClasses);
-                        sidemenuCSS.classList.add(...bluemodeClasses);
-                        userlistCSS.classList.add(...bluemodeClasses);
-                        webappCSS.classList.add(...bluemodeClasses);
-                        videolistCSS.classList.add(...bluemodeClasses);
-                        videomoderationCSS.classList.add(...bluemodeClasses);
-                        chatlistCSS.classList.add(...bluemodeClasses);
-                        chatlogCSS.classList.add(...bluemodeClasses);
-                        chatlogElem.querySelector("#chat-wider").classList.add(...bluemodeClasses);
-                        // Messages:
-                        if (chatlogElem.querySelector(messageQueryString) != null) {
-                            var messageElems = chatlogElem.querySelectorAll(messageQueryString);
-                            for (i = 0; i < messageElems.length; i++) {
-                                var messageItem = messageElems[i].querySelector("tc-message-html").shadowRoot;
-                                var messageItemCSS = messageItem.querySelector(".message");
-                                messageItemCSS.classList.add(...bluemodeClasses);
-                            }
-                        }
-                        // Cams:
-                        if (videolistElem.querySelector(camQueryString) != null) {
-                            var camElems = videolistElem.querySelectorAll(camQueryString);
-                            for (i = 0; i < camElems.length; i++) {
-                                var camItem = camElems[i].querySelector("tc-video-item").shadowRoot;
-                                var camItemCSS = camItem.querySelector(".video");
-                                camItemCSS.classList.add(...bluemodeClasses);
-
-                                if (camItemCSS.querySelector("#camItemCSS") == null) camItemCSS.insertAdjacentHTML("afterbegin", camItemCSShtml);
-                            }
-                        }
-                    }
-                    if (arg == false) {
-                        if (!settingsQuick["BlueModeBlack"] && settingsQuick["BlueMode"]) nightmodeClasses = ["bluenight"];
-
-                        bodyElem.classList.remove(...bluemodeClasses);
-                        titleCSS.classList.remove(...bluemodeClasses);
-                        sidemenuCSS.classList.remove(...bluemodeClasses);
-                        userlistCSS.classList.remove(...bluemodeClasses);
-                        webappCSS.classList.remove(...bluemodeClasses);
-                        videolistCSS.classList.remove(...bluemodeClasses);
-                        videomoderationCSS.classList.remove(...bluemodeClasses);
-                        chatlistCSS.classList.remove(...bluemodeClasses);
-                        chatlogCSS.classList.remove(...bluemodeClasses);
-                        chatlogElem.querySelector("#chat-wider").classList.remove(...bluemodeClasses);
-                        // Messages:
-                        if (chatlogElem.querySelector(messageQueryString) != null) {
-                            var messageElems = chatlogElem.querySelectorAll(messageQueryString);
-                            for (i = 0; i < messageElems.length; i++) {
-                                var messageItem = messageElems[i].querySelector("tc-message-html").shadowRoot;
-                                var messageItemCSS = messageItem.querySelector(".message");
-                                messageItemCSS.classList.remove(...bluemodeClasses);
-                            }
-                        }
-                        // Cams:
-                        if (videolistElem.querySelector(camQueryString) != null) {
-                            var camElems = videolistElem.querySelectorAll(camQueryString);
-                            for (i = 0; i < camElems.length; i++) {
-                                var camItem = camElems[i].querySelector("tc-video-item").shadowRoot;
-                                var camItemCSS = camItem.querySelector(".video");
-                                camItemCSS.classList.remove(...bluemodeClasses);
-                            }
-                        }
-                    }
-                } catch (e) {
-                    tcl("error bluemodeToggle: " + e.message);
-                }
-            }
-
-            function orangemodeToggle(arg) {
-                try {
-                    var orangemodeClasses = ["llama-orangemode"];
-
-                    if (settingsQuick["OrangeModeBlack"]) orangemodeClasses.push("orangenight");
-
-                    if (arg == true) {
-                        bodyElem.classList.add(...orangemodeClasses);
-                        titleCSS.classList.add(...orangemodeClasses);
-                        sidemenuCSS.classList.add(...orangemodeClasses);
-                        userlistCSS.classList.add(...orangemodeClasses);
-                        webappCSS.classList.add(...orangemodeClasses);
-                        videolistCSS.classList.add(...orangemodeClasses);
-                        videomoderationCSS.classList.add(...orangemodeClasses);
-                        chatlistCSS.classList.add(...orangemodeClasses);
-                        chatlogCSS.classList.add(...orangemodeClasses);
-                        chatlogElem.querySelector("#chat-wider").classList.add(...orangemodeClasses);
-                        // Messages:
-                        if (chatlogElem.querySelector(messageQueryString) != null) {
-                            var messageElems = chatlogElem.querySelectorAll(messageQueryString);
-                            for (i = 0; i < messageElems.length; i++) {
-                                var messageItem = messageElems[i].querySelector("tc-message-html").shadowRoot;
-                                var messageItemCSS = messageItem.querySelector(".message");
-                                messageItemCSS.classList.add(...orangemodeClasses);
-                            }
-                        }
-                        // Cams:
-                        if (videolistElem.querySelector(camQueryString) != null) {
-                            var camElems = videolistElem.querySelectorAll(camQueryString);
-                            for (i = 0; i < camElems.length; i++) {
-                                var camItem = camElems[i].querySelector("tc-video-item").shadowRoot;
-                                var camItemCSS = camItem.querySelector(".video");
-                                camItemCSS.classList.add(...orangemodeClasses);
-
-                                if (camItemCSS.querySelector("#camItemCSS") == null) camItemCSS.insertAdjacentHTML("afterbegin", camItemCSShtml);
-                            }
-                        }
-                    }
-                    if (arg == false) {
-                        if (!settingsQuick["OrangeModeBlack"] && settingsQuick["OrangeMode"]) nightmodeClasses = ["orangenight"];
-
-                        bodyElem.classList.remove(...orangemodeClasses);
-                        titleCSS.classList.remove(...orangemodeClasses);
-                        sidemenuCSS.classList.remove(...orangemodeClasses);
-                        userlistCSS.classList.remove(...orangemodeClasses);
-                        webappCSS.classList.remove(...orangemodeClasses);
-                        videolistCSS.classList.remove(...orangemodeClasses);
-                        videomoderationCSS.classList.remove(...orangemodeClasses);
-                        chatlistCSS.classList.remove(...orangemodeClasses);
-                        chatlogCSS.classList.remove(...orangemodeClasses);
-                        chatlogElem.querySelector("#chat-wider").classList.remove(...orangemodeClasses);
-                        // Messages:
-                        if (chatlogElem.querySelector(messageQueryString) != null) {
-                            var messageElems = chatlogElem.querySelectorAll(messageQueryString);
-                            for (i = 0; i < messageElems.length; i++) {
-                                var messageItem = messageElems[i].querySelector("tc-message-html").shadowRoot;
-                                var messageItemCSS = messageItem.querySelector(".message");
-                                messageItemCSS.classList.remove(...orangemodeClasses);
-                            }
-                        }
-                        // Cams:
-                        if (videolistElem.querySelector(camQueryString) != null) {
-                            var camElems = videolistElem.querySelectorAll(camQueryString);
-                            for (i = 0; i < camElems.length; i++) {
-                                var camItem = camElems[i].querySelector("tc-video-item").shadowRoot;
-                                var camItemCSS = camItem.querySelector(".video");
-                                camItemCSS.classList.remove(...orangemodeClasses);
-                            }
-                        }
-                    }
-                } catch (e) {
-                    tcl("error orangemodeToggle: " + e.message);
-                }
-            }
-
-            function redmodeToggle(arg) {
-                try {
-                    var redmodeClasses = ["llama-redmode"];
-
-                    if (settingsQuick["RedModeBlack"]) redmodeClasses.push("rednight");
-
-                    if (arg == true) {
-                        bodyElem.classList.add(...redmodeClasses);
-                        titleCSS.classList.add(...redmodeClasses);
-                        sidemenuCSS.classList.add(...redmodeClasses);
-                        userlistCSS.classList.add(...redmodeClasses);
-                        webappCSS.classList.add(...redmodeClasses);
-                        videolistCSS.classList.add(...redmodeClasses);
-                        videomoderationCSS.classList.add(...redmodeClasses);
-                        chatlistCSS.classList.add(...redmodeClasses);
-                        chatlogCSS.classList.add(...redmodeClasses);
-                        chatlogElem.querySelector("#chat-wider").classList.add(...redmodeClasses);
-                        // Messages:
-                        if (chatlogElem.querySelector(messageQueryString) != null) {
-                            var messageElems = chatlogElem.querySelectorAll(messageQueryString);
-                            for (i = 0; i < messageElems.length; i++) {
-                                var messageItem = messageElems[i].querySelector("tc-message-html").shadowRoot;
-                                var messageItemCSS = messageItem.querySelector(".message");
-                                messageItemCSS.classList.add(...redmodeClasses);
-                            }
-                        }
-                        // Cams:
-                        if (videolistElem.querySelector(camQueryString) != null) {
-                            var camElems = videolistElem.querySelectorAll(camQueryString);
-                            for (i = 0; i < camElems.length; i++) {
-                                var camItem = camElems[i].querySelector("tc-video-item").shadowRoot;
-                                var camItemCSS = camItem.querySelector(".video");
-                                camItemCSS.classList.add(...redmodeClasses);
-
-                                if (camItemCSS.querySelector("#camItemCSS") == null) camItemCSS.insertAdjacentHTML("afterbegin", camItemCSShtml);
-                            }
-                        }
-                    }
-                    if (arg == false) {
-                        if (!settingsQuick["RedModeBlack"] && settingsQuick["RedMode"]) nightmodeClasses = ["rednight"];
-
-                        bodyElem.classList.remove(...redmodeClasses);
-                        titleCSS.classList.remove(...redmodeClasses);
-                        sidemenuCSS.classList.remove(...redmodeClasses);
-                        userlistCSS.classList.remove(...redmodeClasses);
-                        webappCSS.classList.remove(...redmodeClasses);
-                        videolistCSS.classList.remove(...redmodeClasses);
-                        videomoderationCSS.classList.remove(...redmodeClasses);
-                        chatlistCSS.classList.remove(...redmodeClasses);
-                        chatlogCSS.classList.remove(...redmodeClasses);
-                        chatlogElem.querySelector("#chat-wider").classList.remove(...redmodeClasses);
-                        // Messages:
-                        if (chatlogElem.querySelector(messageQueryString) != null) {
-                            var messageElems = chatlogElem.querySelectorAll(messageQueryString);
-                            for (i = 0; i < messageElems.length; i++) {
-                                var messageItem = messageElems[i].querySelector("tc-message-html").shadowRoot;
-                                var messageItemCSS = messageItem.querySelector(".message");
-                                messageItemCSS.classList.remove(...redmodeClasses);
-                            }
-                        }
-                        // Cams:
-                        if (videolistElem.querySelector(camQueryString) != null) {
-                            var camElems = videolistElem.querySelectorAll(camQueryString);
-                            for (i = 0; i < camElems.length; i++) {
-                                var camItem = camElems[i].querySelector("tc-video-item").shadowRoot;
-                                var camItemCSS = camItem.querySelector(".video");
-                                camItemCSS.classList.remove(...redmodeClasses);
-                            }
-                        }
-                    }
-                } catch (e) {
-                    tcl("error redmodeToggle: " + e.message);
-                }
-            }
-
-            function featureonemodeToggle(arg) {
-                try {
-                    var featureonemodeClasses = ["llama-featureonemode"];
-
-                    if (settingsQuick["FeatureOneModeBlack"]) featureonemodeClasses.push("featureonenight");
-
-                    if (arg == true) {
-                        bodyElem.classList.add(...featureonemodeClasses);
-                        titleCSS.classList.add(...featureonemodeClasses);
-                        sidemenuCSS.classList.add(...featureonemodeClasses);
-                        userlistCSS.classList.add(...featureonemodeClasses);
-                        webappCSS.classList.add(...featureonemodeClasses);
-                        videolistCSS.classList.add(...featureonemodeClasses);
-                        videomoderationCSS.classList.add(...featureonemodeClasses);
-                        chatlistCSS.classList.add(...featureonemodeClasses);
-                        chatlogCSS.classList.add(...featureonemodeClasses);
-                        chatlogElem.querySelector("#chat-wider").classList.add(...featureonemodeClasses);
-                        // Messages:
-                        if (chatlogElem.querySelector(messageQueryString) != null) {
-                            var messageElems = chatlogElem.querySelectorAll(messageQueryString);
-                            for (i = 0; i < messageElems.length; i++) {
-                                var messageItem = messageElems[i].querySelector("tc-message-html").shadowRoot;
-                                var messageItemCSS = messageItem.querySelector(".message");
-                                messageItemCSS.classList.add(...featureonemodeClasses);
-                            }
-                        }
-                        // Cams:
-                        if (videolistElem.querySelector(camQueryString) != null) {
-                            var camElems = videolistElem.querySelectorAll(camQueryString);
-                            for (i = 0; i < camElems.length; i++) {
-                                var camItem = camElems[i].querySelector("tc-video-item").shadowRoot;
-                                var camItemCSS = camItem.querySelector(".video");
-                                camItemCSS.classList.add(...featureonemodeClasses);
-
-                                if (camItemCSS.querySelector("#camItemCSS") == null) camItemCSS.insertAdjacentHTML("afterbegin", camItemCSShtml);
-                            }
-                        }
-                    }
-                    if (arg == false) {
-                        if (!settingsQuick["FeatureOneModeBlack"] && settingsQuick["FeatureOneMode"]) nightmodeClasses = ["featureonenight"];
-
-                        bodyElem.classList.remove(...featureonemodeClasses);
-                        titleCSS.classList.remove(...featureonemodeClasses);
-                        sidemenuCSS.classList.remove(...featureonemodeClasses);
-                        userlistCSS.classList.remove(...featureonemodeClasses);
-                        webappCSS.classList.remove(...featureonemodeClasses);
-                        videolistCSS.classList.remove(...featureonemodeClasses);
-                        videomoderationCSS.classList.remove(...featureonemodeClasses);
-                        chatlistCSS.classList.remove(...featureonemodeClasses);
-                        chatlogCSS.classList.remove(...featureonemodeClasses);
-                        chatlogElem.querySelector("#chat-wider").classList.remove(...featureonemodeClasses);
-                        // Messages:
-                        if (chatlogElem.querySelector(messageQueryString) != null) {
-                            var messageElems = chatlogElem.querySelectorAll(messageQueryString);
-                            for (i = 0; i < messageElems.length; i++) {
-                                var messageItem = messageElems[i].querySelector("tc-message-html").shadowRoot;
-                                var messageItemCSS = messageItem.querySelector(".message");
-                                messageItemCSS.classList.remove(...featureonemodeClasses);
-                            }
-                        }
-                        // Cams:
-                        if (videolistElem.querySelector(camQueryString) != null) {
-                            var camElems = videolistElem.querySelectorAll(camQueryString);
-                            for (i = 0; i < camElems.length; i++) {
-                                var camItem = camElems[i].querySelector("tc-video-item").shadowRoot;
-                                var camItemCSS = camItem.querySelector(".video");
-                                camItemCSS.classList.remove(...featureonemodeClasses);
-                            }
-                        }
-                    }
-                } catch (e) {
-                    tcl("error featureonemodeToggle: " + e.message);
-                }
-            }
-
-            function featuretwomodeToggle(arg) {
-                try {
-                    var featuretwomodeClasses = ["llama-featuretwomode"];
-
-                    if (settingsQuick["FeatureTwoModeBlack"]) featuretwomodeClasses.push("featuretwonight");
-
-                    if (arg == true) {
-                        bodyElem.classList.add(...featuretwomodeClasses);
-                        titleCSS.classList.add(...featuretwomodeClasses);
-                        sidemenuCSS.classList.add(...featuretwomodeClasses);
-                        userlistCSS.classList.add(...featuretwomodeClasses);
-                        webappCSS.classList.add(...featuretwomodeClasses);
-                        videolistCSS.classList.add(...featuretwomodeClasses);
-                        videomoderationCSS.classList.add(...featuretwomodeClasses);
-                        chatlistCSS.classList.add(...featuretwomodeClasses);
-                        chatlogCSS.classList.add(...featuretwomodeClasses);
-                        chatlogElem.querySelector("#chat-wider").classList.add(...featuretwomodeClasses);
-                        // Messages:
-                        if (chatlogElem.querySelector(messageQueryString) != null) {
-                            var messageElems = chatlogElem.querySelectorAll(messageQueryString);
-                            for (i = 0; i < messageElems.length; i++) {
-                                var messageItem = messageElems[i].querySelector("tc-message-html").shadowRoot;
-                                var messageItemCSS = messageItem.querySelector(".message");
-                                messageItemCSS.classList.add(...featuretwomodeClasses);
-                            }
-                        }
-                        // Cams:
-                        if (videolistElem.querySelector(camQueryString) != null) {
-                            var camElems = videolistElem.querySelectorAll(camQueryString);
-                            for (i = 0; i < camElems.length; i++) {
-                                var camItem = camElems[i].querySelector("tc-video-item").shadowRoot;
-                                var camItemCSS = camItem.querySelector(".video");
-                                camItemCSS.classList.add(...featuretwomodeClasses);
-
-                                if (camItemCSS.querySelector("#camItemCSS") == null) camItemCSS.insertAdjacentHTML("afterbegin", camItemCSShtml);
-                            }
-                        }
-                    }
-                    if (arg == false) {
-                        if (!settingsQuick["FeatureTwoModeBlack"] && settingsQuick["FeatureTwoMode"]) nightmodeClasses = ["featuretwonight"];
-
-                        bodyElem.classList.remove(...featuretwomodeClasses);
-                        titleCSS.classList.remove(...featuretwomodeClasses);
-                        sidemenuCSS.classList.remove(...featuretwomodeClasses);
-                        userlistCSS.classList.remove(...featuretwomodeClasses);
-                        webappCSS.classList.remove(...featuretwomodeClasses);
-                        videolistCSS.classList.remove(...featuretwomodeClasses);
-                        videomoderationCSS.classList.remove(...featuretwomodeClasses);
-                        chatlistCSS.classList.remove(...featuretwomodeClasses);
-                        chatlogCSS.classList.remove(...featuretwomodeClasses);
-                        chatlogElem.querySelector("#chat-wider").classList.remove(...featuretwomodeClasses);
-                        // Messages:
-                        if (chatlogElem.querySelector(messageQueryString) != null) {
-                            var messageElems = chatlogElem.querySelectorAll(messageQueryString);
-                            for (i = 0; i < messageElems.length; i++) {
-                                var messageItem = messageElems[i].querySelector("tc-message-html").shadowRoot;
-                                var messageItemCSS = messageItem.querySelector(".message");
-                                messageItemCSS.classList.remove(...featuretwomodeClasses);
-                            }
-                        }
-                        // Cams:
-                        if (videolistElem.querySelector(camQueryString) != null) {
-                            var camElems = videolistElem.querySelectorAll(camQueryString);
-                            for (i = 0; i < camElems.length; i++) {
-                                var camItem = camElems[i].querySelector("tc-video-item").shadowRoot;
-                                var camItemCSS = camItem.querySelector(".video");
-                                camItemCSS.classList.remove(...featuretwomodeClasses);
-                            }
-                        }
-                    }
-                } catch (e) {
-                    tcl("error featuretwomodeToggle: " + e.message);
-                }
-            }
-
-            function featurethreemodeToggle(arg) {
-                try {
-                    var featurethreemodeClasses = ["llama-featurethreemode"];
-
-                    if (settingsQuick["FeatureThreeModeBlack"]) featurethreemodeClasses.push("featurethreenight");
-
-                    if (arg == true) {
-                        bodyElem.classList.add(...featurethreemodeClasses);
-                        titleCSS.classList.add(...featurethreemodeClasses);
-                        sidemenuCSS.classList.add(...featurethreemodeClasses);
-                        userlistCSS.classList.add(...featurethreemodeClasses);
-                        webappCSS.classList.add(...featurethreemodeClasses);
-                        videolistCSS.classList.add(...featurethreemodeClasses);
-                        videomoderationCSS.classList.add(...featurethreemodeClasses);
-                        chatlistCSS.classList.add(...featurethreemodeClasses);
-                        chatlogCSS.classList.add(...featurethreemodeClasses);
-                        chatlogElem.querySelector("#chat-wider").classList.add(...featurethreemodeClasses);
-                        // Messages:
-                        if (chatlogElem.querySelector(messageQueryString) != null) {
-                            var messageElems = chatlogElem.querySelectorAll(messageQueryString);
-                            for (i = 0; i < messageElems.length; i++) {
-                                var messageItem = messageElems[i].querySelector("tc-message-html").shadowRoot;
-                                var messageItemCSS = messageItem.querySelector(".message");
-                                messageItemCSS.classList.add(...featurethreemodeClasses);
-                            }
-                        }
-                        // Cams:
-                        if (videolistElem.querySelector(camQueryString) != null) {
-                            var camElems = videolistElem.querySelectorAll(camQueryString);
-                            for (i = 0; i < camElems.length; i++) {
-                                var camItem = camElems[i].querySelector("tc-video-item").shadowRoot;
-                                var camItemCSS = camItem.querySelector(".video");
-                                camItemCSS.classList.add(...featurethreemodeClasses);
-
-                                if (camItemCSS.querySelector("#camItemCSS") == null) camItemCSS.insertAdjacentHTML("afterbegin", camItemCSShtml);
-                            }
-                        }
-                    }
-                    if (arg == false) {
-                        if (!settingsQuick["FeatureThreeModeBlack"] && settingsQuick["FeatureThreeMode"]) nightmodeClasses = ["featurethreenight"];
-
-                        bodyElem.classList.remove(...featurethreemodeClasses);
-                        titleCSS.classList.remove(...featurethreemodeClasses);
-                        sidemenuCSS.classList.remove(...featurethreemodeClasses);
-                        userlistCSS.classList.remove(...featurethreemodeClasses);
-                        webappCSS.classList.remove(...featurethreemodeClasses);
-                        videolistCSS.classList.remove(...featurethreemodeClasses);
-                        videomoderationCSS.classList.remove(...featurethreemodeClasses);
-                        chatlistCSS.classList.remove(...featurethreemodeClasses);
-                        chatlogCSS.classList.remove(...featurethreemodeClasses);
-                        chatlogElem.querySelector("#chat-wider").classList.remove(...featurethreemodeClasses);
-                        // Messages:
-                        if (chatlogElem.querySelector(messageQueryString) != null) {
-                            var messageElems = chatlogElem.querySelectorAll(messageQueryString);
-                            for (i = 0; i < messageElems.length; i++) {
-                                var messageItem = messageElems[i].querySelector("tc-message-html").shadowRoot;
-                                var messageItemCSS = messageItem.querySelector(".message");
-                                messageItemCSS.classList.remove(...featurethreemodeClasses);
-                            }
-                        }
-                        // Cams:
-                        if (videolistElem.querySelector(camQueryString) != null) {
-                            var camElems = videolistElem.querySelectorAll(camQueryString);
-                            for (i = 0; i < camElems.length; i++) {
-                                var camItem = camElems[i].querySelector("tc-video-item").shadowRoot;
-                                var camItemCSS = camItem.querySelector(".video");
-                                camItemCSS.classList.remove(...featurethreemodeClasses);
-                            }
-                        }
-                    }
-                } catch (e) {
-                    tcl("error featurethreemodeToggle: " + e.message);
-                }
-            }
-
-            function darkpurplemodeToggle(arg) {
-                try {
-                    var darkpurplemodeClasses = ["llama-darkpurplemode"];
-
-                    if (settingsQuick["DarkPurpleModeBlack"]) darkpurplemodeClasses.push("darkpurplenight");
-
-                    if (arg == true) {
-                        bodyElem.classList.add(...darkpurplemodeClasses);
-                        titleCSS.classList.add(...darkpurplemodeClasses);
-                        sidemenuCSS.classList.add(...darkpurplemodeClasses);
-                        userlistCSS.classList.add(...darkpurplemodeClasses);
-                        webappCSS.classList.add(...darkpurplemodeClasses);
-                        videolistCSS.classList.add(...darkpurplemodeClasses);
-                        videomoderationCSS.classList.add(...darkpurplemodeClasses);
-                        chatlistCSS.classList.add(...darkpurplemodeClasses);
-                        chatlogCSS.classList.add(...darkpurplemodeClasses);
-                        chatlogElem.querySelector("#chat-wider").classList.add(...darkpurplemodeClasses);
-                        // Messages:
-                        if (chatlogElem.querySelector(messageQueryString) != null) {
-                            var messageElems = chatlogElem.querySelectorAll(messageQueryString);
-                            for (i = 0; i < messageElems.length; i++) {
-                                var messageItem = messageElems[i].querySelector("tc-message-html").shadowRoot;
-                                var messageItemCSS = messageItem.querySelector(".message");
-                                messageItemCSS.classList.add(...darkpurplemodeClasses);
-                            }
-                        }
-                        // Cams:
-                        if (videolistElem.querySelector(camQueryString) != null) {
-                            var camElems = videolistElem.querySelectorAll(camQueryString);
-                            for (i = 0; i < camElems.length; i++) {
-                                var camItem = camElems[i].querySelector("tc-video-item").shadowRoot;
-                                var camItemCSS = camItem.querySelector(".video");
-                                camItemCSS.classList.add(...darkpurplemodeClasses);
-
-                                if (camItemCSS.querySelector("#camItemCSS") == null) camItemCSS.insertAdjacentHTML("afterbegin", camItemCSShtml);
-                            }
-                        }
-                    }
-                    if (arg == false) {
-                        if (!settingsQuick["DarkPurpleModeBlack"] && settingsQuick["DarkPurpleMode"]) nightmodeClasses = ["darkpurplenight"];
-
-                        bodyElem.classList.remove(...darkpurplemodeClasses);
-                        titleCSS.classList.remove(...darkpurplemodeClasses);
-                        sidemenuCSS.classList.remove(...darkpurplemodeClasses);
-                        userlistCSS.classList.remove(...darkpurplemodeClasses);
-                        webappCSS.classList.remove(...darkpurplemodeClasses);
-                        videolistCSS.classList.remove(...darkpurplemodeClasses);
-                        videomoderationCSS.classList.remove(...darkpurplemodeClasses);
-                        chatlistCSS.classList.remove(...darkpurplemodeClasses);
-                        chatlogCSS.classList.remove(...darkpurplemodeClasses);
-                        chatlogElem.querySelector("#chat-wider").classList.remove(...darkpurplemodeClasses);
-                        // Messages:
-                        if (chatlogElem.querySelector(messageQueryString) != null) {
-                            var messageElems = chatlogElem.querySelectorAll(messageQueryString);
-                            for (i = 0; i < messageElems.length; i++) {
-                                var messageItem = messageElems[i].querySelector("tc-message-html").shadowRoot;
-                                var messageItemCSS = messageItem.querySelector(".message");
-                                messageItemCSS.classList.remove(...darkpurplemodeClasses);
-                            }
-                        }
-                        // Cams:
-                        if (videolistElem.querySelector(camQueryString) != null) {
-                            var camElems = videolistElem.querySelectorAll(camQueryString);
-                            for (i = 0; i < camElems.length; i++) {
-                                var camItem = camElems[i].querySelector("tc-video-item").shadowRoot;
-                                var camItemCSS = camItem.querySelector(".video");
-                                camItemCSS.classList.remove(...darkpurplemodeClasses);
-                            }
-                        }
-                    }
-                } catch (e) {
-                    tcl("error darkpurplemodeToggle: " + e.message);
-                }
-            }
-
-            function purplemodeToggle(arg) {
-                try {
-                    var purplemodeClasses = ["llama-purplemode"];
-
-                    if (settingsQuick["PurpleModeBlack"]) purplemodeClasses.push("purplenight");
-
-                    if (arg == true) {
-                        bodyElem.classList.add(...purplemodeClasses);
-                        titleCSS.classList.add(...purplemodeClasses);
-                        sidemenuCSS.classList.add(...purplemodeClasses);
-                        userlistCSS.classList.add(...purplemodeClasses);
-                        webappCSS.classList.add(...purplemodeClasses);
-                        videolistCSS.classList.add(...purplemodeClasses);
-                        videomoderationCSS.classList.add(...purplemodeClasses);
-                        chatlistCSS.classList.add(...purplemodeClasses);
-                        chatlogCSS.classList.add(...purplemodeClasses);
-                        chatlogElem.querySelector("#chat-wider").classList.add(...purplemodeClasses);
-                        // Messages:
-                        if (chatlogElem.querySelector(messageQueryString) != null) {
-                            var messageElems = chatlogElem.querySelectorAll(messageQueryString);
-                            for (i = 0; i < messageElems.length; i++) {
-                                var messageItem = messageElems[i].querySelector("tc-message-html").shadowRoot;
-                                var messageItemCSS = messageItem.querySelector(".message");
-                                messageItemCSS.classList.add(...purplemodeClasses);
-                            }
-                        }
-                        // Cams:
-                        if (videolistElem.querySelector(camQueryString) != null) {
-                            var camElems = videolistElem.querySelectorAll(camQueryString);
-                            for (i = 0; i < camElems.length; i++) {
-                                var camItem = camElems[i].querySelector("tc-video-item").shadowRoot;
-                                var camItemCSS = camItem.querySelector(".video");
-                                camItemCSS.classList.add(...purplemodeClasses);
-
-                                if (camItemCSS.querySelector("#camItemCSS") == null) camItemCSS.insertAdjacentHTML("afterbegin", camItemCSShtml);
-                            }
-                        }
-                    }
-                    if (arg == false) {
-                        if (!settingsQuick["PurpleModeBlack"] && settingsQuick["PurpleMode"]) nightmodeClasses = ["purplenight"];
-
-                        bodyElem.classList.remove(...purplemodeClasses);
-                        titleCSS.classList.remove(...purplemodeClasses);
-                        sidemenuCSS.classList.remove(...purplemodeClasses);
-                        userlistCSS.classList.remove(...purplemodeClasses);
-                        webappCSS.classList.remove(...purplemodeClasses);
-                        videolistCSS.classList.remove(...purplemodeClasses);
-                        videomoderationCSS.classList.remove(...purplemodeClasses);
-                        chatlistCSS.classList.remove(...purplemodeClasses);
-                        chatlogCSS.classList.remove(...purplemodeClasses);
-                        chatlogElem.querySelector("#chat-wider").classList.remove(...purplemodeClasses);
-                        // Messages:
-                        if (chatlogElem.querySelector(messageQueryString) != null) {
-                            var messageElems = chatlogElem.querySelectorAll(messageQueryString);
-                            for (i = 0; i < messageElems.length; i++) {
-                                var messageItem = messageElems[i].querySelector("tc-message-html").shadowRoot;
-                                var messageItemCSS = messageItem.querySelector(".message");
-                                messageItemCSS.classList.remove(...purplemodeClasses);
-                            }
-                        }
-                        // Cams:
-                        if (videolistElem.querySelector(camQueryString) != null) {
-                            var camElems = videolistElem.querySelectorAll(camQueryString);
-                            for (i = 0; i < camElems.length; i++) {
-                                var camItem = camElems[i].querySelector("tc-video-item").shadowRoot;
-                                var camItemCSS = camItem.querySelector(".video");
-                                camItemCSS.classList.remove(...purplemodeClasses);
-                            }
-                        }
-                    }
-                } catch (e) {
-                    tcl("error purplemodeToggle: " + e.message);
-                }
-            }
-
-
-            function showUpdateNotifier(text) {
-                try {
-
-                    var updateNotifier = titleElem.querySelector("#llama-updateNotifier");
-                    updateNotifier.querySelector("span").innerHTML = text;
-                    updateNotifier.classList.add("visible");
-                    if (settingsVisible == true) toggleSettingsDisplay();
-
-                } catch (e) {
-                    tcl("error showUpdateNotifier: " + e.message);
+                } else {
+                  current_trans_checkbox.checked = true
+                  chatlogElem.querySelector("#chat-wrapper").setAttribute('style', 'background-color: transparent;')
                 }
             }
 
             function toggleSettingsDisplay(arg) {
+                //console.log(arg)
                 try {
-                    if (arg == "updateNotifier") {
-                        titleElem.querySelector("#llama-updateNotifier").classList.remove("visible");
-                        GM_setValue("llama-updateNotifSeen", "2018.155");
-                    }
-
                     if (settingsVisible == true) {
                         titleElem.getElementById("llama-settingsBox").classList.add("hidden");
                         titleElem.getElementById("llama-settings").classList.remove("llama-open");
@@ -1825,6 +1375,25 @@ if (/\/room/.test(location.pathname)) {
 
             }
 
+            function toggleSubSetting(arg) {
+                try {
+                    //console.log(arg)
+                    var setting_choices = ["general", "theme", "images"]
+                    setting_choices.forEach(function(setting_choice) {
+                        if (setting_choice === arg) {
+                            console.log('Menu - Opened -' + ' ' + arg)
+                            titleElem.getElementById('llama_' + arg).classList.add('active')
+                            titleElem.getElementById('llama_' + arg + '_settings').classList.remove('d-none')
+                        } else {
+                            titleElem.getElementById('llama_' + setting_choice).classList.remove('active')
+                            titleElem.getElementById('llama_' + setting_choice + '_settings').classList.add('d-none')
+                        }
+                    })
+                } catch (e) {
+                    tcl("error toggleSubSetting: " + e.message);
+                }
+            }
+
             function settingsCheckboxUpdate(settingName = null, value = null) {
                 try {
                     if (settingName == null && value == null) {
@@ -1838,20 +1407,6 @@ if (/\/room/.test(location.pathname)) {
                         titleElem.getElementById("llama-settings-chatbelow").querySelector("input").checked = settingsQuick["ChatBelow"];
                         titleElem.getElementById("llama-settings-nightmode").querySelector("input").checked = settingsQuick["NightMode"];
                         titleElem.getElementById("llama-settings-maxcamposition").querySelector("input").checked = settingsQuick["MaxedCamLeft"];
-
-                        titleElem.getElementById("llama-settings-defaultmode").querySelector("input").checked = settingsQuick["DefaultMode"];
-                        titleElem.getElementById("llama-settings-pinkmode").querySelector("input").checked = settingsQuick["PinkMode"];
-                        titleElem.getElementById("llama-settings-greenmode").querySelector("input").checked = settingsQuick["GreenMode"];
-                        titleElem.getElementById("llama-settings-bluemode").querySelector("input").checked = settingsQuick["BlueMode"];
-                        titleElem.getElementById("llama-settings-purplemode").querySelector("input").checked = settingsQuick["PurpleMode"];
-                        titleElem.getElementById("llama-settings-darkpurplemode").querySelector("input").checked = settingsQuick["DarkPurpleMode"];
-                        titleElem.getElementById("llama-settings-whitemode").querySelector("input").checked = settingsQuick["WhiteMode"];
-                        titleElem.getElementById("llama-settings-orangemode").querySelector("input").checked = settingsQuick["OrangeMode"];
-                        titleElem.getElementById("llama-settings-redmode").querySelector("input").checked = settingsQuick["RedMode"];
-                        titleElem.getElementById("llama-settings-featureonemode").querySelector("input").checked = settingsQuick["FeatureOneMode"];
-                        titleElem.getElementById("llama-settings-featuretwomode").querySelector("input").checked = settingsQuick["FeatureTwoMode"];
-                        titleElem.getElementById("llama-settings-featurethreemode").querySelector("input").checked = settingsQuick["FeatureThreeMode"];
-
                         return;
                     }
 
@@ -1946,863 +1501,6 @@ if (/\/room/.test(location.pathname)) {
                             borderlessCamsToggle(newValue);
                         }
                     }
-
-                    if (settingName == "llama-settings-pinkmode") {
-                        if (value == null) {
-                            var newValue = titleElem.getElementById("llama-settings-pinkmode").querySelector("input").checked
-
-                            settingsQuick["BlueMode"] = (false);
-                            GM_setValue("llama-BlueMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-bluemode input").checked = false;
-
-                            settingsQuick["GreenMode"] = (false);
-                            GM_setValue("llama-GreenMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-greenmode input").checked = false;
-
-                            settingsQuick["PurpleMode"] = (false);
-                            GM_setValue("llama-PurpleMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-purplemode input").checked = false;
-
-                            settingsQuick["DarkPurpleMode"] = (false);
-                            GM_setValue("llama-DarkPurpleMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-darkpurplemode input").checked = false;
-
-                            settingsQuick["OrangeMode"] = (false);
-                            GM_setValue("llama-OrangeMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-orangemode input").checked = false;
-
-                            settingsQuick["FeatureThreeMode"] = (false);
-                            GM_setValue("llama-FeatureThreeMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featurethreemode input").checked = false;
-
-                            settingsQuick["FeatureTwoMode"] = (false);
-                            GM_setValue("llama-FeatureTwoMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featuretwomode input").checked = false;
-
-                            settingsQuick["FeatureOneMode"] = (false);
-                            GM_setValue("llama-FeatureOneMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featureonemode input").checked = false;
-
-                            settingsQuick["RedMode"] = (false);
-                            GM_setValue("llama-RedMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-redmode input").checked = false;
-
-                            settingsQuick["WhiteMode"] = (false);
-                            GM_setValue("llama-WhiteMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-whitemode input").checked = false;
-
-                            settingsQuick["DefaultMode"] = (false);
-                            GM_setValue("llama-DefaultMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-defaultmode input").checked = false;
-
-                            settingsQuick["PinkMode"] = newValue;
-                            GM_setValue("llama-PinkMode", newValue.toString());
-                            pinkmodeToggle(newValue);
-                            pinkmodeToggle(true);
-                            toggleThemesDisplay(false);
-                            featuretwomodeToggle(false);
-                            featureonemodeToggle(false);
-                            greenmodeToggle(false);
-                            bluemodeToggle(false);
-                            orangemodeToggle(false);
-                            redmodeToggle(false);
-                            purplemodeToggle(false);
-                            whitemodeToggle(false);
-                            darkpurplemodeToggle(false);
-                            featurethreemodeToggle(false);
-
-                            if (titleElem.getElementById("llama-settings-pinkmode").querySelector("input").checked) {
-                                titleElem.querySelector("#llama-settings-nightmode > input").checked = true;
-                                GM_setValue("llama-NightMode", true.toString());
-                                settingsQuick["NightMode"] = true;
-                            }
-                        }
-                    }
-                    if (settingName == "llama-settings-whitemode") {
-                        if (value == null) {
-                            var newValue = titleElem.getElementById("llama-settings-whitemode").querySelector("input").checked
-
-                            settingsQuick["BlueMode"] = (false);
-                            GM_setValue("llama-BlueMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-bluemode input").checked = false;
-
-                            settingsQuick["GreenMode"] = (false);
-                            GM_setValue("llama-GreenMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-greenmode input").checked = false;
-
-                            settingsQuick["PurpleMode"] = (false);
-                            GM_setValue("llama-PurpleMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-purplemode input").checked = false;
-
-                            settingsQuick["DarkPurpleMode"] = (false);
-                            GM_setValue("llama-DarkPurpleMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-darkpurplemode input").checked = false;
-
-                            settingsQuick["OrangeMode"] = (false);
-                            GM_setValue("llama-OrangeMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-orangemode input").checked = false;
-
-                            settingsQuick["FeatureThreeMode"] = (false);
-                            GM_setValue("llama-FeatureThreeMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featurethreemode input").checked = false;
-
-                            settingsQuick["FeatureTwoMode"] = (false);
-                            GM_setValue("llama-FeatureTwoMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featuretwomode input").checked = false;
-
-                            settingsQuick["FeatureOneMode"] = (false);
-                            GM_setValue("llama-FeatureOneMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featureonemode input").checked = false;
-
-                            settingsQuick["RedMode"] = (false);
-                            GM_setValue("llama-RedMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-redmode input").checked = false;
-
-                            settingsQuick["PinkMode"] = (false);
-                            GM_setValue("llama-PinkMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-pinkmode input").checked = false;
-
-                            settingsQuick["DefaultMode"] = (false);
-                            GM_setValue("llama-DefaultMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-defaultmode input").checked = false;
-
-                            settingsQuick["WhiteMode"] = newValue;
-                            GM_setValue("llama-WhiteMode", newValue.toString());
-                            whitemodeToggle(newValue);
-                            whitemodeToggle(true);
-                            toggleThemesDisplay(false);
-                            featuretwomodeToggle(false);
-                            featureonemodeToggle(false);
-                            greenmodeToggle(false);
-                            bluemodeToggle(false);
-                            orangemodeToggle(false);
-                            redmodeToggle(false);
-                            purplemodeToggle(false);
-                            pinkmodeToggle(false);
-                            darkpurplemodeToggle(false);
-                            featurethreemodeToggle(false);
-
-
-                            if (titleElem.getElementById("llama-settings-whitemode").querySelector("input").checked) {
-                                titleElem.querySelector("#llama-settings-nightmode > input").checked = true;
-                                GM_setValue("llama-NightMode", true.toString());
-                                settingsQuick["NightMode"] = true;
-                            }
-                        }
-                    }
-                    if (settingName == "llama-settings-greenmode") {
-                        if (value == null) {
-                            var newValue = titleElem.getElementById("llama-settings-greenmode").querySelector("input").checked;
-
-                            settingsQuick["BlueMode"] = (false);
-                            GM_setValue("llama-BlueMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-bluemode input").checked = false;
-
-                            settingsQuick["PinkMode"] = (false);
-                            GM_setValue("llama-PinkMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-pinkmode input").checked = false;
-
-                            settingsQuick["PurpleMode"] = (false);
-                            GM_setValue("llama-PurpleMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-purplemode input").checked = false;
-
-                            settingsQuick["DarkPurpleMode"] = (false);
-                            GM_setValue("llama-DarkPurpleMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-darkpurplemode input").checked = false;
-
-                            settingsQuick["OrangeMode"] = (false);
-                            GM_setValue("llama-OrangeMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-orangemode input").checked = false;
-
-                            settingsQuick["RedMode"] = (false);
-                            GM_setValue("llama-RedMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-redmode input").checked = false;
-
-                            settingsQuick["FeatureThreeMode"] = (false);
-                            GM_setValue("llama-FeatureThreeMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featurethreemode input").checked = false;
-
-                            settingsQuick["FeatureOneMode"] = (false);
-                            GM_setValue("llama-FeatureOneMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featureonemode input").checked = false;
-
-                            settingsQuick["FeatureTwoMode"] = (false);
-                            GM_setValue("llama-FeatureTwoMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featuretwomode input").checked = false;
-
-                            settingsQuick["WhiteMode"] = (false);
-                            GM_setValue("llama-WhiteMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-whitemode input").checked = false;
-
-                            settingsQuick["DefaultMode"] = (false);
-                            GM_setValue("llama-DefaultMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-defaultmode input").checked = false;
-
-                            settingsQuick["GreenMode"] = newValue;
-                            GM_setValue("llama-GreenMode", newValue.toString());
-                            greenmodeToggle(newValue);
-                            greenmodeToggle(true);
-                            toggleThemesDisplay(false);
-                            featuretwomodeToggle(false);
-                            featureonemodeToggle(false);
-                            pinkmodeToggle(false);
-                            orangemodeToggle(false);
-                            redmodeToggle(false);
-                            bluemodeToggle(false);
-                            purplemodeToggle(false);
-                            darkpurplemodeToggle(false);
-                            whitemodeToggle(false);
-                            featurethreemodeToggle(false);
-
-                            if (titleElem.getElementById("llama-settings-greenmode").querySelector("input").checked) {
-                                titleElem.querySelector("#llama-settings-nightmode > input").checked = true;
-                                GM_setValue("llama-NightMode", true.toString());
-                                settingsQuick["NightMode"] = true;
-                            }
-                        }
-                    }
-                    if (settingName == "llama-settings-bluemode") {
-                        if (value == null) {
-                            var newValue = titleElem.getElementById("llama-settings-bluemode").querySelector("input").checked;
-
-                            settingsQuick["PinkMode"] = (false);
-                            GM_setValue("llama-PinkMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-pinkmode input").checked = false;
-
-                            settingsQuick["GreenMode"] = (false);
-                            GM_setValue("llama-GreenMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-greenmode input").checked = false;
-
-                            settingsQuick["PurpleMode"] = (false);
-                            GM_setValue("llama-PurpleMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-purplemode input").checked = false;
-
-                            settingsQuick["DarkPurpleMode"] = (false);
-                            GM_setValue("llama-DarkPurpleMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-darkpurplemode input").checked = false;
-
-                            settingsQuick["OrangeMode"] = (false);
-                            GM_setValue("llama-OrangeMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-orangemode input").checked = false;
-
-                            settingsQuick["FeatureOneMode"] = (false);
-                            GM_setValue("llama-FeatureOneMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featureonemode input").checked = false;
-
-                            settingsQuick["FeatureThreeMode"] = (false);
-                            GM_setValue("llama-FeatureThreeMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featurethreemode input").checked = false;
-
-                            settingsQuick["FeatureTwoMode"] = (false);
-                            GM_setValue("llama-FeatureTwoMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featuretwomode input").checked = false;
-
-                            settingsQuick["RedMode"] = (false);
-                            GM_setValue("llama-RedMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-redmode input").checked = false;
-
-                            settingsQuick["WhiteMode"] = (false);
-                            GM_setValue("llama-WhiteMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-whitemode input").checked = false;
-
-                            settingsQuick["DefaultMode"] = (false);
-                            GM_setValue("llama-DefaultMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-defaultmode input").checked = false;
-
-                            settingsQuick["BlueMode"] = newValue;
-                            GM_setValue("llama-BlueMode", newValue.toString());
-                            bluemodeToggle(newValue);
-                            bluemodeToggle(true);
-                            toggleThemesDisplay(false);
-                            featuretwomodeToggle(false);
-                            featureonemodeToggle(false);
-                            purplemodeToggle(false);
-                            darkpurplemodeToggle(false);
-                            orangemodeToggle(false);
-                            redmodeToggle(false);
-                            pinkmodeToggle(false);
-                            greenmodeToggle(false);
-                            whitemodeToggle(false);
-                            featurethreemodeToggle(false);
-
-                            if (titleElem.getElementById("llama-settings-bluemode").querySelector("input").checked) {
-                                titleElem.querySelector("#llama-settings-nightmode > input").checked = true;
-                                GM_setValue("llama-NightMode", true.toString());
-                                settingsQuick["NightMode"] = true;
-                            }
-                        }
-                    }
-                    if (settingName == "llama-settings-orangemode") {
-                        if (value == null) {
-                            var newValue = titleElem.getElementById("llama-settings-orangemode").querySelector("input").checked;
-
-                            settingsQuick["PinkMode"] = (false);
-                            GM_setValue("llama-PinkMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-pinkmode input").checked = false;
-
-                            settingsQuick["GreenMode"] = (false);
-                            GM_setValue("llama-GreenMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-greenmode input").checked = false;
-
-                            settingsQuick["PurpleMode"] = (false);
-                            GM_setValue("llama-PurpleMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-purplemode input").checked = false;
-
-                            settingsQuick["DarkPurpleMode"] = (false);
-                            GM_setValue("llama-DarkPurpleMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-darkpurplemode input").checked = false;
-
-                            settingsQuick["BlueMode"] = (false);
-                            GM_setValue("llama-BlueMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-bluemode input").checked = false;
-
-                            settingsQuick["FeatureThreeMode"] = (false);
-                            GM_setValue("llama-FeatureThreeMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featurethreemode input").checked = false;
-
-                            settingsQuick["FeatureOneMode"] = (false);
-                            GM_setValue("llama-FeatureOneMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featureonemode input").checked = false;
-
-                            settingsQuick["FeatureTwoMode"] = (false);
-                            GM_setValue("llama-FeatureTwoMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featuretwomode input").checked = false;
-
-                            settingsQuick["RedMode"] = (false);
-                            GM_setValue("llama-RedMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-redmode input").checked = false;
-
-                            settingsQuick["WhiteMode"] = (false);
-                            GM_setValue("llama-WhiteMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-whitemode input").checked = false;
-
-                            settingsQuick["DefaultMode"] = (false);
-                            GM_setValue("llama-DefaultMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-defaultmode input").checked = false;
-
-                            settingsQuick["OrangeMode"] = newValue;
-                            GM_setValue("llama-OrangeMode", newValue.toString());
-                            orangemodeToggle(newValue);
-                            orangemodeToggle(true);
-                            toggleThemesDisplay(false);
-                            featuretwomodeToggle(false);
-                            featureonemodeToggle(false);
-                            bluemodeToggle(false);
-                            redmodeToggle(false);
-                            purplemodeToggle(false);
-                            darkpurplemodeToggle(false);
-                            pinkmodeToggle(false);
-                            greenmodeToggle(false);
-                            whitemodeToggle(false);
-                            featurethreemodeToggle(false);
-
-                            if (titleElem.getElementById("llama-settings-orangemode").querySelector("input").checked) {
-                                titleElem.querySelector("#llama-settings-nightmode > input").checked = true;
-                                GM_setValue("llama-NightMode", true.toString());
-                                settingsQuick["NightMode"] = true;
-                            }
-                        }
-                    }
-                    if (settingName == "llama-settings-redmode") {
-                        if (value == null) {
-                            var newValue = titleElem.getElementById("llama-settings-redmode").querySelector("input").checked;
-
-                            settingsQuick["PinkMode"] = (false);
-                            GM_setValue("llama-PinkMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-pinkmode input").checked = false;
-
-                            settingsQuick["GreenMode"] = (false);
-                            GM_setValue("llama-GreenMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-greenmode input").checked = false;
-
-                            settingsQuick["PurpleMode"] = (false);
-                            GM_setValue("llama-PurpleMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-purplemode input").checked = false;
-
-                            settingsQuick["DarkPurpleMode"] = (false);
-                            GM_setValue("llama-DarkPurpleMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-darkpurplemode input").checked = false;
-
-                            settingsQuick["BlueMode"] = (false);
-                            GM_setValue("llama-BlueMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-bluemode input").checked = false;
-
-                            settingsQuick["FeatureThreeMode"] = (false);
-                            GM_setValue("llama-FeatureThreeMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featurethreemode input").checked = false;
-
-                            settingsQuick["FeatureOneMode"] = (false);
-                            GM_setValue("llama-FeatureOneMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featureonemode input").checked = false;
-
-                            settingsQuick["FeatureTwoMode"] = (false);
-                            GM_setValue("llama-FeatureTwoMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featuretwomode input").checked = false;
-
-                            settingsQuick["OrangeMode"] = (false);
-                            GM_setValue("llama-OrangeMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-orangemode input").checked = false;
-
-                            settingsQuick["WhiteMode"] = (false);
-                            GM_setValue("llama-WhiteMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-whitemode input").checked = false;
-
-                            settingsQuick["DefaultMode"] = (false);
-                            GM_setValue("llama-DefaultMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-defaultmode input").checked = false;
-
-                            settingsQuick["RedMode"] = newValue;
-                            GM_setValue("llama-RedMode", newValue.toString());
-                            redmodeToggle(newValue);
-                            redmodeToggle(true);
-                            toggleThemesDisplay(false);
-                            featuretwomodeToggle(false);
-                            featureonemodeToggle(false);
-                            bluemodeToggle(false);
-                            orangemodeToggle(false);
-                            purplemodeToggle(false);
-                            darkpurplemodeToggle(false);
-                            pinkmodeToggle(false);
-                            greenmodeToggle(false);
-                            whitemodeToggle(false);
-                            featurethreemodeToggle(false);
-
-                            if (titleElem.getElementById("llama-settings-redmode").querySelector("input").checked) {
-                                titleElem.querySelector("#llama-settings-nightmode > input").checked = true;
-                                GM_setValue("llama-NightMode", true.toString());
-                                settingsQuick["NightMode"] = true;
-                            }
-                        }
-                    }
-                    if (settingName == "llama-settings-darkpurplemode") {
-                        if (value == null) {
-                            var newValue = titleElem.getElementById("llama-settings-darkpurplemode").querySelector("input").checked;
-
-                            settingsQuick["PinkMode"] = (false);
-                            GM_setValue("llama-PinkMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-pinkmode input").checked = false;
-
-                            settingsQuick["GreenMode"] = (false);
-                            GM_setValue("llama-GreenMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-greenmode input").checked = false;
-
-                            settingsQuick["BlueMode"] = (false);
-                            GM_setValue("llama-BlueMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-bluemode input").checked = false;
-
-                            settingsQuick["OrangeMode"] = (false);
-                            GM_setValue("llama-OrangeMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-orangemode input").checked = false;
-
-                            settingsQuick["PurpleMode"] = (false);
-                            GM_setValue("llama-PurpleMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-purplemode input").checked = false;
-
-                            settingsQuick["FeatureThreeMode"] = (false);
-                            GM_setValue("llama-FeatureThreeMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featurethreemode input").checked = false;
-
-                            settingsQuick["FeatureOneMode"] = (false);
-                            GM_setValue("llama-FeatureOneMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featureonemode input").checked = false;
-
-                            settingsQuick["FeatureTwoMode"] = (false);
-                            GM_setValue("llama-FeatureTwoMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featuretwomode input").checked = false;
-
-                            settingsQuick["RedMode"] = (false);
-                            GM_setValue("llama-RedMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-redmode input").checked = false;
-
-                            settingsQuick["WhiteMode"] = (false);
-                            GM_setValue("llama-WhiteMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-whitemode input").checked = false;
-
-                            settingsQuick["DefaultMode"] = (false);
-                            GM_setValue("llama-DefaultMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-defaultmode input").checked = false;
-
-                            settingsQuick["DarkPurpleMode"] = newValue;
-                            GM_setValue("llama-DarkPurpleMode", newValue.toString());
-                            darkpurplemodeToggle(newValue);
-                            darkpurplemodeToggle(true);
-                            toggleThemesDisplay(false);
-                            featureonemodeToggle(false);
-                            featuretwomodeToggle(false);
-                            purplemodeToggle(false);
-                            pinkmodeToggle(false);
-                            redmodeToggle(false);
-                            greenmodeToggle(false);
-                            bluemodeToggle(false);
-                            orangemodeToggle(false);
-                            whitemodeToggle(false);
-                            featurethreemodeToggle(false);
-
-                            if (titleElem.getElementById("llama-settings-darkpurplemode").querySelector("input").checked) {
-                                titleElem.querySelector("#llama-settings-nightmode > input").checked = true;
-                                GM_setValue("llama-NightMode", true.toString());
-                                settingsQuick["NightMode"] = true;
-                            }
-                        }
-                    }
-                    if (settingName == "llama-settings-purplemode") {
-                        if (value == null) {
-                            var newValue = titleElem.getElementById("llama-settings-purplemode").querySelector("input").checked;
-
-                            settingsQuick["PinkMode"] = (false);
-                            GM_setValue("llama-PinkMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-pinkmode input").checked = false;
-
-                            settingsQuick["GreenMode"] = (false);
-                            GM_setValue("llama-GreenMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-greenmode input").checked = false;
-
-                            settingsQuick["BlueMode"] = (false);
-                            GM_setValue("llama-BlueMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-bluemode input").checked = false;
-
-                            settingsQuick["OrangeMode"] = (false);
-                            GM_setValue("llama-OrangeMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-orangemode input").checked = false;
-
-                            settingsQuick["DarkPurpleMode"] = (false);
-                            GM_setValue("llama-DarkPurpleMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-darkpurplemode input").checked = false;
-
-                            settingsQuick["FeatureThreeMode"] = (false);
-                            GM_setValue("llama-FeatureThreeMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featurethreemode input").checked = false;
-
-                            settingsQuick["FeatureOneMode"] = (false);
-                            GM_setValue("llama-FeatureOneMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featureonemode input").checked = false;
-
-                            settingsQuick["FeatureTwoMode"] = (false);
-                            GM_setValue("llama-FeatureTwoMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featuretwomode input").checked = false;
-
-                            settingsQuick["RedMode"] = (false);
-                            GM_setValue("llama-RedMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-redmode input").checked = false;
-
-                            settingsQuick["WhiteMode"] = (false);
-                            GM_setValue("llama-WhiteMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-whitemode input").checked = false;
-
-                            settingsQuick["DefaultMode"] = (false);
-                            GM_setValue("llama-DefaultMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-defaultmode input").checked = false;
-
-                            settingsQuick["PurpleMode"] = newValue;
-                            GM_setValue("llama-PurpleMode", newValue.toString());
-                            purplemodeToggle(newValue);
-                            purplemodeToggle(true);
-                            toggleThemesDisplay(false);
-                            featureonemodeToggle(false);
-                            featuretwomodeToggle(false);
-                            darkpurplemodeToggle(false);
-                            pinkmodeToggle(false);
-                            redmodeToggle(false);
-                            greenmodeToggle(false);
-                            bluemodeToggle(false);
-                            orangemodeToggle(false);
-                            whitemodeToggle(false);
-                            featurethreemodeToggle(false);
-
-                            if (titleElem.getElementById("llama-settings-purplemode").querySelector("input").checked) {
-                                titleElem.querySelector("#llama-settings-nightmode > input").checked = true;
-                                GM_setValue("llama-NightMode", true.toString());
-                                settingsQuick["NightMode"] = true;
-                            }
-                        }
-                    }
-                    if (settingName == "llama-settings-featureonemode") {
-                        if (value == null) {
-                            var newValue = titleElem.getElementById("llama-settings-featureonemode").querySelector("input").checked;
-
-                            settingsQuick["PinkMode"] = (false);
-                            GM_setValue("llama-PinkMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-pinkmode input").checked = false;
-
-                            settingsQuick["PurpleMode"] = (false);
-                            GM_setValue("llama-PurpleMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-purplemode input").checked = false;
-
-                            settingsQuick["DarkPurpleMode"] = (false);
-                            GM_setValue("llama-DarkPurpleMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-darkpurplemode input").checked = false;
-
-                            settingsQuick["GreenMode"] = (false);
-                            GM_setValue("llama-GreenMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-greenmode input").checked = false;
-
-                            settingsQuick["BlueMode"] = (false);
-                            GM_setValue("llama-BlueMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-bluemode input").checked = false;
-
-                            settingsQuick["OrangeMode"] = (false);
-                            GM_setValue("llama-OrangeMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-orangemode input").checked = false;
-
-                            settingsQuick["FeatureThreeMode"] = (false);
-                            GM_setValue("llama-FeatureThreeMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featurethreemode input").checked = false;
-
-                            settingsQuick["FeatureTwoMode"] = (false);
-                            GM_setValue("llama-FeatureTwoMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featuretwomode input").checked = false;
-
-                            settingsQuick["RedMode"] = (false);
-                            GM_setValue("llama-RedMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-redmode input").checked = false;
-
-                            settingsQuick["WhiteMode"] = (false);
-                            GM_setValue("llama-WhiteMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-whitemode input").checked = false;
-
-                            settingsQuick["DefaultMode"] = (false);
-                            GM_setValue("llama-DefaultMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-defaultmode input").checked = false;
-
-                            settingsQuick["FeatureOneMode"] = newValue;
-                            GM_setValue("llama-FeatureOneMode", newValue.toString());
-                            featureonemodeToggle(newValue);
-                            featureonemodeToggle(true);
-                            toggleThemesDisplay(false);
-                            featuretwomodeToggle(false);
-                            purplemodeToggle(false);
-                            darkpurplemodeToggle(false);
-                            pinkmodeToggle(false);
-                            redmodeToggle(false);
-                            greenmodeToggle(false);
-                            bluemodeToggle(false);
-                            orangemodeToggle(false);
-                            whitemodeToggle(false);
-                            featurethreemodeToggle(false);
-
-                            if (titleElem.getElementById("llama-settings-featureonemode").querySelector("input").checked) {
-                                titleElem.querySelector("#llama-settings-nightmode > input").checked = true;
-                                GM_setValue("llama-NightMode", true.toString());
-                                settingsQuick["NightMode"] = true;
-                            }
-                        }
-                    }
-                    if (settingName == "llama-settings-featuretwomode") {
-                        if (value == null) {
-                            var newValue = titleElem.getElementById("llama-settings-featuretwomode").querySelector("input").checked;
-
-                            settingsQuick["PinkMode"] = (false);
-                            GM_setValue("llama-PinkMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-pinkmode input").checked = false;
-
-                            settingsQuick["PurpleMode"] = (false);
-                            GM_setValue("llama-PurpleMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-purplemode input").checked = false;
-
-                            settingsQuick["DarkPurpleMode"] = (false);
-                            GM_setValue("llama-DarkPurpleMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-darkpurplemode input").checked = false;
-
-                            settingsQuick["GreenMode"] = (false);
-                            GM_setValue("llama-GreenMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-greenmode input").checked = false;
-
-                            settingsQuick["BlueMode"] = (false);
-                            GM_setValue("llama-BlueMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-bluemode input").checked = false;
-
-                            settingsQuick["OrangeMode"] = (false);
-                            GM_setValue("llama-OrangeMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-orangemode input").checked = false;
-
-                            settingsQuick["FeatureThreeMode"] = (false);
-                            GM_setValue("llama-FeatureThreeMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featurethreemode input").checked = false;
-
-                            settingsQuick["FeatureOneMode"] = (false);
-                            GM_setValue("llama-FeatureOneMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featureonemode input").checked = false;
-
-                            settingsQuick["RedMode"] = (false);
-                            GM_setValue("llama-RedMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-redmode input").checked = false;
-
-                            settingsQuick["WhiteMode"] = (false);
-                            GM_setValue("llama-WhiteMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-whitemode input").checked = false;
-
-                            settingsQuick["DefaultMode"] = (false);
-                            GM_setValue("llama-DefaultMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-defaultmode input").checked = false;
-
-                            settingsQuick["FeatureTwoMode"] = newValue;
-                            GM_setValue("llama-FeatureTwoMode", newValue.toString());
-                            featuretwomodeToggle(newValue);
-                            featuretwomodeToggle(true);
-                            toggleThemesDisplay(false);
-                            featureonemodeToggle(false);
-                            purplemodeToggle(false);
-                            darkpurplemodeToggle(false);
-                            pinkmodeToggle(false);
-                            redmodeToggle(false);
-                            greenmodeToggle(false);
-                            bluemodeToggle(false);
-                            orangemodeToggle(false);
-                            whitemodeToggle(false);
-                            featurethreemodeToggle(false);
-
-                            if (titleElem.getElementById("llama-settings-featuretwomode").querySelector("input").checked) {
-                                titleElem.querySelector("#llama-settings-nightmode > input").checked = true;
-                                GM_setValue("llama-NightMode", true.toString());
-                                settingsQuick["NightMode"] = true;
-                            }
-                        }
-                    }
-
-                    if (settingName == "llama-settings-featurethreemode") {
-                        if (value == null) {
-                            var newValue = titleElem.getElementById("llama-settings-featurethreemode").querySelector("input").checked;
-
-                            settingsQuick["PinkMode"] = (false);
-                            GM_setValue("llama-PinkMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-pinkmode input").checked = false;
-
-                            settingsQuick["PurpleMode"] = (false);
-                            GM_setValue("llama-PurpleMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-purplemode input").checked = false;
-
-                            settingsQuick["DarkPurpleMode"] = (false);
-                            GM_setValue("llama-DarkPurpleMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-darkpurplemode input").checked = false;
-
-                            settingsQuick["GreenMode"] = (false);
-                            GM_setValue("llama-GreenMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-greenmode input").checked = false;
-
-                            settingsQuick["BlueMode"] = (false);
-                            GM_setValue("llama-BlueMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-bluemode input").checked = false;
-
-                            settingsQuick["OrangeMode"] = (false);
-                            GM_setValue("llama-OrangeMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-orangemode input").checked = false;
-
-                            settingsQuick["FeatureOneMode"] = (false);
-                            GM_setValue("llama-FeatureOneMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featureonemode input").checked = false;
-
-                            settingsQuick["FeatureTwoMode"] = (false);
-                            GM_setValue("llama-FeatureTwoMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featuretwomode input").checked = false;
-
-                            settingsQuick["RedMode"] = (false);
-                            GM_setValue("llama-RedMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-redmode input").checked = false;
-
-                            settingsQuick["WhiteMode"] = (false);
-                            GM_setValue("llama-WhiteMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-whitemode input").checked = false;
-
-                            settingsQuick["DefaultMode"] = (false);
-                            GM_setValue("llama-DefaultMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-defaultmode input").checked = false;
-
-                            settingsQuick["FeatureThreeMode"] = newValue;
-                            GM_setValue("llama-FeatureThreeMode", newValue.toString());
-                            featurethreemodeToggle(newValue);
-                            featurethreemodeToggle(true);
-                            toggleThemesDisplay(false);
-                            featureonemodeToggle(false);
-                            purplemodeToggle(false);
-                            darkpurplemodeToggle(false);
-                            pinkmodeToggle(false);
-                            redmodeToggle(false);
-                            greenmodeToggle(false);
-                            bluemodeToggle(false);
-                            orangemodeToggle(false);
-                            whitemodeToggle(false);
-                            featuretwomodeToggle(false);
-
-                            if (titleElem.getElementById("llama-settings-featurethreemode").querySelector("input").checked) {
-                                titleElem.querySelector("#llama-settings-nightmode > input").checked = true;
-                                GM_setValue("llama-NightMode", true.toString());
-                                settingsQuick["NightMode"] = true;
-                            }
-                        }
-                    }
-
-                    if (settingName == "llama-settings-defaultmode") {
-                        if (value == null) {
-                            var newValue = titleElem.getElementById("llama-settings-defaultmode").querySelector("input").checked;
-
-                            settingsQuick["PinkMode"] = (false);
-                            GM_setValue("llama-PinkMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-pinkmode input").checked = false;
-
-                            settingsQuick["GreenMode"] = (false);
-                            GM_setValue("llama-GreenMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-greenmode input").checked = false;
-
-                            settingsQuick["PurpleMode"] = (false);
-                            GM_setValue("llama-PurpleMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-purplemode input").checked = false;
-
-                            settingsQuick["DarkPurpleMode"] = (false);
-                            GM_setValue("llama-DarkPurpleMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-darkpurplemode input").checked = false;
-
-                            settingsQuick["OrangeMode"] = (false);
-                            GM_setValue("llama-OrangeMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-orangemode input").checked = false;
-
-                            settingsQuick["RedMode"] = (false);
-                            GM_setValue("llama-RedMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-redmode input").checked = false;
-
-                            settingsQuick["FeatureThreeMode"] = (false);
-                            GM_setValue("llama-FeatureThreeMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featurethreemode input").checked = false;
-
-                            settingsQuick["FeatureOneMode"] = (false);
-                            GM_setValue("llama-FeatureOneMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featureonemode input").checked = false;
-
-                            settingsQuick["FeatureTwoMode"] = (false);
-                            GM_setValue("llama-FeatureTwoMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-featuretwomode input").checked = false;
-
-                            settingsQuick["WhiteMode"] = (false);
-                            GM_setValue("llama-WhiteMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-whitemode input").checked = false;
-
-                            settingsQuick["BlueMode"] = (false);
-                            GM_setValue("llama-BlueMode", (false).toString());
-                            titleElem.querySelector("#llama-settings-bluemode input").checked = false;
-
-                            settingsQuick["DefaultMode"] = newValue;
-                            GM_setValue("llama-DefaultMode", newValue.toString());
-                            nightmodeToggle(newValue);
-                            nightmodeToggle(true);
-                            toggleThemesDisplay(false);
-                            purplemodeToggle(false);
-                            darkpurplemodeToggle(false);
-                            featureonemodeToggle(false);
-                            featuretwomodeToggle(false);
-                            redmodeToggle(false);
-                            pinkmodeToggle(false);
-                            greenmodeToggle(false);
-                            bluemodeToggle(false);
-                            orangemodeToggle(false);
-                            whitemodeToggle(false);
-                            featurethreemodeToggle(false);
-
-                            if (titleElem.getElementById("llama-settings-defaultmode").querySelector("input").checked) {
-                                titleElem.querySelector("#llama-settings-nightmode > input").checked = true;
-                                GM_setValue("llama-NightMode", true.toString());
-                                settingsQuick["NightMode"] = true;
-                            }
-                        }
-                    }
                 } catch (e) {
                     tcl("error settingsCheckboxUpdate: " + e.message);
                 }
@@ -2814,6 +1512,15 @@ if (/\/room/.test(location.pathname)) {
                 } catch (e) {
                     tcl("error fontToggle: " + e.message);
                 }
+            }
+
+            function reloadUserImages() {
+                let current_roombg = localStorage.getItem('llama_image_roombg');
+                let current_roombg_url = localStorage.getItem('llama_image_roombg_url');
+                let roombg_checkbox = titleElem.querySelector('#llama-settings-roombg > input')
+                if (current_roombg_url) {titleElem.getElementById('llama_roombg_img').value = current_roombg_url}
+                console.log(current_roombg)
+                if (current_roombg == 1) {roombg_checkbox.checked = true; Toggle_Theme('roombg');}
             }
 
             function borderlessCamsToggle(arg) {
@@ -2967,125 +1674,38 @@ if (/\/room/.test(location.pathname)) {
 
                 try {
                     globalCSS = `:root {
-		--textcolor: black;
-		--bgcolor: white;
-
-/*--------------------------------------------------DEFAULTTT--------------------------------------------------------*/
-		--nightmode-bgcolor: #2d373a;
-		--nightmode-trimcolor: #3c4a4e;
-		--nightmode-textcolor: #9faaad;
-		--nightmode-textSecondarycolor: #4e5f65;
-		--nightmode-headerButtonscolor: #3986a7;
-
-		--nightmodeBlack-bgcolor: black;
-		--nightmodeBlack-trimcolor: #222;
-/*--------------------------------------------------PINKKK1--------------------------------------------------------*/
-		--pinkmode-bgcolor: #ffd1dc;
-		--pinkmode-bordercolor: #ea98ab;
-		--pinkmode-lightbgcolor: #ffe1e6;
-		--pinkmode-textcolor: #aa8991;
-
-/*--------------------------------------------------GREENNN1--------------------------------------------------------*/
-		--greenmode-bgcolor: #042500;
-		--greenmode-bordercolor: #217c16;
-		--greenmode-lightbgcolor: #00500d;
-		--greenmode-textcolor: #000000;
-
-/*--------------------------------------------------BLUEEE1--------------------------------------------------------*/
-		--bluemode-bgcolor: #111949;
-		--bluemode-bordercolor: #596ce0;
-		--bluemode-lightbgcolor: #2a388b;
-		--bluemode-textcolor: #000000;
-
-/*--------------------------------------------------PURPLEEE1--------------------------------------------------------*/
-		--purplemode-bgcolor: #9168b2;
-		--purplemode-bordercolor: #cac0d2;
-		--purplemode-lightbgcolor: #BF8FE5;
-		--purplemode-textcolor: #000000;
-
-/*--------------------------------------------------ORANGEEE1--------------------------------------------------------*/
-		--orangemode-bgcolor: #b33700;
-		--orangemode-bordercolor: #ff8d10;
-		--orangemode-lightbgcolor: #ff4f00;
-		--orangemode-textcolor: #000000;
-
-/*--------------------------------------------------REDDD1--------------------------------------------------------*/
-		--redmode-bgcolor: #590000;
-		--redmode-bordercolor: #d02323;
-		--redmode-lightbgcolor: #860000;
-		--redmode-textcolor: #000000;
-
-/*--------------------------------------------------DARKPURPLEEE1--------------------------------------------------------*/
-		--darkpurplemode-bgcolor: #280048;
-		--darkpurplemode-bordercolor: #b14fff;
-		--darkpurplemode-lightbgcolor: #550098;
-		--darkpurplemode-textcolor: #000000;
-
-/*--------------------------------------------------WHITEEE1--------------------------------------------------------*/
-		--whitemode-bgcolor: #2d373a;
-		--whitemode-bordercolor: #cbcfcf;
-		--whitemode-lightbgcolor: #FFFFFF;
-		--whitemode-textcolor: #000000;
-		--whitemode-headerbg: #f5f5f5;
-		--whitemode-darkbgcolor: #091316;
-		--whitemode-tcblue: #04caff;
-
-/*--------------------------------------------------FEATUREONEEE1--------------------------------------------------------*/
-		--featureonemode-bgcolor: #000000;
-		--featureonemode-bordercolor: #005900;
-		--featureonemode-lightbgcolor: #000000;
-		--featureonemode-textcolor: #000000;
-		--featureonemode-headerbg: url(https://i.ibb.co/jDC8w3C/weed-wallpaper-1920x1080.jpg);
-		--featureonemode-roombg: url(https://i.ibb.co/5YKLsSK/wp2565886.jpg);
-		--featureonemode-userbg: url(https://i.ibb.co/5YKLsSK/wp2565886.jpg);
-		--featureonemode-chatbg: url(https://i.ibb.co/5YKLsSK/wp2565886.jpg);
-		--featureonemode-ptt: url(https://i.ibb.co/W2tyNNs/cannabis-PNG17.png);
-
-/*--------------------------------------------------FEATURETWOOO1--------------------------------------------------------*/
-		--featuretwomode-bgcolor: #282828;
-		--featuretwomode-bordercolor: #3c3c3c;
-		--featuretwomode-lightbgcolor: #282828;
-		--featuretwomode-textcolor: #FFFFFF;
-		--featuretwomode-headerbg: url(https://i.ibb.co/BK1CXz4/smashlogo.jpg);
-		--featuretwomode-roombg: url(https://i.ibb.co/JxkgSdj/melee-minimal-wallpaper-by-browniehooves-d8lwcvk.png);
-		--featuretwomode-userbg: url(https://i.ibb.co/nRNHL9C/20444930186-7a639da784-o.png);
-		--featuretwomode-chatbg: url(https://i.ibb.co/ZSYHQs7/chat.jpg);
-		--featuretwomode-ptt: url(https://i.ibb.co/7KSTsdj/smash-clipart-87526.png);
-
-/*--------------------------------------------------FEATURETHREEE1--------------------------------------------------------*/
-		--featurethreemode-bgcolor: #282828;
-		--featurethreemode-bordercolor: #3c3c3c;
-		--featurethreemode-lightbgcolor: #282828;
-		--featurethreemode-textcolor: #FFFFFF;
-		--featurethreemode-headerbg: url(https://i.ibb.co/XsTjVk0/splay-bg-header2.png);
-		--featurethreemode-roombg: url(https://i.ibb.co/C18JNgK/splatbg.jpg);
-		--featurethreemode-userbg: url(https://i.ibb.co/7nrB9LT/test.png);
-		--featurethreemode-chatbg: url(https://i.ibb.co/TrKBZFn/splat-chat-bg3.png);
-		--featurethreemode-ptt: url(https://i.ibb.co/3dHQVhC/splat-mic2.png);
-		--featurethreemode-innerchatbg: url(https://i.ibb.co/vBXky7C/splat-chat-bg.png);
-		--featurethreemode-messagebg: url(https://i.ibb.co/FWFnhc4/messagebg.png);
-		--featurethreemode-squid: url(https://i.ibb.co/FKNpP6D/squid.png);
-		--featurethreemode-squid2: url(https://i.ibb.co/KLGF7FH/squid2.png);
-		--featurethreemode-squid3: url(https://i.ibb.co/Wc9D0Xj/squid3.png);
-
+    --llamatheme-bgcolor: #2d373a;
+    --llamatheme-bordercolor: rgba(0, 0, 0, .1);
+    --llamatheme-lightbgcolor: #2d373a;
+    --llamatheme-textcolor: #000;
+    --llamatheme-buttontext: ;
+    --llamatheme-roombg: ;
+    --llamatheme-userbg: ;
+    --llamatheme-chatheaderbg: ;
+    --llamatheme-chatbg: ;
+    --llamatheme-messagebg: ;
+    --llamatheme-userlist: ;
+    --llamatheme-cambgcolor: #FFF;
 ;
+}
 
-	}
-
-
-	* {
-	  scrollbar-color: #ccc transparent;
-	  scrollbar-width: thin;
-	}
-	.llama-nightmode * { scrollbar-color: #242C2E transparent; }
-	.llama-nightmode.blacknight * { scrollbar-color: #111 transparent; }
+* {
+    scrollbar-color: #ccc transparent;
+    scrollbar-width: thin;
+}
+.llama-nightmode * {
+    scrollbar-color: #242C2E transparent;
+}
+.llama-nightmode.blacknight * {
+    scrollbar-color: #111 transparent;
+}
 .icon-resize {
     left: 50%;
     margin-left: -11px;display:none;
 }
 
 .llama-featurethreemode #room-content {
-background-color:transparent !important;
+    background-color:transparent !important;
 }
 
 :host, #videolist {
@@ -3408,6 +2028,7 @@ height: 0px !important;
     color: #313131;}
 
 
+
 .pink {background: #ffadc1;
     color: #952c46;}
 .green {background: #00500d;
@@ -3422,7 +2043,7 @@ height: 0px !important;
     color: #952c46;}
 .red {background: #860000;
     color: #952c46;}
-.white {background: #ffffff;
+.default {background: #ffffff;
     color: #952c46;}
 .featureone {
     color: #952c46;}
@@ -3430,7 +2051,7 @@ height: 0px !important;
     color: #952c46;}
 .featurethree {
     color: #952c46;}
-.default {background: #191919;
+.black {background: #191919;
 }
 
 .feature1 {
@@ -3522,24 +2143,24 @@ background-color:#00ff00;
     background-color:#111111;}
 
 #room-header-gifts-buttons > #get-coins {
-    background-color: #111111;
-    border-color: #313131;
-    color: #313131;}
+    background-color: var(--llamatheme-cambgcolor);
+    border-color: var(--llamatheme-bordercolor);
+    color: var(--llamatheme-bordercolor);}
 
 #room-header-gifts-buttons > #get-coins:hover {
-    background-color: #313131;
-    border-color: #111111;
-    color: #111111;}
+    background-color: var(--llamatheme-bordercolor);
+    border-color: var(--llamatheme-bordercolor);
+    color: var(--llamatheme-cambgcolor);}
 
 #room-header-gifts-buttons > a {
-    background-color: #111111;
-    border-color: #313131;
-    color: #313131;}
+    background-color: var(--llamatheme-cambgcolor);
+    border-color: var(--llamatheme-bordercolor);
+    color: var(--llamatheme-bordercolor);}
 
 #room-header-gifts-buttons > a:hover {
-    background-color: #313131;
-    border-color: #111111;
-    color: #111111;}
+    background-color: var(--llamatheme-bordercolor);
+    border-color: var(--llamatheme-bordercolor);
+    color: var(--llamatheme-cambgcolor);}
 
 #llama-header-grabber {
     position: absolute;
@@ -3548,8 +2169,8 @@ background-color:#00ff00;
     background: white;
     width: 60px;
     height: 20px;
-    border-color: #313131;
-    border-top: 1px solid #313131;
+    border-color: var(--llamatheme-bordercolor);
+    border-top: 1px solid var(--llamatheme-bordercolor);
     border-right: 0px;
     border-bottom: 0px;
     border-left: 0px;
@@ -3558,8 +2179,12 @@ background-color:#00ff00;
     color: #b4c1c5;
     cursor: pointer;
     transition: all .4s ease-in-out;
-    background-color:#111111;
+    background-color: var(--llamatheme-cambgcolor);
     z-index:9;}
+
+#llama-header-grabber:hover {
+    background-color: var(--llamatheme-bordercolor);
+    border-color: var(--llamatheme-bordercolor);}
 
 #llama-fullscreen-grabber {
     position: absolute;
@@ -3598,7 +2223,7 @@ background-color:#00ff00;
 
 .llama-headerCollapsed #llama-header-grabber {
     top: 0px;
-    background: #111111;
+    background: var(--llamatheme-bgcolor);
     border-top: 0;
     z-index: 9;
     border-radius: 11px;
@@ -3713,10 +2338,11 @@ input[type="button"], button {
 
 .blue-button {
     color: #fff;
-    background-color: #333333;}
+    border: 1px solid var(--llamatheme-bordercolor);
+    background-color: var(--llamatheme-bgcolor);}
 
 .blue-button:hover {
-    background-color: #54ccf3;}
+    background-color: var(--llamatheme-lightbgcolor);}
 
 .blue-button:active {
     background-color: #38a8dd;}
@@ -3727,14 +2353,14 @@ input[type="button"], button {
 #llama-settings > div {
     animation: ease-to-bottom-21px .2s ease 0s 1;
     position: relative;
-    top: 0px;
+    top: 10px;
 }
 
 #llama-settings > div > span {
     position: relative;
     top: -23px;
-    background-color: #111111;
-    border: 1px solid #313131;
+    background-color: var(--llamatheme-cambgcolor);
+    border: 1px solid var(--llamatheme-bordercolor);
     border-radius: 100px;
     padding-left: 5px;
     padding-right: 5px;}
@@ -3772,10 +2398,8 @@ input[type="button"], button {
 
 
 #llama-settings {
-    width: 390px;
     transition: all .4s ease-in-out;
     animation: ease-to-bottom-21px .2s ease 0s 1;
-    /*max-height: 10%;*/
     font-size: 11px;
     flex: none;
     overflow: hidden;
@@ -3799,17 +2423,21 @@ input[type="button"], button {
     top: 5px;
     left:161px;}
 
-
+.default-theme #llama-themesGear > div {
+    background-color: #04caff !important;
+    border-color: #04caff !important;
+    color: #fff !important;
+}
 #llama-themesGear > div {
-    background-color: #111111;
-    border:1px solid #313131;
+    background-color: var(--llamatheme-cambgcolor);
+    border:1px solid var(--llamatheme-bordercolor);
     height: 25px;
     border-bottom-right-radius:20px;
     border-top-right-radius:20px;
     border-left:0px;
     text-align: center;
     font-weight: bold;
-    color: #C1C1C1;
+    color: var(--llamatheme-textcolor);
     line-height: 20px;
     font-size: 13px;}
 
@@ -3938,7 +2566,6 @@ z-index:10;
     text-align: center;
     color:#fff;}
 
-
 #llama-emojisGear > div {
 background-color: #111111;
     background-image: url(https://cdn.glitch.com/e82ef8ae-b7d2-4511-8d06-23bc75bc02eb%2FEmoji-BG.jpg?v=1561428846260);
@@ -4041,9 +2668,8 @@ background-color: #111111;
     overflow: visible;}
 
 #llama-settings-mentions .inputcontainer {
-    float: right;
     position: relative;
-    top: -3px;}
+    left: 3px;}
 
 #llama-settingsGear {
     font-size: 40px;
@@ -4060,7 +2686,6 @@ background-color: #111111;
     border-top-right-radius: 15px;
     border: #53b6ef 0px solid;
     border-left: 0;
-    top: -30px;
 }
 
 .llama-open #llama-settingsGear span img{
@@ -4077,22 +2702,32 @@ background-color: #111111;
     /*position: relative; right: -1000px;*/}
 
 		/*** Inline with header ***/
-
+.default-theme #llama-settingsBox {
+    background: #fff;
+    color: #000;
+}
+.default-theme #llama-settings #title,
+.default-theme #llama-settings .label{
+    color: #000;
+}
 #llama-settingsBox {
     border-bottom-left-radius: 15px;
-    border-top-left-radius: 15px;}
-
-#llama-settingsBox {
-    background: #191919;
+    border-top-left-radius: 15px;
+    background: var(--llamatheme-bgcolor);
     padding: 0px 10px 0px 10px;
     float: left;
-    border: #313131 1px solid;
+    border: var(--llamatheme-bordercolor) 1px solid;
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
     border-bottom-right-radius: 12px;
     border-top-right-radius: 12px;
     animation: ease-to-left .2s ease 0s 1;
-    right: 0;}
+    right: 0;
+    top: 0px !important;
+    margin-right: 10px;
+    margin-top: 10px;
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
+    }
 
 #llama-settingsGear {
     display: table;}
@@ -4130,7 +2765,7 @@ background-color: #111111;
     top: 100px;
     left: 162px;
     z-index: 2;
-    background-color: #000000;
+    background-color: var(--llamatheme-bordercolor);
     width: 25px;height:25px;
     color: #fff;
     border-bottom-right-radius: 10px;}
@@ -4186,17 +2821,17 @@ position:absolute;
     top: 107px !important;}
 
 		/***------------------------------------DEFAULTTTT------------------------------------***/
-#llama-settings-defaultmode {
+#llama-settings-blackmode {
 position:absolute;
     top: 123px !important;}
 
 		/***------------------------------------WHITEEE------------------------------------***/
-#llama-settings-whitemode {
+#llama-settings-defaultmode {
 position:absolute;
     top: 140px !important;}
 
 		/***------------------------------------FEATUREONEEE------------------------------------***/
-#llama-settings-featureonemode {
+#llama-settings-weedmode {
 position:absolute;
     top: 157px !important;}
 
@@ -4234,17 +2869,17 @@ position:absolute;
     user-select: none;}
 
 /* Hide the browser's default checkbox */
-#llama-settings-defaultmode > label > input[type="checkbox"],
+#llama-settings-blackmode > label > input[type="checkbox"],
 #llama-settings-pinkmode > label > input[type="checkbox"],
 #llama-settings-greenmode > label > input[type="checkbox"],
 #llama-settings-bluemode > label > input[type="checkbox"],
 #llama-settings-orangemode > label > input[type="checkbox"],
 #llama-settings-redmode > label > input[type="checkbox"],
-#llama-settings-featureonemode > label > input[type="checkbox"],
+#llama-settings-weedmode > label > input[type="checkbox"],
 #llama-settings-featuretwomode > label > input[type="checkbox"],
 #llama-settings-darkpurplemode > label > input[type="checkbox"],
 #llama-settings-purplemode > label > input[type="checkbox"],
-#llama-settings-whitemode > label > input[type="checkbox"],
+#llama-settings-defaultmode > label > input[type="checkbox"],
 #llama-settings-featurethreemode > label > input[type="checkbox"]   {
     position: absolute;
     opacity: 0;
@@ -4283,7 +2918,7 @@ position:absolute;
 /* When the checkbox is checked, add a blue background */
 .llama-color-container input:checked ~ .checkmark {
     background-color: transparent;
-    border: 0px solid #FFFFFF;
+    /*border: 0px solid #FFFFFF;*/
     border-top-right-radius: 100px;
     border-bottom-right-radius: 100px;
     border-left: 0px;
@@ -4297,7 +2932,7 @@ position:absolute;
 
 /* Show the checkmark when checked */
 .llama-color-container input:checked ~ .checkmark:after {
-    display: block;}
+    /*display: block;*/}
 
 /* Style the checkmark/indicator */
 #llama-settings-defaultmode > label > span.checkmark:after,
@@ -4321,7 +2956,7 @@ position:absolute;
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);}
 
-#llama-settings-featureonemode > label > span.checkmark:after {
+#llama-settings-weedmode > label > span.checkmark:after {
 left: 44px;
     top: -5px;
     width: 3px;
@@ -4358,16 +2993,7 @@ label:hover {
 .llama-bluemode #modes {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);}
 
-#llama-settings .llama-setting-container input[type=checkbox] {
-    margin: 0;
-    margin-right: 1px;
-    float: left;
-    position: absolute;
-    left: 8px;}
-
 #llama-settings .label{
-    margin-right: 4px;
-    margin-left: 12px;
     color:#ffffff;
     position: relative;
     top: -2px;}
@@ -4397,7 +3023,7 @@ color:#000000;
     content: attr(data-title);
     display: inline-block;
     position: absolute;
-    top: 52px;
+    top: 1px;
     left: 0;
     z-index: 9;}
 
@@ -4418,16 +3044,42 @@ color:#000000;
 #llama-settings a:hover {
     color: #53b6ef;}
 
-
+#room-header.default-theme {
+    background-color: #f6f6f6 !important;
+}
 
 #room-header {
-z-index:9;
+    z-index:9;
     height: 100px;
     max-height: unset;
     min-height: unset;
     transition: all .4s ease-in-out;
-    background-color:#191919;
-    border-bottom: 1px solid #313131;}
+    background-color: var(--llamatheme-bgcolor);
+    border-bottom: 1px solid var(--llamatheme-bordercolor);
+}
+
+#room-header {
+    background-position: center center;
+    background-image: var(--llamatheme-headerbg);
+}
+
+
+#room-header.smashbros-theme {
+    background-color: #282828;
+    background-position: right center;
+    background-size: 240px;
+    background-repeat:no-repeat;
+}
+
+
+#room-header.splatoon-theme {
+    background-color: transparent;
+    border: 0px;
+    background-position: right center;
+    background-repeat: no-repeat;
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+}
 
 #room-header-gifts-items {
     padding: 0 11px;
@@ -4444,8 +3096,15 @@ z-index:9;
     border: 4px solid #313131;}
 
 #room-header.llama-headerCollapsed {
+
     height: 0px;
     margin-top: -10px;}
+
+#room-header.llama-headerCollapsed #room-header-avatar,
+#room-header.llama-headerCollapsed #room-header-info,
+#room-header.llama-headerCollapsed #room-header-gifts-buttons
+{
+    display: none;}
 
 .llama-featurethreemode #room-header.llama-headerCollapsed {
     height: 0px;
@@ -4465,10 +3124,10 @@ z-index:9;
 
 #room-header-info {
     padding: 0;
-    color: #ffffff;}
+    color: var(--llamatheme-textcolor);}
 
 #room-header-info > h1 {
-    color: #ffffff;
+    color: var(--llamatheme-textcolor);
     text-transform: uppercase;}
 
 #room-header-info > h1:after {
@@ -4520,479 +3179,6 @@ z-index:9;
 .llama-headerCollapsed #llama-settings {
     top: 0px;
     right: 0;}
-
-
-																													/*** ---COLORSSSSSSS--- ***/
-
-
-
-		/***------------------------------------PINKKK THEMEBOX + HEADER------------------------------------***/
-
-.llama-pinkmode #llama-settings > div > span {
-background-color: var(--pinkmode-bgcolor);
-border-color: var(--pinkmode-bordercolor);}
-
-#room-header.llama-pinkmode
-{   background-color: var(--pinkmode-lightbgcolor);
-    border-color: var(--pinkmode-bordercolor);}
-
-.llama-pinkmode #llama-settingsBox,
-.llama-pinkmode #llama-header-grabber
-{   background-color: var(--pinkmode-bgcolor);
-    border-color: var(--pinkmode-bordercolor);}
-
-.llama-pinkmode #room-header-info,
-.llama-pinkmode #room-header-info > h1
-{   color:  var(--pinkmode-bordercolor);}
-
-.llama-pinkmode #room-header-gifts-buttons > a,
-.llama-pinkmode #room-header-gifts-buttons > #get-coins
-{   background-color: var(--pinkmode-bgcolor);
-    border-color: var(--pinkmode-bgcolor);
-    color: var(--pinkmode-textcolor);}
-
-.llama-pinkmode #room-header-gifts-buttons > a:hover,
-.llama-pinkmode #room-header-gifts-buttons > #get-coins:hover
-{   background-color: var(--pinkmode-bgcolor);
-    border-color: var(--pinkmode-bordercolor);
-    color: var(--pinkmode-textcolor);}
-
-.llama-pinkmode #room-header-gifts-items > a > img
-{   border-color: var(--pinkmode-bgcolor);}
-
-.llama-pinkmode #llama-header-grabber:before
-{   border-color: transparent transparent var(--pinkmode-bordercolor) transparent;}
-
-		/***------------------------------------GREENNN THEMEBOX + HEADER------------------------------------***/
-
-.llama-greenmode #llama-settings > div > span {
-background-color: var(--greenmode-bgcolor);
-border-color: var(--greenmode-bordercolor);}
-
-#room-header.llama-greenmode
-{   background-color: var(--greenmode-lightbgcolor);
-    border-color: var(--greenmode-bordercolor);}
-
-.llama-greenmode #llama-settingsBox,
-.llama-greenmode #llama-header-grabber
-{   background-color: var(--greenmode-bgcolor);
-    border-color: var(--greenmode-bordercolor);}
-
-.llama-greenmode #room-header-info,
-.llama-greenmode #room-header-info > h1
-{   color:  var(--greenmode-bordercolor);}
-
-.llama-greenmode #room-header-gifts-buttons > a,
-.llama-greenmode #room-header-gifts-buttons > #get-coins
-{   background-color: var(--greenmode-bgcolor);
-    border-color: var(--greenmode-bgcolor);
-    color: var(--greenmode-bordercolor);}
-
-.llama-greenmode #room-header-gifts-buttons > a:hover,
-.llama-greenmode #room-header-gifts-buttons > #get-coins:hover
-{   background-color: var(--greenmode-bgcolor);
-    border-color: var(--greenmode-bordercolor);
-    color: var(--greenmode-bordercolor);}
-
-.llama-greenmode #room-header-gifts-items > a > img
-{   border-color: var(--greenmode-bgcolor);}
-
-.llama-greenmode #llama-header-grabber:before
-{   border-color: transparent transparent var(--greenmode-bordercolor) transparent;}
-
-		/***------------------------------------BLUEEE THEMEBOX + HEADER------------------------------------***/
-
-.llama-bluemode #llama-settings > div > span {
-background-color: var(--bluemode-bgcolor);
-border-color: var(--bluemode-bordercolor);}
-
-#room-header.llama-bluemode
-{   background-color: var(--bluemode-lightbgcolor);
-    border-color: var(--bluemode-bordercolor);}
-
-.llama-bluemode #llama-settingsBox,
-.llama-bluemode #llama-header-grabber
-{   background-color: var(--bluemode-bgcolor);
-    border-color: var(--bluemode-bordercolor);}
-
-.llama-bluemode #room-header-info,
-.llama-bluemode #room-header-info > h1
-{   color:  var(--bluemode-bordercolor);}
-
-.llama-bluemode #room-header-gifts-buttons > a,
-.llama-bluemode #room-header-gifts-buttons > #get-coins
-{   background-color: var(--bluemode-bgcolor);
-    border-color: var(--bluemode-bgcolor);
-    color: var(--bluemode-bordercolor);}
-
-.llama-bluemode #room-header-gifts-buttons > a:hover,
-.llama-bluemode #room-header-gifts-buttons > #get-coins:hover
-{   background-color: var(--bluemode-bgcolor);
-    border-color: var(--bluemode-bordercolor);
-    color: var(--bluemode-bordercolor);}
-
-.llama-bluemode #room-header-gifts-items > a > img
-{   border-color: var(--bluemode-bgcolor);}
-
-.llama-bluemode #llama-header-grabber:before
-{   border-color: transparent transparent var(--bluemode-bordercolor) transparent;}
-
-		/***------------------------------------PURPLEEE THEMEBOX + HEADER------------------------------------***/
-
-.llama-purplemode #llama-settings > div > span {
-background-color: var(--purplemode-bgcolor);
-border-color: var(--purplemode-bordercolor);}
-
-#room-header.llama-purplemode
-{   background-color: var(--purplemode-lightbgcolor);
-    border-color: var(--purplemode-bordercolor);}
-
-.llama-purplemode #llama-settingsBox,
-.llama-purplemode #llama-header-grabber
-{   background-color: var(--purplemode-bgcolor);
-    border-color: var(--purplemode-bordercolor);}
-
-.llama-purplemode #room-header-info,
-.llama-purplemode #room-header-info > h1
-{   color:  var(--purplemode-bordercolor);}
-
-.llama-purplemode #room-header-gifts-buttons > a,
-.llama-purplemode #room-header-gifts-buttons > #get-coins
-{   background-color: var(--purplemode-bgcolor);
-    border-color: var(--purplemode-bgcolor);
-    color: var(--purplemode-bordercolor);}
-
-.llama-purplemode #room-header-gifts-buttons > a:hover,
-.llama-purplemode #room-header-gifts-buttons > #get-coins:hover
-{   background-color: var(--purplemode-bgcolor);
-    border-color: var(--purplemode-bordercolor);
-    color: var(--purplemode-bordercolor);}
-
-.llama-purplemode #room-header-gifts-items > a > img
-{   border-color: var(--purplemode-bgcolor);}
-
-.llama-purplemode #llama-header-grabber:before
-{   border-color: transparent transparent var(--purplemode-bordercolor) transparent;}
-
-		/***------------------------------------ORANGEEE THEMEBOX + HEADER------------------------------------***/
-
-.llama-orangemode #llama-settings > div > span {
-background-color: var(--orangemode-bgcolor);
-border-color: var(--orangemode-bordercolor);}
-
-#room-header.llama-orangemode
-{   background-color: var(--orangemode-lightbgcolor);
-    border-color: var(--orangemode-bordercolor);}
-
-.llama-orangemode #llama-settingsBox,
-.llama-orangemode #llama-header-grabber
-{   background-color: var(--orangemode-bgcolor);
-    border-color: var(--orangemode-bordercolor);}
-
-.llama-orangemode #room-header-info,
-.llama-orangemode #room-header-info > h1
-{   color:  var(--orangemode-bordercolor);}
-
-.llama-orangemode #room-header-gifts-buttons > a,
-.llama-orangemode #room-header-gifts-buttons > #get-coins
-{   background-color: var(--orangemode-bgcolor);
-    border-color: var(--orangemode-bgcolor);
-    color: var(--orangemode-bordercolor);}
-
-.llama-orangemode #room-header-gifts-buttons > a:hover,
-.llama-orangemode #room-header-gifts-buttons > #get-coins:hover
-{   background-color: var(--orangemode-bgcolor);
-    border-color: var(--orangemode-bordercolor);
-    color: var(--orangemode-bordercolor);}
-
-.llama-orangemode #room-header-gifts-items > a > img
-{   border-color: var(--orangemode-bgcolor);}
-
-.llama-orangemode #llama-header-grabber:before
-{   border-color: transparent transparent var(--orangemode-bordercolor) transparent;}
-
-		/***------------------------------------REDDD THEMEBOX + HEADER------------------------------------***/
-
-.llama-redmode #llama-settings > div > span {
-background-color: var(--redmode-bgcolor);
-border-color: var(--redmode-bordercolor);}
-
-#room-header.llama-redmode
-{   background-color: var(--redmode-lightbgcolor);
-    border-color: var(--redmode-bordercolor);}
-
-.llama-redmode #llama-settingsBox,
-.llama-redmode #llama-header-grabber
-{   background-color: var(--redmode-bgcolor);
-    border-color: var(--redmode-bordercolor);}
-
-.llama-redmode #room-header-info,
-.llama-redmode #room-header-info > h1
-{   color:  var(--redmode-bordercolor);}
-
-.llama-redmode #room-header-gifts-buttons > a,
-.llama-redmode #room-header-gifts-buttons > #get-coins
-{   background-color: var(--redmode-bgcolor);
-    border-color: var(--redmode-bgcolor);
-    color: var(--redmode-bordercolor);}
-
-.llama-redmode #room-header-gifts-buttons > a:hover,
-.llama-redmode #room-header-gifts-buttons > #get-coins:hover {
-background-color: var(--redmode-bgcolor);
-    border-color: var(--redmode-bordercolor);
-    color: var(--redmode-bordercolor);}
-
-.llama-redmode #room-header-gifts-items > a > img {
-border-color: var(--redmode-bgcolor);}
-
-.llama-redmode #llama-header-grabber:before {
-border-color: transparent transparent var(--redmode-bordercolor) transparent;}
-
-		/***------------------------------------DARKPURPLEEE THEMEBOX + HEADER------------------------------------***/
-
-.llama-darkpurplemode #llama-settings > div > span {
-background-color: var(--darkpurplemode-bgcolor);
-border-color: var(--darkpurplemode-bordercolor);}
-
-#room-header.llama-darkpurplemode {
-background-color: var(--darkpurplemode-lightbgcolor);
-    border-color: var(--darkpurplemode-bordercolor);}
-
-.llama-darkpurplemode #llama-settingsBox,
-.llama-darkpurplemode #llama-header-grabber {
-background-color: var(--darkpurplemode-bgcolor);
-    border-color: var(--darkpurplemode-bordercolor);}
-
-.llama-darkpurplemode #room-header-info,
-.llama-darkpurplemode #room-header-info > h1 {
-color:  var(--darkpurplemode-bordercolor);}
-
-.llama-darkpurplemode #room-header-gifts-buttons > a,
-.llama-darkpurplemode #room-header-gifts-buttons > #get-coins {
-background-color: var(--darkpurplemode-bgcolor);
-    border-color: var(--darkpurplemode-bgcolor);
-    color: var(--darkpurplemode-bordercolor);}
-
-.llama-darkpurplemode #room-header-gifts-buttons > a:hover,
-.llama-darkpurplemode #room-header-gifts-buttons > #get-coins:hover {
-background-color: var(--darkpurplemode-bgcolor);
-    border-color: var(--darkpurplemode-bordercolor);
-    color: var(--darkpurplemode-bordercolor);}
-
-.llama-darkpurplemode #room-header-gifts-items > a > img {
-border-color: var(--darkpurplemode-bgcolor);}
-
-.llama-darkpurplemode #llama-header-grabber:before {
-border-color: transparent transparent var(--darkpurplemode-bordercolor) transparent;}
-
-		/***------------------------------------WHITEEE THEMEBOX + HEADER------------------------------------***/
-
-.llama-whitemode #llama-settings > div > span {
-background-color: var(--whitemode-lightbgcolor);
-border-color: var(--whitemode-bordercolor);}
-
-#room-header.llama-whitemode
-{   background-color: var(--whitemode-headerbg);
-    border-color: var(--whitemode-bordercolor);}
-
-.llama-whitemode #llama-settingsBox,
-.llama-whitemode #llama-header-grabber
-{   background-color: var(--whitemode-lightbgcolor);
-    border-color: var(--whitemode-bordercolor);}
-
-.llama-whitemode #room-header-info,
-.llama-whitemode #room-header-info > h1
-{   color:  var(--whitemode-bordercolor);}
-
-.llama-whitemode #room-header-gifts-buttons > a,
-.llama-whitemode #room-header-gifts-buttons > #get-coins
-{   background-color: var(--whitemode-lightbgcolor);
-    border-color: var(--whitemode-bordercolor);
-    color: var(--whitemode-bordercolor);}
-
-.llama-whitemode #room-header-gifts-buttons > a:hover,
-.llama-whitemode #room-header-gifts-buttons > #get-coins:hover
-{   background-color: var(--whitemode-lightbgcolor);
-    border-color: var(--whitemode-bgcolor);
-    color: var(--whitemode-bordercolor);}
-
-.llama-whitemode #room-header-gifts-items > a > img
-{   border-color: var(--whitemode-bgcolor);}
-
-.llama-whitemode #llama-header-grabber:before
-{   border-color: transparent transparent var(--whitemode-bordercolor) transparent;}
-
-		/***------------------------------------FEATUREONEEE THEMEBOX + HEADER------------------------------------***/
-
-.llama-featureonemode #llama-settings > div > span {
-background-color: var(--featureonemode-bgcolor);
-border-color: var(--featureonemode-bordercolor);}
-
-#room-header.llama-featureonemode
-{   background-color: var(--featureonemode-headerbg);
-    border-color: var(--featureonemode-bordercolor);
-    background-position: center center;
-    background-image: var(--featureonemode-headerbg);}
-
-.llama-featureonemode #llama-settingsBox,
-.llama-featureonemode #llama-header-grabber
-{   background-color: var(--featureonemode-lightbgcolor);
-    border-color: var(--featureonemode-bordercolor);}
-
-.llama-featureonemode #room-header-info,
-.llama-featureonemode #room-header-info > h1
-{   color:  var(--featureonemode-bordercolor);}
-
-.llama-featureonemode #room-header-gifts-buttons > a,
-.llama-featureonemode #room-header-gifts-buttons > #get-coins
-{   background-color: var(--featureonemode-bgcolor);
-    border-color: var(--featureonemode-bgcolor);
-    color: var(--featureonemode-bordercolor);}
-
-.llama-featureonemode #room-header-gifts-buttons > a:hover,
-.llama-featureonemode #room-header-gifts-buttons > #get-coins:hover
-{   background-color: var(--featureonemode-bgcolor);
-    border-color: var(--featureonemode-bordercolor);
-    color: var(--featureonemode-bordercolor);}
-
-.llama-featureonemode #room-header-gifts-items > a > img
-{   border-color: var(--featureonemode-bgcolor);}
-
-.llama-featureonemode #llama-header-grabber:before
-{   border-color: transparent transparent var(--featureonemode-bordercolor) transparent;}
-
-		/***------------------------------------FEATURETWOOO THEMEBOX + HEADER------------------------------------***/
-
-.llama-featuretwomode #llama-settings > div > span {
-background-color: var(--featuretwomode-bgcolor);
-border-color: var(--featuretwomode-bordercolor);}
-
-#room-header.llama-featuretwomode
-{   background-color: #282828;
-    border-color: var(--featuretwomode-bordercolor);
-    background-position: right center;
-    background-size: 240px;
-background-repeat:no-repeat;
-    background-image: var(--featuretwomode-headerbg);}
-
-.llama-featuretwomode #llama-settingsBox,
-.llama-featuretwomode #llama-header-grabber
-{   background-color: var(--featuretwomode-lightbgcolor);
-    border-color: var(--featuretwomode-bordercolor);}
-
-.llama-featuretwomode #room-header-info,
-.llama-featuretwomode #room-header-info > h1
-{   color:  var(--featuretwomode-textcolor);}
-
-.llama-featuretwomode #room-header-gifts-buttons > a, .llama-featuretwomode #room-header-gifts-buttons > #get-coins {display:none;}
-
-.llama-featuretwomode #room-header-gifts-buttons > a,
-.llama-featuretwomode #room-header-gifts-buttons > #get-coins
-
-{   display:none !important;background-color: var(--featuretwomode-bgcolor);
-    border-color: var(--featuretwomode-textcolor);
-    color: var(--featuretwomode-bordercolor);}
-
-.llama-featuretwomode #room-header-gifts-buttons > a:hover,
-.llama-featuretwomode #room-header-gifts-buttons > #get-coins:hover
-{   background-color: var(--featuretwomode-bgcolor);
-    border-color: var(--featuretwomode-bordercolor);
-    color: var(--featuretwomode-bordercolor);}
-
-.llama-featuretwomode #room-header-gifts-items > a > img
-{   border-color: var(--featuretwomode-bgcolor);}
-
-.llama-featuretwomode #llama-header-grabber:before
-{   border-color: transparent transparent var(--featuretwomode-bordercolor) transparent;}
-
-		/***------------------------------------FEATURETHREEE THEMEBOX + HEADER------------------------------------***/
-
-.llama-featurethreemode #llama-settings > div > span {
-background-color: var(--featurethreemode-bgcolor);
-border-color:#51bc02;}
-
-#room-header.llama-featurethreemode
-{   background-color: transparent;
-    border: 0px;
-    background-position: right center;
-background-repeat:no-repeat;
-border-top-right-radius: 100px;
-    border-bottom-right-radius: 100px;
-    background-image: var(--featurethreemode-headerbg);}
-
-#room-header.llama-featurethreemode.llama-headerCollapsed {
-    position: unset !important;
-    left: unset !important;
-    height: 0px;
-    margin-top: -150px;
-}
-
-#room-header.llama-featurethreemode.llama-sidemenuCollapsed {
-position:relative;
-left:-1px;
-}
-
-#room-header.llama-featurethreemode.llama-sidemenuCollapsed + .llama-headerCollapse{
-position:relative;
-left:-1px;
-    height: 0px;
-    margin-top: -15px;
-}
-
-
-.llama-featurethreemode #llama-header-grabber {
-    background-image: var(--featurethreemode-squid);
-    background-size: 25px;
-    background-repeat: no-repeat;
-    background-color: transparent;
-    border-color: var(--featurethreemode-bordercolor);
-    height: 30px;
-    width: 25px;
-top: 81px;
-}
-
-.llama-featurethreemode #llama-header-grabber:hover {background-color:#51bc02;}
-
-
-.llama-featurethreemode.llama-headerCollapsed #llama-header-grabber {
--webkit-transform: rotate(180deg);
-transform: rotate(180deg);
-border-radius:50px;
-top: -13px !important;
-}
-
-.llama-featurethreemode #llama-settingsBox
-{   background-color: var(--featurethreemode-lightbgcolor);
-    border-color: #51bc02;
-    background-image: url(https://i.imgur.com/kR2eClp.jpg);
-    background-size: cover;    background-size: cover;}
-
-
-.llama-featurethreemode #room-header-info,
-.llama-featurethreemode #room-header-info > h1
-{   color:  var(--featurethreemode-textcolor);top:4px;}
-
-.llama-featurethreemode #room-header-gifts-buttons > a, .llama-featurethreemode #room-header-gifts-buttons > #get-coins {display:none;}
-
-.llama-featurethreemode #room-header-gifts-buttons > a,
-.llama-featurethreemode #room-header-gifts-buttons > #get-coins
-
-{   display:none !important;background-color: var(--featurethreemode-bgcolor);
-    border-color: var(--featurethreemode-textcolor);
-    color: var(--featurethreemode-bordercolor);}
-
-.llama-featurethreemode #room-header-gifts-buttons > a:hover,
-.llama-featurethreemode #room-header-gifts-buttons > #get-coins:hover
-{   background-color: var(--featurethreemode-bgcolor);
-    border-color: var(--featurethreemode-bordercolor);
-    color: var(--featurethreemode-bordercolor);}
-
-.llama-featurethreemode #room-header-gifts-items > a > img
-{   border-color: var(--featurethreemode-bgcolor);}
-
-.llama-featurethreemode #llama-header-grabber:before
-{   border-color: transparent transparent var(--featurethreemode-bordercolor) transparent;displaY:none;}
-
 
  ` + firefoxCSS + `
 	</style>
@@ -5073,10 +3259,10 @@ top: -13px !important;
 #videos-header {
     height: 10px;
     min-height: 10px;
-    background-color:#111111;}
+    background-color: transparent;}
 
 #videos-content {
-    background-color:#111111;}
+    background-color: transparent;}
 
 @media screen and (max-width: 600px) {
 #submenu-icons > div {
@@ -5360,190 +3546,9 @@ border-top-left-radius: 11px !important;
     background-color:#313131;}
 
 .videos-header-volume:before {
-    background-color: #111;}
-
-
-
-
-		/***------------------------------------PINKKK VIDEO HEADER------------------------------------***/
-
-.llama-pinkmode #videos-header,
-.llama-pinkmode #videos-content
-{    background-color: var(--pinkmode-bgcolor);}
-
-.llama-pinkmode #videos-footer-broadcast-wrapper.active > #videos-footer-broadcast,
-.llama-pinkmode #videos-footer-broadcast-wrapper.active > #videos-footer-submenu-button,
-.llama-pinkmode #videos-footer-broadcast-wrapper.active > #videos-footer-submenu-button:focus
-{    background-color: var(--pinkmode-bordercolor);}
-
-
-		/***------------------------------------GREENNN VIDEO HEADER------------------------------------***/
-
-.llama-greenmode #videos-header,
-.llama-greenmode #videos-content
-{    background-color: var(--greenmode-bgcolor);}
-
-.llama-greenmode #videos-footer-broadcast-wrapper.active > #videos-footer-broadcast,
-.llama-greenmode #videos-footer-broadcast-wrapper.active > #videos-footer-submenu-button,
-.llama-greenmode #videos-footer-broadcast-wrapper.active > #videos-footer-submenu-button:focus
-{    background-color: var(--greenmode-bordercolor);}
-
-
-		/***------------------------------------BLUEEE VIDEO HEADER------------------------------------***/
-
-.llama-bluemode #videos-header,
-.llama-bluemode #videos-content
-{    background-color: var(--bluemode-bgcolor);}
-
-.llama-bluemode #videos-footer-broadcast-wrapper.active > #videos-footer-broadcast,
-.llama-bluemode #videos-footer-broadcast-wrapper.active > #videos-footer-submenu-button,
-.llama-bluemode #videos-footer-broadcast-wrapper.active > #videos-footer-submenu-button:focus
-{    background-color: var(--bluemode-bordercolor);}
-
-
-		/***------------------------------------PURPLEEE VIDEO HEADER------------------------------------***/
-
-.llama-purplemode #videos-header,
-.llama-purplemode #videos-content
-{    background-color: var(--purplemode-bgcolor);}
-
-.llama-purplemode #videos-footer-broadcast-wrapper.active > #videos-footer-broadcast,
-.llama-purplemode #videos-footer-broadcast-wrapper.active > #videos-footer-submenu-button,
-.llama-purplemode #videos-footer-broadcast-wrapper.active > #videos-footer-submenu-button:focus
-{    background-color: var(--purplemode-bgcolor);    border-color: var(--purplemode-bordercolor);}
-
-		/***------------------------------------ORANGEEE VIDEO HEADER------------------------------------***/
-
-.llama-orangemode #videos-header,
-.llama-orangemode #videos-content
-{    background-color: var(--orangemode-bgcolor);}
-
-.llama-orangemode #videos-footer-broadcast-wrapper.active > #videos-footer-broadcast,
-.llama-orangemode #videos-footer-broadcast-wrapper.active > #videos-footer-submenu-button,
-.llama-orangemode #videos-footer-broadcast-wrapper.active > #videos-footer-submenu-button:focus
-{    background-color: var(--orangemode-bordercolor);}
-
-		/***------------------------------------REDDD VIDEO HEADER------------------------------------***/
-
-.llama-redmode #videos-header,
-.llama-redmode #videos-content
-{    background-color: var(--redmode-bgcolor);}
-
-.llama-redmode #videos-footer-broadcast-wrapper.active > #videos-footer-broadcast,
-.llama-redmode #videos-footer-broadcast-wrapper.active > #videos-footer-submenu-button,
-.llama-redmode #videos-footer-broadcast-wrapper.active > #videos-footer-submenu-button:focus
-{    background-color: var(--redmode-bordercolor);}
-
-		/***------------------------------------DARKPURPLEEE VIDEO HEADER------------------------------------***/
-
-.llama-darkpurplemode #videos-header,
-.llama-darkpurplemode #videos-content
-{    background-color: var(--darkpurplemode-bgcolor);}
-
-.llama-darkpurplemode #videos-footer-broadcast-wrapper.active > #videos-footer-broadcast,
-.llama-darkpurplemode #videos-footer-broadcast-wrapper.active > #videos-footer-submenu-button,
-.llama-darkpurplemode #videos-footer-broadcast-wrapper.active > #videos-footer-submenu-button:focus
-{    background-color: var(--darkpurplemode-bordercolor);}
-
-		/***------------------------------------WHITEEE VIDEO HEADER------------------------------------***/
-
-.llama-whitemode #videos-header,
-.llama-whitemode #videos-content
-{    background-color: var(--whitemode-lightbgcolor);}
-
-.llama-whitemode #videos-footer-broadcast-wrapper.active > #videos-footer-broadcast,
-.llama-whitemode #videos-footer-broadcast-wrapper.active > #videos-footer-submenu-button,
-.llama-whitemode #videos-footer-broadcast-wrapper.active > #videos-footer-submenu-button:focus
-{    background-color: var(--whitemode-darkbgcolor);}
-
-		/***------------------------------------FEATUREONEEE VIDEO HEADER------------------------------------***/
-
-.llama-featureonemode #videos-header
-{   min-height: 0px;
-    height: 0px;
-    background-color:transparent;}
-
-.llama-featureonemode #videos-content
-{   background-color:transparent;
-    background-image: var(--featureonemode-roombg);
-    background-position: center center;
-    background-size: cover;}
-
-.llama-featureonemode #videos-footer-broadcast-wrapper.active > #videos-footer-broadcast,
-.llama-featureonemode #videos-footer-broadcast-wrapper.active > #videos-footer-submenu-button,
-.llama-featureonemode #videos-footer-broadcast-wrapper.active > #videos-footer-submenu-button:focus
-{    background-color: var(--featureonemode-bordercolor);}
-
-.llama-featureonemode #videos-footer-push-to-talk {
-    background-image: var(--featureonemode-ptt) !important;
-    background-size: 50px;}
-
-		/***------------------------------------FEATURETWOOO VIDEO HEADER------------------------------------***/
-
-.llama-featuretwomode #videos-header
-{   min-height: 0px;
-    height: 0px;
-    background-color:transparent;}
-
-.llama-featuretwomode #videos-content
-{   background-color:transparent;
-    background-image: var(--featuretwomode-roombg);
-    background-position: right center;
-    background-size: cover;}
-
-.llama-featuretwomode #videos-footer-broadcast-wrapper.active > #videos-footer-broadcast,
-.llama-featuretwomode #videos-footer-broadcast-wrapper.active > #videos-footer-submenu-button,
-.llama-featuretwomode #videos-footer-broadcast-wrapper.active > #videos-footer-submenu-button:focus
-{    background-color: var(--featuretwomode-bordercolor);}
-
-.llama-featuretwomode #videos-footer-push-to-talk {
-    background-image: var(--featuretwomode-ptt) !important;
-    background-size: 50px;}
-
-		/***------------------------------------FEATURETHREEE VIDEO HEADER------------------------------------***/
-
-.llama-featurethreemode#videos-footer-broadcast-wrapper {
-background-image: var(--featurethreemode-ptt);
+    background-color: #111;
 }
-
-
-.llama-featurethreemode.llama-sidemenuCollapsed #videos-footer-broadcast {
-background-color: #bd1071;
-    right: 184px;
-
-}
-
-.llama-featurethreemode.llama-sidemenuCollapsed #videos-footer-youtube{
-    right: 383px;
-    border: 1px solid #51bc02;
-}
-.llama-featurethreemode #videos-header
-{   min-height: 0px;
-    height: 0px;
-    background-color:transparent;}
-
-.llama-featurethreemode #videos-content
-{   background-color:transparent;
-    background-image: none;
-    background-position: right center;
-    background-size: cover;}
-
-.llama-featurethreemode #videos-footer-broadcast-wrapper.active > #videos-footer-broadcast,
-.llama-featurethreemode #videos-footer-broadcast-wrapper.active > #videos-footer-submenu-button,
-.llama-featurethreemode #videos-footer-broadcast-wrapper.active > #videos-footer-submenu-button:focus
-{    background-color: var(--featurethreemode-bordercolor);}
-
-.llama-featurethreemode #videos-footer-push-to-talk {
-    background-image: var(--featurethreemode-ptt) !important;
-    background-size: 89px;}
-
-.llama-featurethreemode #videos-footer-broadcast-wrapper.show-ptt > #videos-footer-push-to-talk {
-    height: 50px;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-    position: relative;
-    top: -4px;}
-	</style>
+</style>
 	`;
                         videolistCSS.insertAdjacentHTML(insertPosition, videolistCSShtml);
                     }
@@ -5594,6 +3599,11 @@ background-color: #bd1071;
     right: 16px;
     background: none!important;}
 
+#chatlist > div > span,
+#chatlist > #header,
+#chatlist > div.list-item {
+    color: var(--llamatheme-textcolor);
+}
 	</style>
 	`;
                         chatlistCSS.insertAdjacentHTML(insertPosition, chatlistCSShtml);
@@ -5602,6 +3612,20 @@ background-color: #bd1071;
                     { // userlistCSS
                         userlistCSShtml = `
 	<style id="userlistCSS" scope="tinychat-userlist">` + globalCSS + `
+#userlist.splatoon-theme > div > span {
+    border-color: var(--llamatheme-bordercolor);
+    background-image: url('https://i.ibb.co/FWFnhc4/messagebg.png');
+    border-radius: 14px;
+    margin-top: 2px;
+    color: var(--featurethreemode-textcolor);
+    font-weight: bold;
+    text-shadow: 1px 2px #2b6600;
+}
+<style>
+#userlist.splatoon-theme > div > span {
+    width: 98%;
+}
+
 #userlist > div > span {
 	padding-left: 2px;
 	padding-right: 2px;
@@ -5612,7 +3636,7 @@ background-color: #bd1071;
     border-radius: 0 0 0 0;
     box-sizing: border-box;
     font-size: 14px;
-    color: #7b868a;
+    color: var(--llamatheme-textcolor);
     line-height: 30px;
     text-align: left;
     white-space: nowrap;
@@ -5622,22 +3646,6 @@ background-color: #bd1071;
 .llama-sidemenuCollapsed #button-banlist {
     left: -100px;
     width: 10px;}
-
-#chatlist > div > span {
-    position: relative;
-    display: inline-block;
-    height: 30px;
-    width: 100%;
-    padding-left: 36px;
-    border-radius: 0 30px 30px 0;
-    box-sizing: border-box;
-    font-size: 14px;
-    color: #02bcff;
-    line-height: 30px;
-    text-align: left;
-    white-space: nowrap;
-    overflow: hidden;
-    transition: .2s;}
 
 .list-item > span > span {
 	right: auto;
@@ -5669,10 +3677,18 @@ background-color: #bd1071;
 	top: auto;
 	height: auto;}
 
-#userlist > #header > span {
+
+ #userlist.default-theme > #header > span {
+    background-color: #202628;
+    color: #FFF;
+}
+#userlist > #header > span,
+#chatlist > #header > span
+{
     display: block;
-    border-color: black;
-    background-color: #111111;
+    border-color: var(--llamatheme-bordercolor);
+    background-color: var(--llamatheme-bordercolor);
+    color: var(--llamatheme-textcolor);
     text-align: center;
     top: 4px;}
 
@@ -5697,247 +3713,6 @@ background-color: #bd1071;
 .list-item > span > span[data-cam="1"]:after
 {   background-image: url(https://i.ibb.co/RjLdY26/63629-3.png) !important;
     background-size: 10px;}
-
-		/*** ---                                START COLOR MODES                                       --- ***/
-
-
-		/***------------------------------------PINKKK USERS------------------------------------***/
-
-#userlist.llama-pinkmode  > div > span:hover
-{   background-color: var(--pinkmode-bgcolor);
-    color: var(--pinkmode-bordercolor);}
-
-.llama-pinkmode .list-item > span:hover > span
-{   background: none;
-    box-shadow: none;}
-
-.list-item.llama-pinkmode > span > span > .send-gift:hover
-{   background-color: var(--pinkmode-bgcolor);}
-
-#userlist.llama-pinkmode > #header > span
-{   background-color: var(--pinkmode-bordercolor);
-    color:#ffffff}
-
-
-		/***------------------------------------GREENNN USERS------------------------------------***/
-
-#userlist.llama-greenmode  > div > span:hover
-{   background-color: var(--greenmode-bgcolor);
-    color: var(--greenmode-bordercolor);}
-
-.llama-greenmode .list-item > span:hover > span
-{   background: none;
-    box-shadow: none;}
-
-.list-item.llama-greenmode > span > span > .send-gift:hover
-{   background-color: var(--greenmode-bgcolor);}
-
-#userlist.llama-greenmode > #header > span
-{   background-color: var(--greenmode-bordercolor);
-    color:#ffffff}
-
-		/***------------------------------------BLUEEE USERS------------------------------------***/
-
-#userlist.llama-bluemode  > div > span:hover
-{   background-color: var(--bluemode-bgcolor);
-    color: var(--bluemode-bordercolor);}
-
-.llama-bluemode .list-item > span:hover > span
-{   background: none;
-    box-shadow: none;}
-
-.list-item.llama-bluemode > span > span > .send-gift:hover
-{   background-color: var(--bluemode-bgcolor);}
-
-#userlist.llama-bluemode > #header > span
-{   background-color: var(--bluemode-bordercolor);
-    color:#ffffff}
-
-		/***------------------------------------PURPLEEE USERS------------------------------------***/
-
-#userlist.llama-purplemode  > div > span:hover
-{   background-color: var(--purplemode-bgcolor);
-    color: var(--purplemode-bordercolor);}
-
-.llama-purplemode .list-item > span:hover > span
-{   background: none;
-    box-shadow: none;}
-
-.list-item.llama-purplemode > span > span > .send-gift:hover
-{   background-color: var(--purplemode-bgcolor);}
-
-#userlist.llama-purplemode > #header > span
-{   background-color: var(--purplemode-bgcolor);
-    color:#ffffff}
-
-		/***------------------------------------ORANGEEE USERS------------------------------------***/
-
-#userlist.llama-orangemode  > div > span:hover
-{   background-color: var(--orangemode-bgcolor);
-    color: var(--orangemode-bordercolor);}
-
-.llama-orangemode .list-item > span:hover > span
-{   background: none;
-    box-shadow: none;}
-
-.list-item.llama-orangemode > span > span > .send-gift:hover
-{   background-color: var(--orangemode-bgcolor);}
-
-#userlist.llama-orangemode > #header > span
-{   background-color: var(--orangemode-bordercolor);
-    color:#ffffff}
-
-		/***------------------------------------REDDD USERS------------------------------------***/
-
-#userlist.llama-redmode  > div > span:hover
-{   background-color: var(--redmode-bgcolor);
-    color: var(--redmode-bordercolor);}
-
-.llama-redmode .list-item > span:hover > span
-{   background: none;
-    box-shadow: none;}
-
-.list-item.llama-redmode > span > span > .send-gift:hover
-{   background-color: var(--redmode-bgcolor);}
-
-#userlist.llama-redmode > #header > span
-{   background-color: var(--redmode-bordercolor);
-    color:#ffffff}
-
-		/***------------------------------------DARKPURPLEEE USERS------------------------------------***/
-
-#userlist.llama-darkpurplemode  > div > span:hover
-{   background-color: var(--darkpurplemode-bgcolor);
-    color: var(--darkpurplemode-bordercolor);}
-
-.llama-darkpurplemode .list-item > span:hover > span
-{   background: none;
-    box-shadow: none;}
-
-.list-item.llama-darkpurplemode > span > span > .send-gift:hover
-{   background-color: var(--darkpurplemode-bgcolor);}
-
-#userlist.llama-darkpurplemode > #header > span
-{   background-color: var(--darkpurplemode-bordercolor);
-    color:#ffffff}
-
-		/***------------------------------------WHITEEE USERS------------------------------------***/
-
-#userlist.llama-whitemode  > div > span:hover
-{   background-color: var(--whitemode-lightbgcolor);
-    color: var(--whitemode-bordercolor);}
-
-.llama-whitemode .list-item > span:hover > span
-{   background: none;
-    box-shadow: none;}
-
-.list-item.llama-whitemode > span > span > .send-gift:hover
-{   background-color: var(--whitemode-bgcolor);}
-
-#userlist.llama-whitemode > #header > span
-{   background-color: var(--whitemode-bgcolor);
-    color:#ffffff}
-
-		/***------------------------------------FEATUREONEEE USERS------------------------------------***/
-
-#userlist.llama-featureonemode > #header > span {
-    background-color:#005900;
-    color:#000;}
-
-#userlist.llama-featureonemode  > div > span:hover
-{   background-color: var(--featureonemode-lightbgcolor);
-    color: var(--featureonemode-bordercolor);}
-
-.llama-featureonemode .list-item > span:hover > span
-{   background: none;
-    box-shadow: none;}
-
-.list-item.llama-featureonemode > span > span > .send-gift:hover
-{   background-color: var(--featureonemode-bgcolor);}
-
-#userlist.llama-featureonemode > #header > span
-{   background-color: var(--featureonemode-bgcolor);
-    color:#ffffff}
-
-		/***------------------------------------FEATURETWOOO USERS------------------------------------***/
-
-#userlist.llama-featuretwomode > #header > span {
-    background-color:#005900;
-    color:#000;}
-
-#userlist.llama-featuretwomode  > div > span
-{   background-color: #2a2a2abd;
-    color: var(--featuretwomode-textcolor);}
-
-#userlist.llama-featuretwomode  > div > span:hover
-{   background-color: var(--featuretwomode-lightbgcolor);
-    color: var(--featuretwomode-bordercolor);}
-
-.llama-featuretwomode .list-item > span:hover > span
-{   background: none;
-    box-shadow: none;}
-
-.list-item.llama-featuretwomode > span > span > .send-gift:hover
-{   background-color: var(--featuretwomode-bgcolor);}
-
-#userlist.llama-featuretwomode > #header > span {
-    background-color: var(--featuretwomode-bgcolor);
-    color:#ffffff}
-
-.llama-featuretwomode #userlist > div > span {background-color:#00ff00;}
-
-		/***------------------------------------FEATURETHREEE USERS------------------------------------***/
-.llama-featurethreemode .llama-myNick {
-    color:#ffffff;
-    text-shadow: 0px 0px #000000;
-    background-image: url(https://i.ibb.co/hWh32Cp/19-190402-paint-brush-strokes-png-graphic-transparent-library-png.png);
-    background-size: 54px;
-    background-position: left center;
-    background-repeat: no-repeat;
-}
-.llama-myNick {
-    color:#ff0000;
-}
-
-
-#chatlist.llama-featurethreemod > div > span{color:#00ff00;}
-
-#userlist.llama-featurethreemode  > div > span {width:98%;}
-#userlist.llama-featurethreemode {margin-left:2%;}
-
-.llama-featurethreemode .nickname {margin-left:5px; !important;}
-#userlist.llama-featurethreemode > #header > span {
-background-image:none;
-background-color: #0d0d0d;
-    border-radius: 100px;
-    color: #ffffff;
-    top: 0px;
-    border: 1px solid #51bc02;}
-
-#userlist.llama-featurethreemode  > div > span
-{       border-color: var(--featurethreemode-bordercolor);
-    background-image: var(--featurethreemode-messagebg);
-    border-radius: 14px;
-    margin-top: 2px;
-    color: var(--featurethreemode-textcolor);
-font-weight: bold;
-    text-shadow: 1px 2px #2b6600;}
-
-#userlist.llama-featurethreemode  > div > span:hover
-{       border:1px solid #51bc02;  background-color: #0d0d0d;;
-background-image:none;
-    color: var(--featurethreemode-textcolor);
-    text-shadow: 1px 2px #000000;}
-
-.llama-featurethreemode .list-item > span:hover > span
-{   background: none;
-    box-shadow: none;}
-
-.list-item.llama-featurethreemode > span > span > .send-gift:hover
-{   background-color: var(--featurethreemode-bgcolor);}
-
-.llama-featurethreemode #userlist > div > span {background-color:#00ff00;}
-
 	</style>
 	`;
                         userlistCSS.insertAdjacentHTML(insertPosition, userlistCSShtml);
@@ -5957,89 +3732,13 @@ background-image:none;
                     { // bodyCSS
                         bodyCSShtml = `
 	<style id="bodyCSS">` + globalCSS + `
-
-/*** ---                                START COLOR MODES                                      --- ***/
-
-
-		/***------------------------------------PINKKK BODY---------------------------------***/
-
-body.llama-pinkmode
-{   overflow: hidden;
-    background-color: var(--pinkmode-bgcolor)}
-
-		/***------------------------------------GREENNN BODY---------------------------------***/
-
-body.llama-greenmode
-{   overflow: hidden;
-    background-color: var(--greenmode-bgcolor)}
-
-		/***------------------------------------BLUEEE BODY---------------------------------***/
-
-body.llama-bluemode
-{   overflow: hidden;
-    background-color: var(--bluemode-bgcolor)}
-
-		/***------------------------------------PURPLEEE BODY---------------------------------***/
-
-body.llama-purplemode
-{   overflow: hidden;
-    background-color: var(--purplemode-bgcolor)}
-
-		/***------------------------------------ORANGEEE BODY---------------------------------***/
-
-body.llama-orangemode
-{   overflow: hidden;
-    background-color: var(--orangemode-bgcolor)}
-
-		/***------------------------------------REDDD BODY---------------------------------***/
-
-body.llama-redmode
-{   overflow: hidden;
-    background-color: var(--redmode-bgcolor)}
-
-		/***------------------------------------DARKPURPLEEE BODY---------------------------------***/
-
-body.llama-darkpurplemode
-{   overflow: hidden;
-    background-color: var(--darkpurplemode-bgcolor)}
-
-		/***------------------------------------WHITEEE BODY---------------------------------***/
-
-body.llama-whitemode
-{   overflow: hidden;
-    background-color: var(--whitemode-bgcolor)}
-
-		/***------------------------------------FEATUREONEEE BODY---------------------------------***/
-
-body.llama-featureonemode
-{   overflow: hidden;
-    background-color: var(--featureonemode-bgcolor)}
-
-		/***------------------------------------FEATURETWOOO BODY---------------------------------***/
-
-body.llama-featuretwomode
-{   overflow: hidden;
-    background-color: var(--featuretwomode-bgcolor)}
-
-		/***------------------------------------FEATURETHREEE BODY---------------------------------***/
-
-body.llama-featurethreemode
-{   overflow: hidden;
-    background-color: var(--featurethreemode-bgcolor);
-background-image: var(--featurethreemode-roombg);
-
-background-size:cover;}
-
-.message {color:red;}
-
-
-
-
-/*** ---                                END COLOR MODES                                      --- ***/
-
-body{
+body {
     overflow: hidden;
-    background-color:#111111;}
+    background-color:var(--llamatheme-cambgcolor);
+    background-image: var(--llamatheme-roombg);
+    background-position: center center;
+    background-size: cover;
+}
 
 #nav-static-wrapper {
     width: 2px;
@@ -6172,12 +3871,6 @@ body.llama-changefont {
 	background-color: transparent;
 	color: #4d4d4d;}
 
-body.llama-pinkmode {
-	overflow: hidden;
-	background-color: var(--pinkmode-bgcolor)!important;}
-
-.message.llama-orangemode,.message.llama-featurethreemode {
-    color: black;}
 
 .message.system {
     font-size: 12px;
@@ -6193,25 +3886,15 @@ body.llama-pinkmode {
     overflow-x: hidden;
     overflow-y: hidden;}
 
-.llama-featurethreemode.message {
-    font-size: 14px;
-    color: #000000;
-    white-space: pre-line;
-    word-wrap: break-word;
-    position: relative;
-    right: 12px;
-font-weight:bold;
-    top: 3px;}
-
 
 .message {
     font-size: 14px;
-    color: #ffffff;
+    color: var(--llamatheme-textcolor);
     white-space: pre-line;
     word-wrap: break-word;
     position: relative;
     right: 12px;
-font-weight:bold;
+    font-weight:bold;
     top: 3px;}
 
 	`;
@@ -6306,6 +3989,8 @@ left:293px;}
     color: #00ff00;
     margin:10px;}
 @media screen and (max-width: 600px) {
+#chat-wrapper.default-theme {border-left:1px solid rgba(0, 0, 0, .1) !important;}
+
 #chat-wrapper {border:0px !important;}
 #chat-content > .message.common > .nickname {right:5px !important;}
 
@@ -6318,21 +4003,30 @@ left:293px;}
     min-width: 350px;
     border-left: 0px solid rgba(0, 0, 0, .1);
     box-sizing: border-box;
-    background-color: #111111;
-    transition: .8s;}
-#chat-wrapper.llama-whitemode {
-    min-width: 350px;
-    border-left: 1px solid rgba(0, 0, 0, .1);
-    box-sizing: border-box;
-    background-color: #111111;
+    background-color: var(--llamatheme-cambgcolor);
     transition: .8s;}
 
-#chat-content > .message.common {
-    padding-bottom: 0;
-    padding-top: 0!important;
-    margin-bottom: 5px;
-    min-height: 0px!important;
-    color: #ff0000 !important;}
+#chat-wrapper {
+    background-image: var(--llamatheme-chatbg);
+    background-position: center center;
+    background-blend-mode: overlay;
+    background-size: cover;
+}
+
+#chat-wrapper.splatoon-theme {
+    background-size: unset;
+    border-radius: 0px;
+    background-color: transparent;
+    background-position: 0px 0px;
+    background-repeat: repeat-y;
+    animation: animatedBackground 10s linear infinite;
+    min-width: 346px;
+}
+
+@keyframes animatedBackground {
+	from { background-position: 0 0; }
+	to { background-position: 0 100%; }
+}
 
 		/*
 #chat-content > .message:hover {
@@ -6341,12 +4035,14 @@ left:293px;}
 		*/
 
 #chat-content > .message.common {
+    padding-top: 0!important;
+    min-height: 0px!important;
     margin-bottom: 5px;
     margin-right: 10px;
     padding-bottom: 9px;
-    color: #353535 !important;
-    background-color: #2a2a2a;
-    border: 1px solid;
+    color: var(--llamatheme-textcolor) !important;
+    background-color: var(--llamatheme-lightbgcolor);
+    border: 1px solid var(--llamatheme-lightbgcolor);
     border-radius: 20px;}
 
 #chat-content > .message.system {
@@ -6378,12 +4074,14 @@ left:293px;}
     padding-top: 10px;
     margin-right: 25px;
     overflow-wrap: break-word;}
-
+.default-theme #input > textarea {
+    border:1px solid var(--llamatheme-bordercolor);
+}
 #input > textarea{
     overflow-y:auto;
-    background-color:#111111;
-    border:1px solid #313131;
-    color:#ffffff;}
+    background-color: var(--llamatheme-cambgcolor);
+    border:1px solid var(--llamatheme-lightbgcolor);
+    color: var(--llamatheme-textcolor);}
 
 #input:after {
     content: "";
@@ -6424,8 +4122,8 @@ left:293px;}
 
 #chat-wider {
     font-size: 0;
-    background-color: transparent;
-    border: 1px solid #313131;
+    background-color: var(--llamatheme-cambgcolor);
+    border: 1px solid var(--llamatheme-bordercolor);
     cursor: pointer;
     z-index: 1;
     padding-top: 10px;
@@ -6449,8 +4147,8 @@ left:293px;}
     -webkit-transform: rotate(0deg);}
 
 #chat-wider:hover {
-    background: #333;
-    color: #5c5c5c;
+    background: var(--llamatheme-bordercolor);
+    color: var(--llamatheme-textcolor);
     cursor: pointer;
     border:0px;}
 
@@ -6637,472 +4335,11 @@ border}
 
 #llama-chatlogView:hover {
     color:#17ff00;}
-
-
-		/*** ---                                START COLOR MODES                                      --- ***/
-
-		/***------------------------------------PINKKK CHAT---------------------------------***/
-
-.llama-pinkmode #input > textarea
-{   background-color: var(--pinkmode-bordercolor);
-    border-color: var(--pinkmode-bordercolor);
-    color:#000000;}
-
-.llama-pinkmode #input > textarea::placeholder
-{    color:#FFFFFF;}
-
-.llama-pinkmode #chat-wider:before,
-#chat-wider.llama-pinkmode
-{   background-color: var(--pinkmode-bgcolor);
-    border:1px solid var(--pinkmode-bordercolor) !important;}
-
-.llama-pinkmode #chat-wider:hover
-{   background-color: var(--pinkmode-bordercolor);
-    border:1px solid var(--pinkmode-bgcolor) !important;}
-
-#chat-wrapper.llama-pinkmode
-{   background-color:var(--pinkmode-bgcolor);}
-
-.llama-pinkmode #chat-content > .message.common
-{   border-color: var(--pinkmode-bordercolor);
-    background-color: var(--pinkmode-bordercolor);}
-
-.llama-pinkmode #timestamp
-{   color: var(--pinkmode-bgcolor);}
-
-.llama-pinkmode#chat-wider:before
-{ border-color: transparent  var(--pinkmode-bordercolor);}
-
-
-		/***------------------------------------GREENNN CHAT---------------------------------***/
-
-.llama-greenmode #input > textarea
-{   background-color: var(--greenmode-bordercolor);
-    border-color: var(--greenmode-bordercolor);
-    color:#000000;}
-
-.llama-greenmode #input > textarea::placeholder
-{    color:#FFFFFF;}
-
-.llama-greenmode #chat-wider:before,
-#chat-wider.llama-greenmode
-{   background-color: var(--greenmode-bgcolor);
-    border: 1px solid  var(--greenmode-bordercolor) !important;}
-
-.llama-greenmode #chat-wider:hover
-{   background-color: var(--greenmode-bordercolor);
-    border: 1px solid var(--greenmode-bgcolor) !important;}
-
-#chat-wrapper.llama-greenmode
-{   background-color:var(--greenmode-bgcolor);}
-
-.llama-greenmode #chat-content > .message.common
-{   border-color: var(--greenmode-bordercolor);
-    background-color: var(--greenmode-bordercolor);}
-
-.llama-greenmode #timestamp
-{   color: var(--greenmode-bgcolor);}
-
-.llama-greenmode#chat-wider:before
-{ border-color: transparent  var(--greenmode-bordercolor);}
-
-		/***------------------------------------BLUEEE CHAT---------------------------------***/
-
-.llama-bluemode #input > textarea
-{   background-color: var(--bluemode-bordercolor);
-    border-color: var(--bluemode-bordercolor);
-    color:#000000;}
-
-.llama-bluemode #input > textarea::placeholder
-{    color:#FFFFFF;}
-
-.llama-bluemode #chat-wider:before,
-#chat-wider.llama-bluemode
-{   background-color: var(--bluemode-bgcolor);
-    border: 1px solid var(--bluemode-bordercolor) !important;}
-
-.llama-bluemode #chat-wider:hover
-{   background-color: var(--bluemode-bordercolor);
-    border: 1px solid var(--bluemode-bgcolor) !important;}
-
-#chat-wrapper.llama-bluemode
-{   background-color:var(--bluemode-bgcolor);}
-
-.llama-bluemode #chat-content > .message.common
-{   border-color: var(--bluemode-bordercolor);
-    background-color: var(--bluemode-bordercolor);}
-
-.llama-bluemode #timestamp
-{   color: var(--bluemode-bgcolor);}
-
-.llama-bluemode#chat-wider:before
-{ border-color: transparent  var(--bluemode-bordercolor);}
-
-		/***------------------------------------PURPLEEE CHAT---------------------------------***/
-
-.llama-purplemode #input > textarea
-{   background-color: var(--purplemode-lightbgcolor);
-    border-color: var(--purplemode-lightbgcolor);
-    color:#000000;}
-
-.llama-purplemode #input > textarea::placeholder
-{    color:#FFFFFF;}
-
-.llama-purplemode #chat-wider:before,
-#chat-wider.llama-purplemode
-{   background-color: var(--purplemode-bgcolor);
-    border: 1px solid var(--purplemode-bordercolor) !important;}
-
-.llama-purplemode #chat-wider:hover
-{   background-color: var(--purplemode-bordercolor);
-    border: 1px solid var(--purplemode-bgcolor) !important;}
-
-#chat-wrapper.llama-purplemode
-{   background-color:var(--purplemode-bgcolor);}
-
-.llama-purplemode #chat-content > .message.common
-{   border-color: var(--purplemode-lightbgcolor);
-    background-color: var(--purplemode-lightbgcolor);}
-
-.llama-purplemode #timestamp
-{   color: var(--purplemode-bgcolor);}
-
-.llama-purplemode#chat-wider:before
-{ border-color: transparent  var(--purplemode-bordercolor);}
-
-		/***------------------------------------ORANGEEE CHAT---------------------------------***/
-
-.llama-orangemode #input > textarea
-{   background-color: var(--orangemode-lightbgcolor);
-    border-color: var(--orangemode-lightbgcolor);
-    color:#000000;}
-
-.llama-orangemode #input > textarea::placeholder
-{    color:#FFFFFF;}
-
-.llama-orangemode #chat-wider:before,
-#chat-wider.llama-orangemode
-{   background-color: var(--orangemode-bgcolor);
-    border: 1px solid var(--orangemode-bordercolor) !important;}
-
-.llama-orangemode #chat-wider:hover
-{   background-color: var(--orangemode-bordercolor);
-    border: 1px solid var(--orangemode-bgcolor) !important;}
-
-#chat-wrapper.llama-orangemode
-{   background-color:var(--orangemode-bgcolor);}
-
-.llama-orangemode #chat-content > .message.common
-{   border-color: var(--orangemode-lightbgcolor);
-    background-color: var(--orangemode-lightbgcolor);}
-
-.llama-orangemode #timestamp
-{   color: var(--orangemode-bgcolor);}
-
-.llama-orangemode#chat-wider:before
-{ border-color: transparent  var(--orangemode-bordercolor);}
-
-		/***------------------------------------REDDD CHAT---------------------------------***/
-
-.llama-redmode #input > textarea
-{   background-color: var(--redmode-lightbgcolor);
-    border-color: var(--redmode-lightbgcolor);
-    color:#000000;}
-
-.llama-redmode #input > textarea::placeholder
-{    color:#FFFFFF;}
-
-.llama-redmode #chat-wider:before,
-#chat-wider.llama-redmode
-{   background-color: var(--redmode-bgcolor);
-    border: 1px solid var(--redmode-bordercolor) !important;}
-
-.llama-redmode #chat-wider:hover
-{   background-color: var(--redmode-bordercolor);
-    border: 1px solid var(--redmode-bgcolor) !important;}
-
-#chat-wrapper.llama-redmode
-{   background-color:var(--redmode-bgcolor);}
-
-.llama-redmode #chat-content > .message.common
-{   border-color: var(--redmode-lightbgcolor);
-    background-color: var(--redmode-lightbgcolor);}
-
-.llama-redmode #timestamp
-{   color: var(--redmode-bgcolor);}
-
-.llama-redmode#chat-wider:before
-{ border-color: transparent  var(--redmode-bordercolor);}
-
-
-		/***------------------------------------DARKPURPLEEE CHAT---------------------------------***/
-
-.llama-darkpurplemode #input > textarea
-{   background-color: var(--darkpurplemode-lightbgcolor);
-    border-color: var(--darkpurplemode-lightbgcolor);
-    color:#000000;}
-
-.llama-darkpurplemode #input > textarea::placeholder
-{    color:#FFFFFF;}
-
-.llama-darkpurplemode #chat-wider:before,
-#chat-wider.llama-darkpurplemode
-{   background-color: var(--darkpurplemode-bgcolor);
-    border: 1px solid var(--darkpurplemode-bordercolor) !important;}
-
-.llama-darkpurplemode #chat-wider:hover
-{   background-color: var(--darkpurplemode-bordercolor);
-    border: 1px solid var(--darkpurplemode-bgcolor) !important;}
-
-#chat-wrapper.llama-darkpurplemode
-{   background-color:var(--darkpurplemode-bgcolor);}
-
-.llama-darkpurplemode #chat-content > .message.common
-{   border-color: var(--darkpurplemode-lightbgcolor);
-    background-color: var(--darkpurplemode-lightbgcolor);}
-
-.llama-darkpurplemode #timestamp
-{   color: var(--darkpurplemode-bgcolor);}
-
-.llama-darkpurplemode#chat-wider:before
-{ border-color: transparent  var(--darkpurplemode-bordercolor);}
-
-		/***------------------------------------WHITEEE CHAT---------------------------------***/
-
-.llama-whitemode #input > textarea
-{   background-color: var(--whitemode-bordercolor);
-    border-color: var(--whitemode-bordercolor);
-    color:#000000;}
-
-.llama-whitemode #input > textarea::placeholder
-{    color:#000000;}
-
-.llama-whitemode #chat-wider:before,
-#chat-wider.llama-whitemode
-{   background-color: var(--whitemode-lightbgcolor);
-    border: 1px solid var(--whitemode-bordercolor) !important;}
-
-.llama-whitemode #chat-wider:hover
-{   background-color: var(--whitemode-bordercolor);
-    border: 1px solid var(--whitemode-bgcolor) !important;}
-
-#chat-wrapper.llama-whitemode
-{   background-color:var(--whitemode-lightbgcolor);}
-
-.llama-whitemode #chat-content > .message.common
-{   border-color: var(--whitemode-bgcolor);
-    background-color: var(--whitemode-bgcolor);}
-
-.llama-whitemode #timestamp
-{   color: var(--whitemode-bgcolor);}
-
-.llama-whitemode#chat-wider:before
-{ border-color: transparent  var(--whitemode-bordercolor);}
-
-		/***------------------------------------FEATUREONEEE CHAT---------------------------------***/
-
-.llama-featureonemode #input > textarea
-{   background-color: var(--featureonemode-bordercolor);
-    border-color: var(--featureonemode-bordercolor);
-    color:#000000;}
-
-.llama-featureonemode #input > textarea::placeholder
-{    color:#000000;}
-
-.llama-featureonemode #chat-wider:before,
-#chat-wider.llama-featureonemode
-{   background-color: var(--featureonemode-lightbgcolor);
-    border: 1px solid var(--featureonemode-bordercolor) !important;}
-
-.llama-featureonemode #chat-wider:hover
-{   background-color: var(--featureonemode-bordercolor);
-    border: 1px solid var(--featureonemode-bgcolor) !important;}
-
-#chat-wrapper.llama-featureonemode
-{   background-color:var(--featureonemode-lightbgcolor);}
-
-.llama-featureonemode #chat-content > .message.common
-{   border-color: var(--featureonemode-bgcolor);
-    background-color: var(--featureonemode-bgcolor);}
-
-.llama-featureonemode #timestamp
-{   color: var(--featureonemode-bgcolor);}
-
-.llama-featureonemode#chat-wider:before
-{ border-color: transparent  var(--featureonemode-bordercolor);}
-
-#chat-wrapper.llama-featureonemode {
-    background-color: #242424;
-    background-image: var(--featureonemode-chatbg);
-    background-position: center center;
-    background-blend-mode: overlay;
-    background-size: cover;}
-
-		/***------------------------------------FEATURETWOOO CHAT---------------------------------***/
-
-.llama-featuretwomode #input > textarea
-{   background-color: var(--featuretwomode-bordercolor);
-    border-color: var(--featuretwomode-bordercolor);
-    color:#000000;}
-
-.llama-featuretwomode #input > textarea::placeholder
-{    color:#000000;}
-
-.llama-featuretwomode #chat-wider:before,
-#chat-wider.llama-featuretwomode
-{   background-color: var(--featuretwomode-lightbgcolor);
-    border: 1px solid var(--featuretwomode-bordercolor) !important;}
-
-.llama-featuretwomode #chat-wider:hover
-{   background-color: var(--featuretwomode-bordercolor);
-    border: 1px solid var(--featuretwomode-bgcolor) !important;}
-
-#chat-wrapper.llama-featuretwomode
-{   background-color:var(--featuretwomode-lightbgcolor);
-border-left: 1px solid var(--featuretwomode-bordercolor);}
-
-.llama-featuretwomode #chat-content > .message.common
-{   border-color: var(--featuretwomode-bordercolor);
-background-color: #2a2a2abd;}
-
-.llama-featuretwomode #timestamp
-{   color: var(--featuretwomode-textcolor);}
-
-.llama-featuretwomode#chat-wider:before
-{ border-color: transparent  var(--featuretwomode-bordercolor);}
-
-#chat-wrapper.llama-featuretwomode {
-    background-color: #242424;
-    background-image: var(--featuretwomode-chatbg);
-    background-position: center center;
-    background-size: cover;}
-
-		/***------------------------------------FEATURETHREEE CHAT---------------------------------***/
-
-.llama-featurethreemode #input > textarea
-{   background-color: transparent;
-    border-color: #51bc02;
-    color:#FFFFFF;
-width: 95%;
-    margin-left: 17px;}
-
-.llama-featurethreemode #input > textarea::placeholder
-{    color:#51bc02;}
-
-
-
-.llama-featurethreemode#chat-wider{
-    background-image: var(--featurethreemode-squid2);
-    background-size: 25px;
-    background-repeat: no-repeat;
-    background-color: transparent;
-    border-color: var(--featurethreemode-bordercolor);
-    height: 13px;
-    width: 26px;
-border-left:0px;
-border-top:0px;
-border-bottom:0px;}
-
-.llama-featurethreemode#chat-wider:hover {background-color:#00ff00;}
-
-
- #chat-wider.llama-featurethreemode.active {
--webkit-transform: rotate(180deg);
-transform: rotate(180deg);
-border-radius:50px;
-}
-
-
-.llama-featurethreemode.message{color#000000 !important;}
-.llama-featurethreemode .message{color#000000 !important;}
-.message.llama-featurethreemode{color#000000 !important;}
-.message .llama-featurethreemode{color#000000 !important;}
-
-
-
-.llama-featurethreemode.llama-sidemenuCollapsed#chat-wider {
--webkit-transform: rotate(180deg);
-transform: rotate(180deg);
-border-radius:50px;
-}
-
-----
-
-
-
-.llama-featurethreemode#chat-wider:before {
-    background-color: var(--featurethreemode-lightbgcolor);
-    border: 1px solid var(--featurethreemode-bordercolor) !important;
-    display:none !important;}
-
-.llama-featurethreemode #chat-wider:hover {
-    background-color: var(--featurethreemode-bordercolor);
-    border: 1px solid var(--featurethreemode-bgcolor) !important;}
-
-#chat-wrapper.llama-featurethreemode {
-    min-width:344px;background-color:var(--featurethreemode-lightbgcolor);
-    border-left: 0px solid var(--featurethreemode-bordercolor);
-}
-@keyframes animatedBackground {
-	from { background-position: 0 0; }
-	to { background-position: 0 100%; }
-}
-
-
-
-
-/*--------------*/
-
-.llama-featurethreemode #chat-content > .message.common {
-    border-color: var(--featurethreemode-bordercolor);
-    background-image: var(--featurethreemode-messagebg);
-    background-color: #51bc02;
-    margin-left:17px;}
-
-.llama-featurethreemode #chat-content > .message {
-   border-color: #51bc02;margin-left:10px;color: #51bc02 !important;}
-
-.llama-featurethreemode #chat-content > .system {
-   color: #51bc02 !important;}
-.llama-featurethreemode #chat-content > .blacknight {
-   color: #51bc02 !important;}
-
-.llama-featurethreemode #chat-content > .system {
-   border-color: #51bc02;margin-left:10px;color: #51bc02 !important;}
-
-.llama-featurethreemode #timestamp{   color: var(--featurethreemode-textcolor);}
-
-.llama-featurethreemode#chat-wider:before{ border-color: transparent  var(--featurethreemode-bordercolor);}
-
-#chat-wrapper.llama-featurethreemode {
-border-radius: 18px;
-    background-color: transparent;
-    background-image: var(--featurethreemode-chatbg);
-    background-position: center center;
-	background-position: 0px 0px;
-	background-repeat: repeat-y;
-
-	animation: animatedBackground 10s linear infinite;
-}
-
-#chat-content.llama-featurethreemode > .message {
-    box-sizing: border-box;
-    background-color: #0000006b;
-    cursor: default;
-    border: 1px solid #000000;
-    color: #000000;
-    border-radius:24px;
-    padding: 0px 0px;}
-}
-
-/*#chat-content > .message > .nickname {
-color:#000000;
-}*/
-
-.llama-featurethreemode#chat-content > .llama-featurethreemode.message > .llama-featurethreemode.nickname {color:#000000;}
-
-.llama-featurethreemode #chat-content > .message > .nickname {color:#000000;}
-
+.default-theme #input > textarea::placeholder
+{    color:rgba(0, 0, 0, .5);}
+#input > textarea::placeholder
+{    color:var(--llamatheme-lightbgcolor);}
+path {fill: var(--llamatheme-bordercolor) !important;}
 
 
 	</style>
@@ -7122,17 +4359,17 @@ transition: all .4s ease-in-out;
                         }
                         sidemenuCSShtml = `
 	<style id="sidemenuCSS" scope="tinychat-sidemenu">` + globalCSS + `
-#sidemenu {
-    min-width: 162px;
-    max-width: 162px;
-    left: 0px;
-    background-color: #191919;
-    /* 	background-image:url('http://i68.tinypic.com/2rp4ncm.png'); */
-    background-position: right top;
-    background-size: 100%;
-    border-right:1px solid #313131;
-transition: all .4s ease-in-out;
-    z-index:3;}
+    #sidemenu {
+        min-width: 162px;
+        max-width: 162px;
+        left: 0px;
+        background-color: var(--llamatheme-bgcolor);
+        /* 	background-image: url('http://i68.tinypic.com/2rp4ncm.png'); */
+        background-position: right top;
+        background-size: 100%;
+        border-right:1px solid var(--llamatheme-bordercolor);
+        transition: all .4s ease-in-out;
+        z-index:3;}
 		` + firefoxCSS +
                             `
 #sidemenu-content {
@@ -7142,7 +4379,7 @@ transition: all .4s ease-in-out;
     padding-left: 0px;
     overflow-x: hidden;
     overflow-y: auto;
-    background-color: #191919;
+    /*background-color: var(--llamatheme-bgcolor);*/
     /* background-image:url('http://i68.tinypic.com/2rp4ncm.png'); */
     background-position: right top;
     background-size: 100%;
@@ -7189,6 +4426,13 @@ transition: all .4s ease-in-out;
     visibility:hidden;}
 
 @media screen and (min-width: 1000px) {
+/*---DEFAULT---*/
+.default-theme #live-directory {
+    background-color: #04caff !important;
+    border-color: #04caff !important;
+    color: #fff !important;
+}
+
 #live-directory {
     height: 25px;
     line-height: 25px;
@@ -7196,8 +4440,8 @@ transition: all .4s ease-in-out;
     opacity: .8;
     margin-left: 24px;
     width: 150px;
-    background-color:#111111;
-    border:1px solid #313131;
+    background-color: var(--llamatheme-cambgcolor);
+    border:1px solid var(--llamatheme-bordercolor);
     position: relative;
     top: -25px;}
 
@@ -7233,7 +4477,7 @@ transition: all .4s ease-in-out;
     top: 47%;
     right: 0;
     left: 153px;
-    background: #111111;
+    background: var(--llamatheme-cambgcolor);
     color: #536165;
     z-index: 3;
     border-radius: 10px;
@@ -7244,8 +4488,8 @@ transition: all .4s ease-in-out;
     padding-top: 19px;
     width: 16px;
     text-align: center;
-transition: all .4s ease-in-out;
-    border-left: #313131 1px solid;}
+    transition: all .4s ease-in-out;
+    border-left: var(--llamatheme-bordercolor) 1px solid;}
 
 #llama-sidemenu-grabber:before {
     content: '';
@@ -7262,11 +4506,12 @@ transition: all .4s ease-in-out;
     transition: .8s;}
 
 #llama-sidemenu-grabber:hover {
-    background: #333;
+    background: var(--llamatheme-bordercolor);
     color: #5c5c5c;
     cursor: pointer;}
 
 .llama-sidemenuCollapsed #llama-sidemenu-grabber{
+    background: var(--llamatheme-bgcolor);
     border-radius: 0 10px 10px 0;
     right: -15px;
     left: -4px;}
@@ -7310,446 +4555,35 @@ transition: all .4s ease-in-out;
 .llama-nightmode #sidemenu-content::-webkit-scrollbar {
     width: 5px;}
 
-		/*** ---                                START COLOR MODES                      --- ***/
-
-
-		/***------------------------------------PINKKK SIDEMENU------------------------------------***/
-
-#sidemenu.llama-pinkmode,
-.llama-pinkmode #sidemenu-content::-webkit-scrollbar-track
-{   background: var(--pinkmode-lightbgcolor);}
-
-.llama-pinkmode #sidemenu-content::-webkit-scrollbar-thumb
-{   border-color: var(--pinkmode-bgcolor);
-    background-color: var(--pinkmode-bgcolor);
-    width:50%;}
-
-.llama-pinkmode #llama-sidemenu-grabber:before {
-    border-color: transparent var(--pinkmode-bordercolor);}
-
-#sidemenu.llama-pinkmode > #llama-sidemenu-grabber
-{   background-color: var(--pinkmode-bgcolor);
-    border-color: var(--pinkmode-bordercolor);}
-
-#sidemenu.llama-pinkmode
-{   background-color: var(--pinkmode-lightbgcolor);
-    border-color: var(--pinkmode-bordercolor);}
-
-#sidemenu.llama-pinkmode > #sidemenu-content
-{    background-color: var(--pinkmode-lightbgcolor);}
-
-@media screen and (min-width: 1000px)
-{.llama-pinkmode #live-directory
-{   margin-left:10px;
-    width:175px;
-    background-color: var(--pinkmode-bgcolor);
-    border:1px solid var(--pinkmode-bordercolor);}
-
-.llama-pinkmode #llama-sidemenu-grabber,
-#chat-wrapper.llama-pinkmode
-{    background-color: var(--pinkmode-bgcolor);}
-
-		/***------------------------------------GREENNN SIDEMENU------------------------------------***/
-
-#sidemenu.llama-greenmode,
-.llama-greenmode #sidemenu-content::-webkit-scrollbar-track
-{   background: var(--greenmode-lightbgcolor);}
-
-.llama-greenmode #sidemenu-content::-webkit-scrollbar-thumb
-{   border-color: var(--greenmode-bgcolor);
-    background-color: var(--greenmode-bgcolor);
-    width:50%;}
-
-.llama-greenmode #llama-sidemenu-grabber:before {
-    border-color: transparent var(--greenmode-bordercolor);}
-
-#sidemenu.llama-greenmode > #llama-sidemenu-grabber
-{   background-color: var(--greenmode-bgcolor);
-    border-color: var(--greenmode-bordercolor);}
-
-#sidemenu.llama-greenmode
-{   background-color: var(--greenmode-lightbgcolor);
-    border-color: var(--greenmode-bordercolor);}
-
-#sidemenu.llama-greenmode > #sidemenu-content
-{    background-color: var(--greenmode-lightbgcolor);}
-
-@media screen and (min-width: 1000px)
-{.llama-greenmode #live-directory
-{   margin-left:10px;
-    width:175px;
-    background-color: var(--greenmode-bgcolor);
-    border:1px solid var(--greenmode-bordercolor);}
-
-.llama-greenmode #llama-sidemenu-grabber,
-#chat-wrapper.llama-greenmode
-{    background-color: var(--greenmode-bgcolor);}
-
-		/***------------------------------------BLUEEE SIDEMENU------------------------------------***/
-
-#sidemenu.llama-bluemode,
-.llama-bluemode #sidemenu-content::-webkit-scrollbar-track
-{   background: var(--bluemode-lightbgcolor);}
-
-.llama-bluemode #sidemenu-content::-webkit-scrollbar-thumb
-{   border-color: var(--bluemode-bgcolor);
-    background-color: var(--bluemode-bgcolor);
-    width:50%;}
-
-.llama-bluemode #llama-sidemenu-grabber:before {
-    border-color: transparent var(--bluemode-bordercolor);}
-
-#sidemenu.llama-bluemode > #llama-sidemenu-grabber
-{   background-color: var(--bluemode-bgcolor);
-    border-color: var(--bluemode-bordercolor);}
-
-#sidemenu.llama-bluemode
-{   background-color: var(--bluemode-lightbgcolor);
-    border-color: var(--bluemode-bordercolor);}
-
-#sidemenu.llama-bluemode > #sidemenu-content
-{    background-color: var(--bluemode-lightbgcolor);}
-
-@media screen and (min-width: 1000px)
-{.llama-bluemode #live-directory
-{   margin-left:10px;
-    width:175px;
-    background-color: var(--bluemode-bgcolor);
-    border:1px solid var(--bluemode-bordercolor);}
-
-.llama-bluemode #llama-sidemenu-grabber,
-#chat-wrapper.llama-bluemode
-{    background-color: var(--bluemode-bgcolor);}
-
-
-		/***------------------------------------PURPLEEE SIDEMENU------------------------------------***/
-
-#sidemenu.llama-purplemode,
-.llama-purplemode #sidemenu-content::-webkit-scrollbar-track
-{   background: var(--purplemode-lightbgcolor);}
-
-.llama-purplemode #sidemenu-content::-webkit-scrollbar-thumb
-{   border-color: var(--purplemode-bgcolor);
-    background-color: var(--purplemode-bgcolor);
-    width:50%;}
-
-.llama-purplemode #llama-sidemenu-grabber:before {
-    border-color: transparent var(--purplemode-bordercolor);}
-
-#sidemenu.llama-purplemode > #llama-sidemenu-grabber
-{   background-color: var(--purplemode-bgcolor);
-    border-color: var(--purplemode-bordercolor);}
-
-#sidemenu.llama-purplemode
-{   background-color: var(--purplemode-lightbgcolor);
-    border-color: var(--purplemode-bordercolor);}
-
-#sidemenu.llama-purplemode > #sidemenu-content
-{    background-color: var(--purplemode-lightbgcolor);}
-
-@media screen and (min-width: 1000px)
-{.llama-purplemode #live-directory
-{   margin-left:10px;
-    width:175px;
-    background-color: var(--purplemode-bgcolor);
-    border:1px solid var(--purplemode-bordercolor);}
-
-.llama-purplemode #llama-sidemenu-grabber,
-#chat-wrapper.llama-purplemode
-{    background-color: var(--purplemode-bgcolor);}
-
-		/***------------------------------------ORANGEEE SIDEMENU------------------------------------***/
-
-#sidemenu.llama-orangemode,
-.llama-orangemode #sidemenu-content::-webkit-scrollbar-track
-{   background: var(--orangemode-lightbgcolor);}
-
-.llama-orangemode #sidemenu-content::-webkit-scrollbar-thumb
-{   border-color: var(--orangemode-bgcolor);
-    background-color: var(--orangemode-bgcolor);
-    width:50%;}
-
-.llama-orangemode #llama-sidemenu-grabber:before {
-    border-color: transparent var(--orangemode-bordercolor);}
-
-#sidemenu.llama-orangemode > #llama-sidemenu-grabber
-{   background-color: var(--orangemode-bgcolor);
-    border-color: var(--orangemode-bordercolor);}
-
-#sidemenu.llama-orangemode
-{   background-color: var(--orangemode-lightbgcolor);
-    border-color: var(--orangemode-bordercolor);}
-
-#sidemenu.llama-orangemode > #sidemenu-content
-{    background-color: var(--orangemode-lightbgcolor);}
-
-@media screen and (min-width: 1000px)
-{.llama-orangemode #live-directory
-{   margin-left:10px;
-    width:175px;
-    background-color: var(--orangemode-bgcolor);
-    border:1px solid var(--orangemode-bordercolor);}
-
-.llama-orangemode #llama-sidemenu-grabber,
-#chat-wrapper.llama-orangemode
-{    background-color: var(--orangemode-bgcolor);}
-
-		/***------------------------------------REDDD SIDEMENU------------------------------------***/
-
-#sidemenu.llama-redmode,
-.llama-redmode #sidemenu-content::-webkit-scrollbar-track
-{   background: var(--redmode-lightbgcolor);}
-
-.llama-redmode #sidemenu-content::-webkit-scrollbar-thumb
-{   border-color: var(--redmode-bgcolor);
-    background-color: var(--redmode-bgcolor);
-    width:50%;}
-
-.llama-redmode #llama-sidemenu-grabber:before {
-    border-color: transparent var(--redmode-bordercolor);}
-
-#sidemenu.llama-redmode > #llama-sidemenu-grabber
-{   background-color: var(--redmode-bgcolor);
-    border-color: var(--redmode-bordercolor);}
-
-#sidemenu.llama-redmode
-{   background-color: var(--redmode-lightbgcolor);
-    border-color: var(--redmode-bordercolor);}
-
-#sidemenu.llama-redmode > #sidemenu-content
-{    background-color: var(--redmode-lightbgcolor);}
-
-@media screen and (min-width: 1000px)
-{.llama-redmode #live-directory
-{   margin-left:10px;
-    width:175px;
-    background-color: var(--redmode-bgcolor);
-    border:1px solid var(--redmode-bordercolor);}
-
-.llama-redmode #llama-sidemenu-grabber,
-#chat-wrapper.llama-redmode
-{    background-color: var(--redmode-bgcolor);}
-
-		/***------------------------------------DARKPURPLEEE SIDEMENU------------------------------------***/
-
-#sidemenu.llama-darkpurplemode,
-.llama-darkpurplemode #sidemenu-content::-webkit-scrollbar-track
-{   background: var(--darkpurplemode-lightbgcolor);}
-
-.llama-darkpurplemode #sidemenu-content::-webkit-scrollbar-thumb
-{   border-color: var(--darkpurplemode-bgcolor);
-    background-color: var(--darkpurplemode-bgcolor);
-    width:50%;}
-
-.llama-darkpurplemode #llama-sidemenu-grabber:before {
-    border-color: transparent var(--darkpurplemode-bordercolor);}
-
-#sidemenu.llama-darkpurplemode > #llama-sidemenu-grabber
-{   background-color: var(--darkpurplemode-bgcolor);
-    border-color: var(--darkpurplemode-bordercolor);}
-
-#sidemenu.llama-darkpurplemode
-{   background-color: var(--darkpurplemode-lightbgcolor);
-    border-color: var(--darkpurplemode-bordercolor);}
-
-#sidemenu.llama-darkpurplemode > #sidemenu-content
-{    background-color: var(--darkpurplemode-lightbgcolor);}
-
-@media screen and (min-width: 1000px)
-{.llama-darkpurplemode #live-directory
-{   margin-left:10px;
-    width:175px;
-    background-color: var(--darkpurplemode-bgcolor);
-    border:1px solid var(--darkpurplemode-bordercolor);}
-
-.llama-darkpurplemode #llama-sidemenu-grabber,
-#chat-wrapper.llama-darkpurplemode
-{    background-color: var(--darkpurplemode-bgcolor);}
-
-		/***------------------------------------WHITEEE SIDEMENU------------------------------------***/
-
-#sidemenu.llama-whitemode,
-.llama-whitemode #sidemenu-content::-webkit-scrollbar-track
-{   background: var(--whitemode-lightbgcolor);}
-
-.llama-whitemode #sidemenu-content::-webkit-scrollbar-thumb
-{   border-color: var(--whitemode-bgcolor);
-    background-color: var(--whitemode-bgcolor);
-    width:50%;}
-
-.llama-whitemode #llama-sidemenu-grabber:before {
-    border-color: transparent var(--whitemode-bordercolor);}
-
-#sidemenu.llama-whitemode > #llama-sidemenu-grabber
-{   background-color: var(--whitemode-bgcolor);
-    border-color: var(--whitemode-bordercolor);}
-
-#sidemenu.llama-whitemode
-{   background-color: var(--whitemode-bgcolor);
-    border-color: var(--whitemode-bordercolor);}
-
-#sidemenu.llama-whitemode > #sidemenu-content
-{    background-color: var(--whitemode-bgcolor);}
-
-@media screen and (min-width: 1000px)
-{.llama-whitemode #live-directory
-{   margin-left:10px;
-    width:175px;
-    background-color: var(--whitemode-tcblue);
-    border:1px solid var(--whitemode-bordercolor);}
-
-.llama-whitemode #llama-sidemenu-grabber,
-#chat-wrapper.llama-whitemode
-{    background-color: var(--whitemode-bgcolor);}
-
-		/***------------------------------------FEATUREONEEE SIDEMENU------------------------------------***/
-
-#sidemenu.llama-featureonemode,
-.llama-featureonemode #sidemenu-content::-webkit-scrollbar-track
-{   background: var(--featureonemode-lightbgcolor);}
-
-.llama-featureonemode #sidemenu-content::-webkit-scrollbar-thumb
-{   border-color: var(--featureonemode-bgcolor);
-    background-color: var(--featureonemode-bgcolor);
-    width:50%;}
-
-.llama-featureonemode #llama-sidemenu-grabber:before {
-    border-color: transparent var(--featureonemode-bordercolor);}
-
-#sidemenu.llama-featureonemode > #llama-sidemenu-grabber
-{   background-color: var(--featureonemode-bgcolor);
-    border-color: var(--featureonemode-bordercolor);}
-
-#sidemenu.llama-featureonemode,#sidemenu.llama-featureonemode {
-    border-color: var(--featureonemode-bordercolor);
-    background-image: var(--featureonemode-roombg);
+#sidemenu {
+    border-color: var(--llamatheme-bordercolor);
+    background-image: var(--llamatheme-userbg);
     background-position: right center;
-    background-size: cover;}
-
-#sidemenu.llama-featureonemode > #sidemenu-content
-{    background-color: transparent;}
-
-@media screen and (min-width: 1000px)
-{.llama-featureonemode #live-directory
-{   margin-left:10px;
-    width:175px;
-    background-color: var(--featureonemode-tcblue);
-    border:1px solid var(--featureonemode-bordercolor);}
-
-.llama-featureonemode #llama-sidemenu-grabber,
-#chat-wrapper.llama-featureonemode
-{    background-color: var(--featureonemode-bgcolor);}
-
-		/***------------------------------------FEATURETWOOO SIDEMENU------------------------------------***/
-
-#sidemenu.llama-featuretwomode,
-.llama-featuretwomode #sidemenu-content::-webkit-scrollbar-track
-{   background: var(--featuretwomode-lightbgcolor);}
-
-.llama-featuretwomode #sidemenu-content::-webkit-scrollbar-thumb
-{   border-color: var(--featuretwomode-bgcolor);
-    background-color: var(--featuretwomode-bgcolor);
-    width:50%;}
-
-.llama-featuretwomode #llama-sidemenu-grabber:before {
-    border-color: transparent var(--featuretwomode-bordercolor);}
-
-#sidemenu.llama-featuretwomode > #llama-sidemenu-grabber
-{   background-color: var(--featuretwomode-bgcolor);
-    border-color: var(--featuretwomode-bordercolor);}
-
-#sidemenu.llama-featuretwomode,#sidemenu.llama-featuretwomode {
-border-color: var(--featuretwomode-bordercolor);
-    background-image: var(--featuretwomode-userbg);
-    background-attachment: fixed;
-background-position:left;
-    background-size: 900px;
-    background-repeat: no-repeat;}
-
-#sidemenu.llama-featuretwomode > #sidemenu-content
-{    background-color: transparent;}
-
-@media screen and (min-width: 1000px)
-{.llama-featuretwomode #live-directory
-{   margin-left:10px;
-    width:175px;
-    background-color: var(--featuretwomode-tcblue);
-    border:1px solid var(--featuretwomode-bordercolor);}
-
-.llama-featuretwomode #llama-sidemenu-grabber,
-#chat-wrapper.llama-featuretwomode
-{    background-color: var(--featuretwomode-bgcolor);}
-
-		/***------------------------------------FEATURETHREEE SIDEMENU------------------------------------***/
-
-#sidemenu.llama-featurethreemode,
-.llama-featurethreemode #sidemenu-content::-webkit-scrollbar-track {
-   background: var(--featurethreemode-lightbgcolor);}
-
-.llama-featurethreemode #sidemenu-content::-webkit-scrollbar-thumb {
-    border-color: var(--featurethreemode-bgcolor);
-    background-color: var(--featurethreemode-bgcolor);
-    width:50%;}
-
-.llama-featurethreemode #llama-sidemenu-grabber:before {
-    border-color: transparent var(--featurethreemode-bordercolor);display:none;}
-
-#sidemenu.llama-featurethreemode > #llama-sidemenu-grabber {
-background-image: var(--featurethreemode-squid3);
-    background-size: 25px;
-    background-repeat: no-repeat;
-    background-color: transparent;
-    border-color: var(--featurethreemode-bordercolor);
-    height: 5px;
-    width: 30px;
-left: 145px;}
-
-#sidemenu.llama-featurethreemode > #llama-sidemenu-grabber:hover {background-color:#00ff00;}
-
-.llama-featurethreemode.llama-sidemenuCollapsed #llama-sidemenu-grabber {
--webkit-transform: rotate(180deg);
-transform: rotate(180deg);
-border-radius:50px;
-left: -15px !important;
+    background-size: cover;
 }
 
-#sidemenu.llama-featurethreemode,#sidemenu.llama-featurethreemode {
+#sidemenu.smashbros-theme {
+    background-color: var(--llamatheme-bgcolor);
+    background-attachment: fixed;
+    background-position:left;
+    background-size: 900px;
+    background-repeat: no-repeat;
+}
+
+#sidemenu.splatoon-theme {
     background-color:transparent;
     border: 0px;
-    background-image: var(--featurethreemode-userbg);
     background-attachment: fixed;
     background-position:left;
     border-radius: 30px;
     border-top-right-radius: 0px;
     border-top-left-radius: 0px;
-height: 99%;}
-
-#sidemenu.llama-featurethreemode > #sidemenu-content {
-    background-color: transparent;}
-
-@media screen and (min-width: 1000px)
-{.llama-featurethreemode #live-directory {
-background-image: var(--featurethreemode-roombg);
-background-position:top left;
-      margin-left: 5px;
-    width: 152px;
-    background-color: #6cff00;
-color:#000000;
-    border:0px solid var(--featurethreemode-bordercolor);}
-.llama-featurethreemode #live-directory:before {
-color:#000000;
-border-color:#000000;
-}
-.llama-featurethreemode #live-directory:hover
-{color:#51bc02;border:1px solid #51bc02;
-}
-.llama-featurethreemode #live-directory:before::hover
-{color:#51bc02;
+    height: 99%;
 }
 
-.llama-featurethreemode #llama-sidemenu-grabber,
-#chat-wrapper.llama-featurethreemode
-{    background-color: var(--featurethreemode-bgcolor);}
+#sidemenu.splatoon-theme #sidemenu-content  {
+    background-color:transparent;
+}
 	</style>
 	`;
                         sidemenuCSS.insertAdjacentHTML(insertPosition, sidemenuCSShtml);
@@ -7847,8 +4681,15 @@ border-color:#000000;
     flex-direction: column !important;
     margin-bottom: -10px !important;}
 
-
-
+#oom-header-duh {
+    background-color:transparent;
+    background-image: var(--llamatheme-roombg);
+    background-position: center center;
+    background-size: cover;
+}
+#room-content.smashbros-theme {
+    background-position: right center;
+}
 
 .llama-nightmode tc-videolist { background: var(--nightmode-bgcolor); }
 .llama-nightmode.blacknight tc-videolist { background: transparent; }
@@ -8492,9 +5333,9 @@ border-color:#000000;
         try {
             if (m.includes("error ")) {
                 var m = m.split("error ")[1];
-                console.log("%LLAMA " + "%cerror" + "%c" + ": " + m, "font-weight: bold; color: #53b6ef;", "color: red;", "");
+                console.log("TINY-LLAMA " + "%cerror" + "%c" + ": " + m, "font-weight: bold; color: #53b6ef;", "color: red;", "");
             } else {
-                console.log("%LLAMA: " + "%c" + m, "font-weight: bold; color: #53b6ef;", "");
+                console.log("TINY-LLAMA: " + "%c" + m, "font-weight: bold; color: #53b6ef;", "");
             }
         } catch (e) {
             console.log("------ LLAMA error tcl: " + e.message);
@@ -8632,7 +5473,7 @@ border-color:#000000;
 
 } else
 
-{//homepage css 
+{//homepage css
     (function() {
         var css = [
             ".left-arrow.active:before, .right-arrow.active:before {",
