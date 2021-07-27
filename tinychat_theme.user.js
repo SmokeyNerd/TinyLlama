@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TinyLlama : Tinychat Themes and Extra Features
 // @namespace    http://www.smokeyllama.com
-// @version      2021.11
+// @version      2021.12
 // @description  Editing Overall Theme of Tinychat. 12 Color Themes, Background Images, and More! Install and refresh.
 // @author       SmokeyLlama
 // @match        https://tinychat.com/*
@@ -64,7 +64,7 @@ if (/\/room/.test(location.pathname)) {
 
             var resourceDirectory = document.querySelector('link[rel="manifest"]').getAttribute("href").split("manifest")[0]; // \/([\d\.\-])+\/
             var pinkPop = new Audio(resourceDirectory + 'sound/pop.mp3');
-            var weedPop = new Audio('http://smokeyllama.com/bong.mp3');
+            var weedPop = new Audio('https://smokeyllama.com/bong.mp3');
             var audioPop = new Audio(resourceDirectory + 'sound/pop.mp3');
             var settingMentions = [];
             var giftsElemWidth = 127;
@@ -98,9 +98,6 @@ if (/\/room/.test(location.pathname)) {
             injectCSS();
             injectElements();
 
-            var current_theme = localStorage.getItem('llama_theme');
-            if (current_theme) {Toggle_Theme(current_theme);} else {Toggle_Theme('default');}
-
             var scrollboxEvent = scrollbox.addEventListener("wheel", userHasScrolled);
             var unreadbubbleEvent = unreadbubble.addEventListener("click", function() {
                 autoScrollStatus = true;
@@ -114,7 +111,7 @@ if (/\/room/.test(location.pathname)) {
                 userlistElem.querySelector("#userlist").classList.add("llama-mod");
                 chatlistElem.querySelector("#chatlist").classList.add("llama-mod");
             }
-
+            //grab GM Values and turn into a settingsQuick array
             var settingsQuick = {
                 "Autoscroll": (GM_getValue("llama-Autoscroll") == "true" || GM_getValue("llama-Autoscroll") == undefined),
                 "MentionsMonitor": (GM_getValue("llama-MentionsMonitor") == "true" || GM_getValue("llama-MentionsMonitor") == undefined),
@@ -123,16 +120,26 @@ if (/\/room/.test(location.pathname)) {
                 "MaxedCamLeft": (GM_getValue("llama-MaxedCamLeft") == "true" || GM_getValue("llama-MaxedCamLeft") == undefined),
                 "NightMode": (GM_getValue("llama-NightMode") == "true"),
                 "BorderlessCams": (GM_getValue("llama-BorderlessCams") == "true" || GM_getValue("llama-BorderlessCams") == undefined),
+                "RoundedCams": (GM_getValue("llama-RoundedCams") == "true" || GM_getValue("llama-RoundedCams") == undefined),
+                "TransparentChat": (GM_getValue("llama-TransparentChat") == "true" || GM_getValue("llama-TransparentChat") == undefined),
+                "ThemeChoice": (GM_getValue("llama-ThemeChoice")),
+                "RoomBG": (GM_getValue("llama-RoomBG") == "true" || GM_getValue("llama-RoomBG") == undefined),
+                "RoomBGURL": (GM_getValue("llama-RoomBGURL")),
                 "miniyt": (GM_getValue("llama-miniyt") == "true"),
                 "ChatBelow": (GM_getValue("llama-ChatBelow") == "true"),
             };
+            settingsQuick["LlamaTheme"] = true;
+            let usersSelectedTheme = settingsQuick["ThemeChoice"];
+            if (usersSelectedTheme != undefined) {Toggle_Theme(usersSelectedTheme);} else {Toggle_Theme('default');}
+
             if (settingsQuick["ChangeFont"]) bodyElem.classList.add("llama-changefont");
             if (settingsQuick["NightMode"]) nightmodeToggle(true);
             if (settingsQuick["MaxedCamLeft"]) videolistCSS.classList.add("llama-leftcam");
             if (settingsQuick["miniyt"]) miniytToggle(true);
-
             if (settingsQuick["ChatBelow"]) chatBelowToggle(true);
             if (settingsQuick["BorderlessCams"]) borderlessCamsToggle(true);
+            if (settingsQuick["RoundedCams"]) roundCamsToggle(true);
+            //if (settingsQuick['RoomBG']) roundCamsToggle(true);
 
             if (browserFirefox && 1 == 2) {
                 titleElem.querySelector("#room-header-info").insertAdjacentHTML("afterend", `
@@ -197,10 +204,10 @@ if (/\/room/.test(location.pathname)) {
             <div class="foo2 blue"></div>
          </label>
       </div>
-      <div id="llama-settings-purplemode">
+      <div id="llama-settings-mauvemode">
          <label class="llama-color-container">
-            <input type="checkbox"><span class="checkmark" title="PURPLE"></span>
-            <div class="foo2 purple"></div>
+            <input type="checkbox"><span class="checkmark" title="MAUVE"></span>
+            <div class="foo2 mauve"></div>
          </label>
       </div>
       <div id="llama-settings-orangemode">
@@ -215,16 +222,22 @@ if (/\/room/.test(location.pathname)) {
             <div class="foo2 red"></div>
          </label>
       </div>
-      <div id="llama-settings-darkpurplemode">
+      <div id="llama-settings-purplemode">
          <label class="llama-color-container">
-            <input type="checkbox"><span class="checkmark" title="DARK PURPLE"></span>
-            <div class="foo2 darkpurple"></div>
+            <input type="checkbox"><span class="checkmark" title="PURPLE"></span>
+            <div class="foo2 purple"></div>
          </label>
       </div>
       <div id="llama-settings-blackmode">
          <label class="llama-color-container">
-            <input type="checkbox"><span class="checkmark" title="DEFAULT"></span>
+            <input type="checkbox"><span class="checkmark" title="BLACK"></span>
             <div class="foo2 black"></div>
+         </label>
+      </div>
+      <div id="llama-settings-trueblackmode">
+         <label class="llama-color-container">
+            <input type="checkbox"><span class="checkmark" title="TRUE BLACK"></span>
+            <div class="foo2 trueblack"></div>
          </label>
       </div>
       <div id="llama-settings-defaultmode">
@@ -239,13 +252,13 @@ if (/\/room/.test(location.pathname)) {
             <div class="foo2 featureone"></div>
          </label>
       </div>
-      <div id="llama-settings-featuretwomode">
+      <div id="llama-settings-smashbrosmode">
          <label class="llama-color-container">
             <input type="checkbox"><span class="checkmark feature2" title="Smash Bros"></span>
             <div class="foo2 featuretwo"></div>
          </label>
       </div>
-      <div id="llama-settings-featurethreemode">
+      <div id="llama-settings-splatoonmode">
          <label class="llama-color-container">
             <input type="checkbox"><span class="checkmark feature3" title="Splatoon"></span>
             <div class="foo2 featurethree"></div>
@@ -259,6 +272,11 @@ if (/\/room/.test(location.pathname)) {
 <div id="llama-themesGear" title="Themes">
 
 <style>
+#llama-themesGear:hover {
+cursor: pointer;}
+#llama-themesGear:hover > #llama-themesButton {
+background-color: var(--llamatheme-bordercolor)}
+llama-themesButton
 #llama-themesGear>div>span:after {
 	content: "";
 	position: relative;
@@ -341,18 +359,7 @@ if (/\/room/.test(location.pathname)) {
 }
 
 </style>
-<div id="llama-emojis" style="">
-   <div id="llama-emojisBox" class="hidden">
-      <div id="llama-emojislist" style="position: absolute;bottom: 30px;right: 7px;height: 220px;background-color: #191919;z-index: 100;border-radius: 10px;border: 1px solid #313131;">
-         <iframe allow="geolocation; microphone; camera; midi; vr; encrypted-media" src="https://smokeyllama.glitch.me/emoji_list.html" name="gamelist" style="border: 0px; padding: 0px; margin: 0px; height: 100%; border-radius: 10px;"/></iframe>
-      </div>
-   </div>
-   <div id="llama-emojisGear" title="Emojis">
-      <div class="llama-emojisButton" id="llama-emojisButton"><span style="margin-left:10px;">
-         </span>
-      </div>
-   </div>
-</div>
+
 <div id="llama-games" style="">
    <div id="llama-gamesBox" class="hidden">
       <div id="llama-gameslist">
@@ -494,8 +501,33 @@ if (/\/room/.test(location.pathname)) {
 	background-color: #2c2f33
 }
 
+.trueblack_mode {
+	background-color: #111
+}
+
 .default_mode {
 	background-color: #fff
+}
+
+.weed_mode {
+	background-color: transparent;
+    background-image:url('https://i.ibb.co/0Dp3Knx/weed-logo2.png');
+    background-size: cover;
+    border: 0px;
+}
+
+.smashbros_mode {
+	background-color: transparent;
+    background-image:url('https://i.ibb.co/7KSTsdj/smash-clipart-87526.png');
+    background-size: cover;
+    border: 0px;
+}
+
+.splatoon_mode {
+	background-color: transparent;
+    background-image:url('https://i.ibb.co/3dHQVhC/splat-mic2.png');
+    background-size: cover;
+    border: 0px;
 }
 </style>
 <!--- END OF GAMES --->
@@ -507,7 +539,7 @@ if (/\/room/.test(location.pathname)) {
       </span>
    </div>
    <div id="llama-settingsBox" class="hidden">
-      <p id="title">TinyLlama Settings - - - - <a href="http://www.smokeyllama.com">SmokeyLlama.com</a></p>
+      <p id="title">TinyLlama Settings - - - - <a href="https://www.smokeyllama.com">SmokeyLlama.com</a></p>
       <div class="llama_settings_inner">
 <div id="llama_top_bar">
       <label class="button chat__LlamaOption active" id="llama_general">
@@ -521,9 +553,15 @@ if (/\/room/.test(location.pathname)) {
       <label class="button chat__LlamaOption" id="llama_images">
         Images
       </label>
+
+      <label class="button chat__LlamaOption" id="llama_cams">
+        Cams
+      </label>
 </div>
 
 <div class="llama_setting" id="llama_general_settings">
+<span style="color: var(--llamatheme-textcolor); font-weight: bold;font-size: 9pt;">General Settings</span>
+<hr style="border: 2px solid var(--llamatheme-bordercolor);">
       <div id="llama-settings-mentions" class="llama-setting-container">
          <input type="checkbox"><span class="label">Alert phrases <span class="info" data-title='A comma-separated list of phrases to alert/highlight for. Example of 3 phrases: "hello,Google Chrome,sky"'>?</span></span>
          <div class="inputcontainer"><input class="text"><button class="save blue-button">save</button></div>
@@ -532,10 +570,12 @@ if (/\/room/.test(location.pathname)) {
       <div id="llama-settings-notifications" class="llama-setting-container"><input type="checkbox"><span class="label">Hide notifications </span></div>
       <div id="llama-settings-changefont" class="llama-setting-container"><input type="checkbox"><span class="label">Improve font <span class="info" data-title='The default font is too thin in some browsers'>?</span></span></div>
       <div id="llama-settings-chatbelow" class="llama-setting-container"><input type="checkbox"><span class="label">Chat on Bottom <span class="info" data-title='!! BETA !! ------ If cams dont resize, hit the arrow on the side of the chatlog to force resize.'>*</span></span></div>
-      <div id="llama-settings-borderlesscams" class="llama-setting-container"><input type="checkbox"><span class="label">Remove cam spacing </span></div>
+
 </div>
 
 <div class="llama_setting" id="llama_theme_settings">
+<span style="color: var(--llamatheme-textcolor); font-weight: bold;font-size: 9pt;">Theme Settings</span>
+<hr style="border: 2px solid var(--llamatheme-bordercolor);">
         <div class="color_square pink_mode" title="pink" id="pink_square"></div>
         <div class="color_square green_mode" title="green" id="green_square"></div>
         <div class="color_square blue_mode" title="blue" id="blue_square"></div>
@@ -544,11 +584,17 @@ if (/\/room/.test(location.pathname)) {
         <div class="color_square red_mode" title="red" id="red_square"></div>
         <div class="color_square purple_mode" title="purple" id="purple_square"></div>
         <div class="color_square black_mode" title="black" id="black_square"></div>
+        <div class="color_square trueblack_mode" title="trueblack" id="trueblack_square"></div>
         <div class="color_square default_mode" title="default" id="default_square"></div>
+        <div class="color_square weed_mode" title="weed" id="weed_square"></div>
+        <div class="color_square smashbros_mode" title="smash bros" id="smashbros_square"></div>
+        <div class="color_square splatoon_mode" title="splatoon" id="splatoon_square"></div>
         <div id="llama-trans-chat" class="llama-setting-container"><input type="checkbox" id="llama-trans-chat-checkbox"><span class="label">Transparent Chatbox </span></div>
 </div>
 
 <div class="llama_setting" id="llama_images_settings">
+<span style="color: var(--llamatheme-textcolor); font-weight: bold;font-size: 9pt;">Custom Image Settings</span>
+<hr style="border: 2px solid var(--llamatheme-bordercolor);">
 <div id="llama-settings-roombg" class="llama-setting-container"><input type="checkbox"><span class="label">Room BG Image </span></div>
 
       <span class="dropdown__Option no_hoverbg no_hover" id="room_bg_box">
@@ -556,6 +602,13 @@ if (/\/room/.test(location.pathname)) {
       </span>
 </div>
 
+
+<div class="llama_setting" id="llama_cams_settings">
+<span style="color: var(--llamatheme-textcolor); font-weight: bold;font-size: 9pt;">Cam Settings</span>
+<hr style="border: 2px solid var(--llamatheme-bordercolor);">
+<div id="llama-settings-roundedcams" class="llama-setting-container"><input type="checkbox"><span class="label">Round Cam Corners</span></div>
+<div id="llama-settings-borderlesscams" class="llama-setting-container"><input type="checkbox"><span class="label">Remove Cam Padding</span></div>
+</div>
 
 </div>
 
@@ -580,8 +633,8 @@ if (/\/room/.test(location.pathname)) {
 /*-TEST----*/
 
 #llama-settings-miniyt>label:hover {
-	background: transparent;
-}
+	background-color: transparent;
+    border:0px solid var(--llamatheme-bordercolor) !important;}
 
 
 /* On mouse-over, add a grey background color */
@@ -697,125 +750,57 @@ if (/\/room/.test(location.pathname)) {
                         titleElem.getElementById("llama-settingsGear").addEventListener("click", toggleSettingsDisplay);
                         titleElem.getElementById("llama-themesGear").addEventListener("click", toggleThemesDisplay);
                         titleElem.getElementById("llama-gamesGear").addEventListener("click", toggleGamesDisplay);
-                        titleElem.getElementById("llama-emojisGear").addEventListener("click", toggleEmojisDisplay);
                         titleElem.getElementById("llama-trans-chat-checkbox").addEventListener("click", toggleTransparentChat);
-                        toggleSubSetting("general")
-                        titleElem.getElementById("llama_general").addEventListener("click", function() {
-                            toggleSubSetting("general");
+                        //titleElem.getElementById("llama-round-cams-checkbox").addEventListener("click", roundCamsToggle);
+                        toggleSubSetting()
+
+                        // llama menus
+                        var llama_menus = ["general", "theme", "images", "cams"];
+                        llama_menus.forEach(function(llama_menu) {
+                            titleElem.getElementById("llama_" + llama_menu).addEventListener("click", function() {
+                                toggleSubSetting(llama_menu);
+                            });
                         });
 
-                        titleElem.getElementById("llama_theme").addEventListener("click", function() {
-                            toggleSubSetting("theme");
+                        // llama themes
+                        var llama_themes = ['pink', 'green', 'blue', 'mauve', 'orange', 'red', 'purple', 'black', 'trueblack', 'default', 'weed', 'smashbros', 'splatoon'];
+                        llama_themes.forEach(function(llama_theme) {
+                            titleElem.getElementById(llama_theme + "_square").addEventListener("click", function() {
+                                Toggle_Theme(llama_theme);
+                            });
+                            titleElem.querySelector("#llama-settings-" + llama_theme + "mode input").addEventListener("click", function() {
+                                Toggle_Theme(llama_theme);
+                            });
+                            //console.log('AEL THEME:----' + llama_theme)
                         });
 
-                        titleElem.getElementById("llama_images").addEventListener("click", function() {
-                            toggleSubSetting("images");
-                        });
-
+                        // llama custom background image
                         titleElem.getElementById("llama-settings-roombg").addEventListener("click", function() {
                             Toggle_Theme("roombg");
                         });
-
                         titleElem.getElementById("llama_roombg_img").addEventListener("focusout", function() {
                             Toggle_Theme("roombg");
                         });
 
+                        // llama mentions
                         titleElem.querySelector("#llama-settings #llama-settings-mentions button.save").addEventListener("click", function() {
                             mentionsManager("save");
                         });
+
+                        // llama reloaders
                         mentionsManager("load");
                         settingsCheckboxUpdate();
-                        reloadUserImages();
                         toggleTransparentChat('reload')
-                        titleElem.getElementById("pink_square").addEventListener("click", function() {
-                            Toggle_Theme('pink');
-                        });
-                        titleElem.getElementById("green_square").addEventListener("click", function() {
-                            Toggle_Theme("green");
-                        });
-                        titleElem.getElementById("blue_square").addEventListener("click", function() {
-                            Toggle_Theme("blue");
-                        });
-                        titleElem.getElementById("mauve_square").addEventListener("click", function() {
-                            Toggle_Theme("mauve");
-                        });
-                        titleElem.getElementById("orange_square").addEventListener("click", function() {
-                            Toggle_Theme("orange");
-                        });
-                        titleElem.getElementById("red_square").addEventListener("click", function() {
-                            Toggle_Theme("red");
-                        });
-                        titleElem.getElementById("purple_square").addEventListener("click", function() {
-                            Toggle_Theme("purple");
-                        });
-                        titleElem.getElementById("black_square").addEventListener("click", function() {
-                            Toggle_Theme("black");
-                        });
-                        titleElem.getElementById("default_square").addEventListener("click", function() {
-                            Toggle_Theme('default');
-                        });
-                        titleElem.querySelector("#llama-settings-pinkmode input").addEventListener("click", function() {
-                            Toggle_Theme('pink');
-                        });
-                        titleElem.querySelector("#llama-settings-greenmode input").addEventListener("click", function() {
-                            Toggle_Theme("green");
-                        });
-                        titleElem.querySelector("#llama-settings-bluemode input").addEventListener("click", function() {
-                            Toggle_Theme("blue");
-                        });
-                        titleElem.querySelector("#llama-settings-purplemode input").addEventListener("click", function() {
-                            Toggle_Theme("mauve");
-                        });
-                        titleElem.querySelector("#llama-settings-orangemode input").addEventListener("click", function() {
-                            Toggle_Theme("orange");
-                        });
-                        titleElem.querySelector("#llama-settings-redmode input").addEventListener("click", function() {
-                            Toggle_Theme("red");
-                        });
-                        titleElem.querySelector("#llama-settings-darkpurplemode input").addEventListener("click", function() {
-                            Toggle_Theme("purple");
-                        });
-                        titleElem.querySelector("#llama-settings-blackmode input").addEventListener("click", function() {
-                            Toggle_Theme("black");
-                        });
-                        titleElem.querySelector("#llama-settings-defaultmode input").addEventListener("click", function() {
-                            Toggle_Theme('default');
-                        });
-                        titleElem.querySelector("#llama-settings-weedmode input").addEventListener("click", function() {
-                            Toggle_Theme("weed");
-                        });
-                        titleElem.querySelector("#llama-settings-featuretwomode input").addEventListener("click", function() {
-                            Toggle_Theme("smashbros");
-                        });
-                        titleElem.querySelector("#llama-settings-featurethreemode input").addEventListener("click", function() {
-                            Toggle_Theme("splatoon");
-                        });
-                        titleElem.querySelector("#llama-settings-borderlesscams input").addEventListener("click", function() {
-                            settingsCheckboxUpdate("llama-settings-borderlesscams");
-                        });
-                        titleElem.querySelector("#llama-settings-miniyt input").addEventListener("click", function() {
-                            settingsCheckboxUpdate("llama-settings-miniyt");
-                        });
-                        titleElem.querySelector("#llama-settings-autoscroll input").addEventListener("click", function() {
-                            settingsCheckboxUpdate("llama-settings-autoscroll");
-                        });
-                        titleElem.querySelector("#llama-settings-mentions input:first-of-type").addEventListener("click", function() {
-                            settingsCheckboxUpdate("llama-settings-mentions");
-                        });
-                        titleElem.querySelector("#llama-settings-notifications input:first-of-type").addEventListener("click", function() {
-                            settingsCheckboxUpdate("llama-settings-notifications");
-                        });
-                        titleElem.querySelector("#llama-settings-changefont input").addEventListener("click", function() {
-                            settingsCheckboxUpdate("llama-settings-changefont");
-                        });
-                        titleElem.querySelector("#llama-settings-chatbelow input").addEventListener("click", function() {
-                            settingsCheckboxUpdate("llama-settings-chatbelow");
-                        });
-                        titleElem.querySelector("#llama-settings-nightmode input").addEventListener("click", function() {
-                            settingsCheckboxUpdate("llama-settings-nightmode");
-                        });
-                        titleElem.querySelector("#llama-settings-maxcamposition input").addEventListener("click", function() {
-                            settingsCheckboxUpdate("llama-settings-maxcamposition");
+                        reloadUserImages();
+                        //roundCamsToggle('reload')
+
+                        // llama original settings
+                        var llama_original_settings = ['borderlesscams', 'miniyt', 'autoscroll', 'mentions', 'notifications', 'changefont', 'chatbelow', 'roundedcams', 'nightmode', 'maxcamposition'];
+                        llama_original_settings.forEach(function(llama_original_setting) {
+                            titleElem.querySelector("#llama-settings-" + llama_original_setting + " input").addEventListener("click", function() {
+                                settingsCheckboxUpdate("llama-settings-" + llama_original_setting);
+                            });
+                            //console.log('AEL ORIG:----' + llama_original_setting)
                         });
 
                         notificationHider();
@@ -828,6 +813,13 @@ if (/\/room/.test(location.pathname)) {
             }
 
             function Toggle_Theme(color) {
+                var trueblack_bgcolor = "#000000"
+                var trueblack_bordercolor = "#0d0d0e"
+                var trueblack_lightbgcolor = "#0e0e0e"
+                var trueblack_textcolor = "#FFFFFF"
+                var trueblack_buttontext = "#2e303a"
+                var trueblack_userlist = "#FFFFFF"
+                var trueblack_cambgcolor = "#000"
                 var darkgreen_bgcolor = "#143848"
                 var darkgreen_bordercolor = "#061015"
                 var darkgreen_lightbgcolor = "#263233"
@@ -908,7 +900,8 @@ if (/\/room/.test(location.pathname)) {
                 try {
                     var body = document.body
                     if(color != "roombg") {
-                        var theme_choices = ['pink', 'green', 'blue', 'purple', 'orange', 'red', 'darkpurple', 'black', 'default', 'weed', 'smashbros', 'splatoon']
+                        console.log('TINY-LLAMA -> Theme -> ' + color.charAt(0).toUpperCase() + color.slice(1))
+                        var theme_choices = ['pink', 'green', 'blue', 'purple', 'orange', 'red', 'darkpurple', 'black', 'trueblack', 'default', 'weed', 'smashbros', 'splatoon']
                         theme_choices.forEach(function(theme_choice) {
                             if (theme_choice === color) {
                                 bodyElem.classList.add("llama-theme")
@@ -941,31 +934,37 @@ if (/\/room/.test(location.pathname)) {
                         let roombg_checkbox = titleElem.querySelector('#llama-settings-roombg > input')
                         let current_room_bg_image = titleElem.getElementById('llama_roombg_img').value
                         if(roombg_checkbox.checked === true) {
+                            settingsQuick['RoomBG'] = true;
                             document.documentElement.style.setProperty("--llamatheme-roombg", "url('" + current_room_bg_image + "')")
-                            localStorage.setItem('llama_image_roombg', 1)
-                            localStorage.setItem('llama_image_roombg_url', current_room_bg_image)
+                            GM_setValue('llama-RoomBG', true.toString())
+                            GM_setValue('llama-RoomBGURL', current_room_bg_image.toString())
+                            console.log('TINY-LLAMA -> Room BG Image -> ON');
+                            console.log('TINY-LLAMA -> Room BG Image URL -> ' + current_room_bg_image);
+                            //console.log(GM_getValue('llama-RoomBG'))
                         } else {
                             document.documentElement.style.setProperty("--llamatheme-roombg", "url('')")
-                            localStorage.removeItem('llama_image_roombg')
-                            localStorage.setItem('llama_image_roombg_url', current_room_bg_image)
+                            settingsQuick['RoomBG'] = false;
+                            GM_setValue('llama-RoomBG', false.toString())
+                            GM_setValue('llama-RoomBGURL', current_room_bg_image.toString())
+                            //console.log(GM_getValue('llama-RoomBG'))
                         }
                     } else if (color === "weed") {
-                        localStorage.setItem('llama_theme', color);
+                        GM_setValue('llama-ThemeChoice', color.toString())
                         if (color === "weed") {
                             document.documentElement.style.setProperty("--llamatheme-bgcolor", "#000000")
                             document.documentElement.style.setProperty("--llamatheme-bordercolor", "#005900")
                             document.documentElement.style.setProperty("--llamatheme-lightbgcolor", "#000000")
-                            document.documentElement.style.setProperty("--llamatheme-textcolor", "#005900")
-                            document.documentElement.style.setProperty("--llamatheme-buttontext", "#005900")
+                            document.documentElement.style.setProperty("--llamatheme-textcolor", "#FFF")
+                            document.documentElement.style.setProperty("--llamatheme-buttontext", "#073800")
                             document.documentElement.style.setProperty("--llamatheme-userlist", "#005900")
                             document.documentElement.style.setProperty("--llamatheme-cambgcolor", "#000000")
                             document.documentElement.style.setProperty("--llamatheme-headerbg", "url(https://i.ibb.co/jDC8w3C/weed-wallpaper-1920x1080.jpg)")
-                            if(localStorage.getItem('llama_image_roombg') != 1) {document.documentElement.style.setProperty("--llamatheme-roombg", "url(https://i.ibb.co/5YKLsSK/wp2565886.jpg)")}
+                            if(settingsQuick['RoomBG'] != true) {document.documentElement.style.setProperty("--llamatheme-roombg", "url(https://i.ibb.co/5YKLsSK/wp2565886.jpg)")}
                             document.documentElement.style.setProperty("--llamatheme-userbg", "url(https://i.ibb.co/5YKLsSK/wp2565886.jpg)")
                             document.documentElement.style.setProperty("--llamatheme-chatbg", "url(https://i.ibb.co/5YKLsSK/wp2565886.jpg)")
                         }
                     } else if (color === "smashbros") {
-                        localStorage.setItem('llama_theme', color);
+                        GM_setValue('llama-ThemeChoice', color.toString())
                         if (color === "smashbros") {
                             document.documentElement.style.setProperty("--llamatheme-bgcolor", "#282828")
                             document.documentElement.style.setProperty("--llamatheme-bordercolor", "#3c3c3c")
@@ -975,13 +974,13 @@ if (/\/room/.test(location.pathname)) {
                             document.documentElement.style.setProperty("--llamatheme-userlist", "#FFF")
                             document.documentElement.style.setProperty("--llamatheme-cambgcolor", "#151515")
                             document.documentElement.style.setProperty("--llamatheme-headerbg", "url(https://i.ibb.co/BK1CXz4/smashlogo.jpg)")
-                            if(localStorage.getItem('llama_image_roombg') != 1) {document.documentElement.style.setProperty("--llamatheme-roombg", "url(https://i.ibb.co/JxkgSdj/melee-minimal-wallpaper-by-browniehooves-d8lwcvk.png)")}
+                            if(settingsQuick['RoomBG'] != true) {document.documentElement.style.setProperty("--llamatheme-roombg", "url(https://i.ibb.co/JxkgSdj/melee-minimal-wallpaper-by-browniehooves-d8lwcvk.png)")}
                             document.documentElement.style.setProperty("--llamatheme-userbg", "url(https://i.ibb.co/nRNHL9C/20444930186-7a639da784-o.png)")
                             document.documentElement.style.setProperty("--llamatheme-chatbg", "url(https://i.ibb.co/ZSYHQs7/chat.jpg)")
                             document.documentElement.style.setProperty("--llamatheme-ptt", "url(https://i.ibb.co/7KSTsdj/smash-clipart-87526.png)")
                         }
                     } else if (color === "splatoon") {
-                        localStorage.setItem('llama_theme', color);
+                        GM_setValue('llama-ThemeChoice', color.toString())
                         if (color === "splatoon") {
                             document.documentElement.style.setProperty("--llamatheme-bgcolor", "#282828")
                             document.documentElement.style.setProperty("--llamatheme-bordercolor", "#3c3c3c")
@@ -991,13 +990,13 @@ if (/\/room/.test(location.pathname)) {
                             document.documentElement.style.setProperty("--llamatheme-userlist", "#FFF")
                             document.documentElement.style.setProperty("--llamatheme-cambgcolor", "#151515")
                             document.documentElement.style.setProperty("--llamatheme-headerbg", "url(https://i.ibb.co/XsTjVk0/splay-bg-header2.png)")
-                            if(localStorage.getItem('llama_image_roombg') != 1) {document.documentElement.style.setProperty("--llamatheme-roombg", "url(https://i.ibb.co/C18JNgK/splatbg.jpg)")}
+                            if(settingsQuick['RoomBG'] != true) {document.documentElement.style.setProperty("--llamatheme-roombg", "url(https://i.ibb.co/C18JNgK/splatbg.jpg)")}
                             document.documentElement.style.setProperty("--llamatheme-userbg", "url(https://i.ibb.co/7nrB9LT/test.png)")
                             document.documentElement.style.setProperty("--llamatheme-chatbg", "url(https://i.ibb.co/TrKBZFn/splat-chat-bg3.png)")
                             document.documentElement.style.setProperty("--llamatheme-ptt", "url(https://i.ibb.co/3dHQVhC/splat-mic2.png)")
                         }
                     } else {
-                        localStorage.setItem('llama_theme', color);
+                        GM_setValue('llama-ThemeChoice', color.toString())
                         var llama_theme_bgcolor = ""
                         var llama_theme_bordercolor = ""
                         var llama_theme_lightbgcolor = ""
@@ -1101,6 +1100,14 @@ if (/\/room/.test(location.pathname)) {
                             llama_theme_buttontext = black_buttontext
                             llama_theme_userlist = black_userlist
                             llama_theme_cambgcolor = black_cambgcolor
+                        } else if (color === "trueblack") {
+                            llama_theme_bgcolor = trueblack_bgcolor
+                            llama_theme_bordercolor = trueblack_bordercolor
+                            llama_theme_lightbgcolor = trueblack_lightbgcolor
+                            llama_theme_textcolor = trueblack_textcolor
+                            llama_theme_buttontext = trueblack_buttontext
+                            llama_theme_userlist = trueblack_userlist
+                            llama_theme_cambgcolor = trueblack_cambgcolor
                         }
                         document.documentElement.style.setProperty("--llamatheme-bgcolor", llama_theme_bgcolor)
                         document.documentElement.style.setProperty("--llamatheme-bordercolor", llama_theme_bordercolor)
@@ -1112,7 +1119,7 @@ if (/\/room/.test(location.pathname)) {
 
 
                         document.documentElement.style.setProperty("--llamatheme-headerbg", "")
-                        if(localStorage.getItem('llama_image_roombg') != 1) {document.documentElement.style.setProperty("--llamatheme-roombg", "")}
+                        if(settingsQuick['RoomBG'] != true) {document.documentElement.style.setProperty("--llamatheme-roombg", "")}
                         document.documentElement.style.setProperty("--llamatheme-userbg", "")
                         document.documentElement.style.setProperty("--llamatheme-chatbg", "")
                         document.documentElement.style.setProperty("--llamatheme-ptt", "")
@@ -1199,98 +1206,31 @@ if (/\/room/.test(location.pathname)) {
                 }
             }
 
-            function pinkmodeToggle(arg) {
-                try {
-                    var pinkmodeClasses = ["llama-pinkmode"];
-
-                    if (settingsQuick["PinkModeBlack"]) pinkmodeClasses.push("pinknight");
-
-                    if (arg == true) {
-                        bodyElem.classList.add(...pinkmodeClasses);
-                        titleCSS.classList.add(...pinkmodeClasses);
-                        sidemenuCSS.classList.add(...pinkmodeClasses);
-                        userlistCSS.classList.add(...pinkmodeClasses);
-                        webappCSS.classList.add(...pinkmodeClasses);
-                        videolistCSS.classList.add(...pinkmodeClasses);
-                        videomoderationCSS.classList.add(...pinkmodeClasses);
-                        chatlistCSS.classList.add(...pinkmodeClasses);
-                        chatlogCSS.classList.add(...pinkmodeClasses);
-                        chatlogElem.querySelector("#chat-wider").classList.add(...pinkmodeClasses);
-                        // Messages:
-                        if (chatlogElem.querySelector(messageQueryString) != null) {
-                            var messageElems = chatlogElem.querySelectorAll(messageQueryString);
-                            for (i = 0; i < messageElems.length; i++) {
-                                var messageItem = messageElems[i].querySelector("tc-message-html").shadowRoot;
-                                var messageItemCSS = messageItem.querySelector(".message");
-                                messageItemCSS.classList.add(...pinkmodeClasses);
-                            }
-                        }
-                        // Cams:
-                        if (videolistElem.querySelector(camQueryString) != null) {
-                            var camElems = videolistElem.querySelectorAll(camQueryString);
-                            for (i = 0; i < camElems.length; i++) {
-                                var camItem = camElems[i].querySelector("tc-video-item").shadowRoot;
-                                var camItemCSS = camItem.querySelector(".video");
-                                camItemCSS.classList.add(...pinkmodeClasses);
-
-                                if (camItemCSS.querySelector("#camItemCSS") == null) camItemCSS.insertAdjacentHTML("afterbegin", camItemCSShtml);
-                            }
-                        }
-                    }
-                    if (arg == false) {
-                        if (!settingsQuick["PinkModeBlack"] && settingsQuick["PinkMode"]) pinkmodeClasses = ["pinknight"];
-
-                        bodyElem.classList.remove(...pinkmodeClasses);
-                        titleCSS.classList.remove(...pinkmodeClasses);
-                        sidemenuCSS.classList.remove(...pinkmodeClasses);
-                        userlistCSS.classList.remove(...pinkmodeClasses);
-                        webappCSS.classList.remove(...pinkmodeClasses);
-                        videolistCSS.classList.remove(...pinkmodeClasses);
-                        videomoderationCSS.classList.remove(...pinkmodeClasses);
-                        chatlistCSS.classList.remove(...pinkmodeClasses);
-                        chatlogCSS.classList.remove(...pinkmodeClasses);
-                        chatlogElem.querySelector("#chat-wider").classList.remove(...pinkmodeClasses);
-                        // Messages:
-                        if (chatlogElem.querySelector(messageQueryString) != null) {
-                            var messageElems = chatlogElem.querySelectorAll(messageQueryString);
-                            for (i = 0; i < messageElems.length; i++) {
-                                var messageItem = messageElems[i].querySelector("tc-message-html").shadowRoot;
-                                var messageItemCSS = messageItem.querySelector(".message");
-                                messageItemCSS.classList.remove(...pinkmodeClasses);
-                            }
-                        }
-                        // Cams:
-                        if (videolistElem.querySelector(camQueryString) != null) {
-                            var camElems = videolistElem.querySelectorAll(camQueryString);
-                            for (i = 0; i < camElems.length; i++) {
-                                var camItem = camElems[i].querySelector("tc-video-item").shadowRoot;
-                                var camItemCSS = camItem.querySelector(".video");
-                                camItemCSS.classList.remove(...pinkmodeClasses);
-                            }
-                        }
-                    }
-                } catch (e) {
-                    tcl("error pinkmodeToggle: " + e.message);
-                }
-            }
-
-            function toggleTransparentChat(chat_status) {
-                var chat_status = chat_status || ''
-                let current_trans_status = localStorage.getItem('llama_trans_chat')
+            function toggleTransparentChat(status) {
+                status = status || ''
+                let current_trans_status = settingsQuick["TransparentChat"]
                 let current_trans_checkbox = titleElem.getElementById('llama-trans-chat-checkbox')
-                if(chat_status != 'reload') {
-                    if(current_trans_status == 1) {
+                if(status != 'reload') {
+                    if(current_trans_status == true) {
                         current_trans_checkbox.checked = false
                         chatlogElem.querySelector("#chat-wrapper").setAttribute('style', '')
-                        localStorage.removeItem('llama_trans_chat')
+                        var newValue = current_trans_checkbox.checked;
+                        settingsQuick["TransparentChat"] = newValue;
+                        GM_setValue("llama-TransparentChat", newValue.toString());
                     } else {
                         current_trans_checkbox.checked = true
                         chatlogElem.querySelector("#chat-wrapper").setAttribute('style', 'background-color: transparent;')
-                        localStorage.setItem('llama_trans_chat', 1)
+                        var newValue = current_trans_checkbox.checked;
+                        settingsQuick["TransparentChat"] = newValue;
+                        GM_setValue("llama-TransparentChat", newValue.toString());
+                        console.log('TINY-LLAMA -> Trasparent Chat -> ON')
                     }
                 } else {
-                  current_trans_checkbox.checked = true
-                  chatlogElem.querySelector("#chat-wrapper").setAttribute('style', 'background-color: transparent;')
+                    if(current_trans_status == true) {
+                        current_trans_checkbox.checked = true
+                        chatlogElem.querySelector("#chat-wrapper").setAttribute('style', 'background-color: transparent;')
+                        console.log('TINY-LLAMA -> Trasparent Chat -> ON')
+                    }
                 }
             }
 
@@ -1343,22 +1283,6 @@ if (/\/room/.test(location.pathname)) {
 
             }
 
-            function toggleEmojisDisplay(arg) {
-
-                if (settingsVisible == true) {
-                    titleElem.getElementById("llama-emojisBox").classList.add("hidden");
-                    titleElem.getElementById("llama-emojis").classList.remove("llama-open");
-                    titleElem.getElementById("llama-emojisButton").classList.remove("llama-emojis-open");
-                    settingsVisible = false;
-                } else {
-                    titleElem.getElementById("llama-emojisBox").classList.remove("hidden");
-                    titleElem.getElementById("llama-emojis").classList.add("llama-open");
-                    titleElem.getElementById("llama-emojisButton").classList.add("llama-emojis-open");
-                    settingsVisible = true;
-                }
-
-            }
-
             function toggleHidingDisplay(arg) {
 
                 if (settingsVisible == true) {
@@ -1376,12 +1300,15 @@ if (/\/room/.test(location.pathname)) {
             }
 
             function toggleSubSetting(arg) {
+                arg = arg || 'reload'
                 try {
                     //console.log(arg)
-                    var setting_choices = ["general", "theme", "images"]
+                    if(arg != 'reload') {
+                      console.log('TINY-LLAMA -> MENU -> ' + arg.charAt(0).toUpperCase() + arg.slice(1))
+                    } else {arg = 'general';}
+                    var setting_choices = ["general", "theme", "images", "cams"]
                     setting_choices.forEach(function(setting_choice) {
                         if (setting_choice === arg) {
-                            console.log('Menu - Opened -' + ' ' + arg)
                             titleElem.getElementById('llama_' + arg).classList.add('active')
                             titleElem.getElementById('llama_' + arg + '_settings').classList.remove('d-none')
                         } else {
@@ -1397,9 +1324,10 @@ if (/\/room/.test(location.pathname)) {
             function settingsCheckboxUpdate(settingName = null, value = null) {
                 try {
                     if (settingName == null && value == null) {
+                        //no arguments set, then load checkboxes from settingsQuick[]
                         titleElem.getElementById("llama-settings-borderlesscams").querySelector("input").checked = settingsQuick["BorderlessCams"];
+                        titleElem.getElementById("llama-settings-roundedcams").querySelector("input").checked = settingsQuick["RoundedCams"];
                         titleElem.getElementById("llama-settings-miniyt").querySelector("input").checked = settingsQuick["miniyt"];
-
                         titleElem.getElementById("llama-settings-autoscroll").querySelector("input").checked = settingsQuick["Autoscroll"];
                         titleElem.getElementById("llama-settings-mentions").querySelector("input").checked = settingsQuick["MentionsMonitor"];
                         titleElem.getElementById("llama-settings-notifications").querySelector("input").checked = settingsQuick["NotificationsOff"];
@@ -1501,6 +1429,15 @@ if (/\/room/.test(location.pathname)) {
                             borderlessCamsToggle(newValue);
                         }
                     }
+
+                    if (settingName == "llama-settings-roundedcams") {
+                        if (value == null) {
+                            var newValue = titleElem.getElementById("llama-settings-roundedcams").querySelector("input").checked;
+                            settingsQuick["RoundedCams"] = newValue;
+                            GM_setValue("llama-RoundedCams", newValue.toString());
+                            roundCamsToggle(newValue);
+                        }
+                    }
                 } catch (e) {
                     tcl("error settingsCheckboxUpdate: " + e.message);
                 }
@@ -1515,16 +1452,29 @@ if (/\/room/.test(location.pathname)) {
             }
 
             function reloadUserImages() {
-                let current_roombg = localStorage.getItem('llama_image_roombg');
-                let current_roombg_url = localStorage.getItem('llama_image_roombg_url');
+                let current_roombg = settingsQuick['RoomBG'];
+                let current_roombg_url = settingsQuick['RoomBGURL'];
+                //console.log('room bg: ' + current_roombg)
+                //console.log('room bg url: ' + current_roombg_url)
                 let roombg_checkbox = titleElem.querySelector('#llama-settings-roombg > input')
                 if (current_roombg_url) {titleElem.getElementById('llama_roombg_img').value = current_roombg_url}
-                console.log(current_roombg)
-                if (current_roombg == 1) {roombg_checkbox.checked = true; Toggle_Theme('roombg');}
+                if (current_roombg == true) {roombg_checkbox.checked = true; Toggle_Theme('roombg');}
+            }
+
+            function roundCamsToggle(arg) {
+                if (videolistElem.querySelector(camQueryString) != null) {
+                    var camElems = videolistElem.querySelectorAll(camQueryString);
+                    for (i = 0; i < camElems.length; i++) {
+                        var camItem = camElems[i].querySelector("tc-video-item").shadowRoot;
+                        var camElem = camItem.querySelector(".video");
+                        arg ? camElem.classList.add("llama-roundedcams") : camElem.classList.remove("llama-roundedcams");
+                    }
+                }
+                arg ? console.log('TINY-LLAMA -> Rounded Cams -> ON') : ''
+                arg ? videolistCSS.classList.add("llama-roundedcams") : videolistCSS.classList.remove("llama-roundedcams");
             }
 
             function borderlessCamsToggle(arg) {
-
                 if (videolistElem.querySelector(camQueryString) != null) {
                     var camElems = videolistElem.querySelectorAll(camQueryString);
                     for (i = 0; i < camElems.length; i++) {
@@ -1533,6 +1483,7 @@ if (/\/room/.test(location.pathname)) {
                         arg ? camElem.classList.add("llama-borderlesscams") : camElem.classList.remove("llama-borderlesscams");
                     }
                 }
+                arg ? console.log('TINY-LLAMA -> Remove Cam Padding -> ON') : ''
                 arg ? videolistCSS.classList.add("llama-borderlesscams") : videolistCSS.classList.remove("llama-borderlesscams");
             }
 
@@ -1669,7 +1620,6 @@ if (/\/room/.test(location.pathname)) {
                 }
             }
 
-
             function declareGlobalVars() {
 
                 try {
@@ -1704,10 +1654,6 @@ if (/\/room/.test(location.pathname)) {
     margin-left: -11px;display:none;
 }
 
-.llama-featurethreemode #room-content {
-    background-color:transparent !important;
-}
-
 :host, #videolist {
     background-color: transparent;
 }
@@ -1717,11 +1663,7 @@ if (/\/room/.test(location.pathname)) {
 height: 0px !important;
 }}
 
-.video.blacknight div.ratio-4-3 {
-	border-radius: 10px;
-}
-
-.video div.ratio-4-3 {
+.video.llama-roundedcams div.ratio-4-3 {
 	border-radius: 10px;
 }
 /*--------------------------------------------------MINIYT--------------------------------------------------------*/
@@ -2039,9 +1981,9 @@ height: 0px !important;
     color: #952c46;}
 .blue {background: #2a388b;
     color: #952c46;}
-.purple {background: #BF8FE5;
+.mauve {background: #BF8FE5;
     color: #952c46;}
-.darkpurple {background: #550098;
+.purple {background: #550098;
     color: #952c46;}
 .orange {background: #ff4f00;
     color: #952c46;}
@@ -2049,13 +1991,17 @@ height: 0px !important;
     color: #952c46;}
 .default {background: #ffffff;
     color: #952c46;}
-.featureone {
+.weed {
     color: #952c46;}
-.featuretwo {
+.smashbros {
     color: #952c46;}
-.featurethree {
+.splatoon {
     color: #952c46;}
-.black {background: #191919;
+.black {
+    background: #191919;
+}
+.trueblack {
+    background: #000;
 }
 
 .feature1 {
@@ -2116,7 +2062,7 @@ background-color:#00ff00;
     height: 33px !important;
 }
 .featurethree {
-    background-image: var(--featurethreemode-ptt);
+    background-image: url(https://i.ibb.co/3dHQVhC/splat-mic2.png);
     background-size: 36px;
     position: relative;
     right: 8px;
@@ -2180,7 +2126,7 @@ background-color:#00ff00;
     border-left: 0px;
     border-radius: 19px;
     text-align: center;
-    color: #b4c1c5;
+    color: var(--llamatheme-bordercolor);
     cursor: pointer;
     transition: all .4s ease-in-out;
     background-color: var(--llamatheme-cambgcolor);
@@ -2384,9 +2330,6 @@ input[type="button"], button {
 #llama-games .hidden {
     display: none;}
 
-#llama-emojis .hidden {
-    display: none;}
-
 #llama-hiding .hidden {
     display: none;}
 
@@ -2529,15 +2472,6 @@ input[type="button"], button {
     top: 99px;
     right: 0px;}
 
-#llama-emojis {
-    width: 33px;
-    font-size: 11px;
-    flex: none;
-    z-index: 9;
-    position: absolute;
-    bottom: 35px;
-    right: 335px;}
-
 .llama-headerCollapsed #llama-games {
     top:-1px;
 right:36px;
@@ -2569,33 +2503,6 @@ z-index:10;
     cursor:pointer;
     text-align: center;
     color:#fff;}
-
-#llama-emojisGear > div {
-background-color: #111111;
-    background-image: url(https://cdn.glitch.com/e82ef8ae-b7d2-4511-8d06-23bc75bc02eb%2FEmoji-BG.jpg?v=1561428846260);
-    background-position: left center;
-    background-position-x: -18px;
-    background-position-y: -6px;
-    background-size: 266px;
-    background-repeat: no-repeat;
-    border: 1px solid #313131;
-    height: 20px;
-    width: 20px;
-    border-radius: 53px;
-    /* border-left: 0px; */
-    text-align: center;
-    font-weight: bold;
-    color: #C1C1C1;
-    line-height: 20px;
-    font-size: 13px;}
-
-#llama-emojisGear > div:hover {
-    background-color: #04caff;
-    height: 20px;
-    cursor:pointer;
-    text-align: center;
-    color:#fff;}
-
 
 #llama-colors {
     width: 70px;
@@ -2765,6 +2672,10 @@ background-color: #111111;
 
 #llama-settings-maxcamposition { top: 54px; }
 #llama-settings-borderlesscams { top: 67px; }
+#llama-settings-miniyt:hover {
+    background-color: var(--llamatheme-cambgcolor);
+    border-color: var(--llamatheme-cambgcolor);
+}
 #llama-settings-miniyt {
     top: 100px;
     left: 162px;
@@ -2789,12 +2700,12 @@ background-color: #111111;
     left: 33px;}
 
 
-		/***------------------------------------FEATURETWOOO------------------------------------***/
+		/***------------------------------------PINKKK------------------------------------***/
 #llama-settings-pinkmode {
     top: 4px !important;
     position: relative;}
 
-		/***------------------------------------GREEBNNN------------------------------------***/
+		/***------------------------------------GREENNN------------------------------------***/
 #llama-settings-greenmode {
 position:absolute;
     top: 22px !important;}
@@ -2804,8 +2715,8 @@ position:absolute;
 position:absolute;
     top: 39px !important;}
 
-		/***------------------------------------PURPLEEE------------------------------------***/
-#llama-settings-purplemode {
+		/***------------------------------------MAUVEEE------------------------------------***/
+#llama-settings-mauvemode {
 position:absolute;
     top: 56px !important;}
 
@@ -2820,37 +2731,38 @@ position:absolute;
     top: 90px !important;}
 
 		/***------------------------------------DARKPURPLEEE------------------------------------***/
-#llama-settings-darkpurplemode {
+#llama-settings-purplemode {
 position:absolute;
     top: 107px !important;}
 
-		/***------------------------------------DEFAULTTTT------------------------------------***/
+		/***------------------------------------BLACKKKK------------------------------------***/
 #llama-settings-blackmode {
 position:absolute;
     top: 123px !important;}
 
-		/***------------------------------------WHITEEE------------------------------------***/
-#llama-settings-defaultmode {
+		/***------------------------------------TRUEBLACKKKK------------------------------------***/
+#llama-settings-trueblackmode {
 position:absolute;
     top: 140px !important;}
 
-		/***------------------------------------FEATUREONEEE------------------------------------***/
-#llama-settings-weedmode {
+		/***------------------------------------DEFAULTTT------------------------------------***/
+#llama-settings-defaultmode {
 position:absolute;
     top: 157px !important;}
 
-		/***------------------------------------FEATURETWOOO------------------------------------***/
-#llama-settings-featuretwomode {
+		/***------------------------------------WEEDDD------------------------------------***/
+#llama-settings-weedmode {
 position:absolute;
-    top: 194px !important;}
-		/***------------------------------------FEATURETHREEE------------------------------------***/
-#llama-settings-featurethreemode {
+    top: 176px !important;}
+
+		/***------------------------------------SMASHBROSSS------------------------------------***/
+#llama-settings-smashbrosmode {
 position:absolute;
-    top: 231px !important;}
-
-.llama-featurethreemode #llama-themes {background-color:transparent}
-
-
+    top: 214px !important;}
+		/***------------------------------------SPLATOONNN------------------------------------***/
+#llama-settings-splatoonmode {
+position:absolute;
+    top: 255px !important;}
 
 #llama-settings-featuredmode {
     position:absolute;
@@ -2874,17 +2786,18 @@ position:absolute;
 
 /* Hide the browser's default checkbox */
 #llama-settings-blackmode > label > input[type="checkbox"],
+#llama-settings-trueblackmode > label > input[type="checkbox"],
 #llama-settings-pinkmode > label > input[type="checkbox"],
 #llama-settings-greenmode > label > input[type="checkbox"],
 #llama-settings-bluemode > label > input[type="checkbox"],
 #llama-settings-orangemode > label > input[type="checkbox"],
 #llama-settings-redmode > label > input[type="checkbox"],
 #llama-settings-weedmode > label > input[type="checkbox"],
-#llama-settings-featuretwomode > label > input[type="checkbox"],
-#llama-settings-darkpurplemode > label > input[type="checkbox"],
+#llama-settings-smashbrosmode > label > input[type="checkbox"],
 #llama-settings-purplemode > label > input[type="checkbox"],
+#llama-settings-mauvemode > label > input[type="checkbox"],
 #llama-settings-defaultmode > label > input[type="checkbox"],
-#llama-settings-featurethreemode > label > input[type="checkbox"]   {
+#llama-settings-splatoonmode > label > input[type="checkbox"]   {
     position: absolute;
     opacity: 0;
     cursor: pointer;}
@@ -2940,16 +2853,16 @@ position:absolute;
 
 /* Style the checkmark/indicator */
 #llama-settings-defaultmode > label > span.checkmark:after,
+#llama-settings-mauvemode > label > span.checkmark:after,
 #llama-settings-purplemode > label > span.checkmark:after,
-#llama-settings-darkpurplemode > label > span.checkmark:after,
 #llama-settings-bluemode > label > span.checkmark:after,
 #llama-settings-greenmode > label > span.checkmark:after,
 #llama-settings-orangemode > label > span.checkmark:after,
 #llama-settings-redmode > label > span.checkmark:after,
-#llama-settings-featuretwomode > label > span.checkmark:after,
+#llama-settings-smashbrosmode > label > span.checkmark:after,
 #llama-settings-pinkmode > label > span.checkmark:after,
 #llama-settings-whitemode > label > span.checkmark:after,
-#llama-settings-featurethreemode > label > span.checkmark:after {
+#llama-settings-splatoonmode > label > span.checkmark:after {
     left: 8px;
     top: 1px;
     width: 3px;
@@ -3111,10 +3024,6 @@ color:#000000;
 {
     display: none;}
 
-.llama-featurethreemode #room-header.llama-headerCollapsed {
-    height: 0px;
-    margin-top: -10px;}
-
 
 #room-header.llama-headerCollapsed:hover {
     /*	height: 25px;*/}
@@ -3130,6 +3039,11 @@ color:#000000;
 #room-header-info {
     padding: 0;
     color: var(--llamatheme-textcolor);}
+
+#room-header-info span > svg > path,
+#room-header-info > span:nth-child(3) > svg > circle {fill:var(--llamatheme-bordercolor) !important;}
+
+#room-header-info span > svg > circle {stroke:var(--llamatheme-bordercolor) !important;}
 
 #room-header-info > h1 {
     color: var(--llamatheme-textcolor);
@@ -3568,9 +3482,6 @@ border-top-left-radius: 11px !important;
 #chatlist.llama-redmode > div > span {
     color:#000000;}
 
-.llama-redmode #chat-wider:before {
-    color:#860000;}
-
 #chatlist > div > span {
     padding-left: 10px;}
 
@@ -3701,6 +3612,7 @@ border-top-left-radius: 11px !important;
     color: #111111;}
 
 #button-banlist {
+top: 1px;
 	padding: 0 12px;
     text-indent: -9999px;
     background-image: url(https://www.freeiconspng.com/uploads/red-x-png-4.png);
@@ -3708,7 +3620,16 @@ border-top-left-radius: 11px !important;
     background-position: center center;
     background-repeat: no-repeat;
     white-space: nowrap;
-    background-color:transparent;}
+    background-color: var(--llamatheme-cambgcolor);}
+
+.list-item > span:hover {
+    background-color: var(--llamatheme-cambgcolor);
+    }
+
+
+.list-item > span:hover > span {
+    background-color:var(--llamatheme-cambgcolor);
+    box-shadow: 0 0 0px 0px transparent;}
 
 .list-item > span[data-status]:before {
     left: auto;
@@ -3862,9 +3783,6 @@ body.llama-changefont {
 
 .llama-mention-message { color: red !important; }
 
-.llama-featurethreemode #chat-content > .message.system {
-   color: #51bc02;}
-
 .llama-nightmode.llama-mention-message { color: #e44a3f; }
 .llama-nightmode.message.system,
 .llama-nightmode #chat-content > .message.system {
@@ -3984,9 +3902,6 @@ body.llama-changefont {
     padding: 3px;
     border-radius: 100%;
     background-color: #fff;}
-
-.llama-featurethreemode #chat-content > .message.common > a > .status-icon {
-left:293px;}
 
 #chat-content > .message.system > .content {
     font-size: 12px;
@@ -4132,7 +4047,7 @@ left:293px;}
     cursor: pointer;
     z-index: 1;
     padding-top: 10px;
-    color: #3b3b3b;
+    color: var(--llamatheme-bordercolor);
     position: absolute;
     top: 47%;}
 
@@ -4144,6 +4059,7 @@ left:293px;}
     border-radius: 10px 0 0 10px;}
 
 #chat-wider:before {
+    border-color: transparent var(--llamatheme-bordercolor);
     transform: rotate(180deg);
     -webkit-transform: rotate(180deg);}
 
@@ -4468,7 +4384,7 @@ transition: all .4s ease-in-out;
 
 #live-directory:hover, #upgrade:hover {
     opacity: 1;
-    background-color:#222222;}
+    background-color:var(--llamatheme-bordercolor);}
 }
 
 #sidemenu.llama-sidemenuCollapsed {
@@ -4483,7 +4399,7 @@ transition: all .4s ease-in-out;
     right: 0;
     left: 153px;
     background: var(--llamatheme-cambgcolor);
-    color: #536165;
+    color: var(--llamatheme-bordercolor);
     z-index: 3;
     border-radius: 10px;
     border-right: 0px;
@@ -4520,7 +4436,7 @@ transition: all .4s ease-in-out;
     border-radius: 0 10px 10px 0;
     right: -15px;
     left: -4px;}
-#llama-sidemenu-grabber:before {border-color: transparent #cbcfcf;}
+#llama-sidemenu-grabber:before {border-color: transparent var(--llamatheme-bordercolor);}
 
 #sidemenu.llama-nightmode{
     background: #191919;}
@@ -5112,6 +5028,7 @@ transition: all .4s ease-in-out;
                         if (settingsQuick["NightModeBlack"]) camItemCSS.classList.add("blacknight");
                         else camItemCSS.classList.remove("blacknight");
                         if (settingsQuick["BorderlessCams"]) camItemCSS.classList.add("llama-borderlesscams");
+                        if (settingsQuick["RoundedCams"]) camItemCSS.classList.add("llama-roundedcams");
                         else camItemCSS.classList.remove("llama-borderlesscams");
 
                         if (!camItem.querySelector("#camItemCSS")) camItemCSS.insertAdjacentHTML("afterbegin", camItemCSShtml);
