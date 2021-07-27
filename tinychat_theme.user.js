@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TinyLlama : Tinychat Themes and Extra Features
 // @namespace    http://www.smokeyllama.com
-// @version      2021.10
+// @version      2021.11
 // @description  Editing Overall Theme of Tinychat. 12 Color Themes, Background Images, and More! Install and refresh.
 // @author       SmokeyLlama
 // @match        https://tinychat.com/*
@@ -3106,7 +3106,8 @@ color:#000000;
 
 #room-header.llama-headerCollapsed #room-header-avatar,
 #room-header.llama-headerCollapsed #room-header-info,
-#room-header.llama-headerCollapsed #room-header-gifts-buttons
+#room-header.llama-headerCollapsed #room-header-gifts-buttons,
+#room-header.llama-headerCollapsed #room-header-gifts
 {
     display: none;}
 
@@ -4557,7 +4558,7 @@ transition: all .4s ease-in-out;
     background-color: #111;}
 
 .llama-nightmode #sidemenu-content::-webkit-scrollbar {
-    width: 5px;}
+    width: 3px;}
 
 #sidemenu {
     border-color: var(--llamatheme-bordercolor);
