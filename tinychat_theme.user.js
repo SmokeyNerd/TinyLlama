@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TinyLlama : Tinychat Themes and Extra Features
 // @namespace    http://www.smokeyllama.com
-// @version      2021.13
+// @version      2021.14
 // @description  Editing Overall Theme of Tinychat. 12 Color Themes, Background Images, and More! Install and refresh.
 // @author       SmokeyLlama
 // @match        https://tinychat.com/*
@@ -2526,7 +2526,7 @@ body.llama-changefont {
     padding-left: 16px;
     box-sizing: border-box;
     overflow-x: hidden;
-    overflow-y: hidden;}
+    }
 
 
 .message {
@@ -4825,8 +4825,8 @@ height: 0px !important;
 
                         if (latestMessageElem.classList.contains("system")) {
                             typeSystem = true;
-                            latestMessageElem.classList.add('d-none')
-                            chatlogCSS.querySelector('#systemMessageLog').appendChild(latestMessageElem)
+                            //latestMessageElem.classList.add('d-none')
+                            //chatlogCSS.querySelector('#systemMessageLog').appendChild(latestMessageElem)
                         }
 
                         if (latestMessageElem.classList.contains("llama-systemMsg")) {
