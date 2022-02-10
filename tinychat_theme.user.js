@@ -4255,7 +4255,9 @@ height: 0px !important;
 .llama-miniyt #videos.row > .videos-items:last-child {
     width: 100%;}
 }
-
+#menu {
+    display: none;
+}
 	`;
 
                     camItemCSShtml = `
